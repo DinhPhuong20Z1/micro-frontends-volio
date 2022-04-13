@@ -1,0 +1,54 @@
+<div class="row">
+    <nb-card class="col-12">
+        <nb-card-header>Profile</nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="inputFirstName" class="label">Name:</label>
+                        <input type="text" nbInput fullWidth id="inputFirstName" placeholder="Name" value="Kim Ericko">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Email</label>
+                        <input type="text" nbInput fullWidth id="inputLastName" placeholder="Email" value="kimpv@volio.vn" disabled>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" status="info" nbButton hero>Save</button>
+        </nb-card-body>
+    </nb-card>
+</div>
+
+<div class="row">
+    <nb-card class="col-12">
+        <nb-card-header>Change password</nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="inputCurrentPassword" class="label">Current password</label>
+                    <nb-form-field class="form-group">
+                        <input [type]="currentPasswordType" id="inputCurrentPassword" fullWidth nbInput>
+                        <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
+                            <nb-icon [icon]="currentPasswordType=='password' ? 'eye-off-2-outline' : 'eye-outline'" pack="eva" [attr.aria-label]="currentPasswordType=='password' ? 'hide password' : 'show password'"></nb-icon>
+                        </button>
+                    </nb-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputNewPassword" class="label">New Password</label>
+                        <input type="password" nbInput fullWidth id="inputNewPassword" placeholder="New password">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputConfirmPassword" class="label">Confirm password</label>
+                        <input type="password" nbInput fullWidth id="inputConfirmPassword" placeholder="Conform new password">
+                    </div>
+                </div>
+            </div>
+            <button type="submit" status="danger" nbButton hero>Change</button>
+        </nb-card-body>
+    </nb-card>
+</div>
