@@ -1,0 +1,50 @@
+@import '../../../@theme/styles/themes';
+
+@include nb-install-component() {
+    .ngx-toggle-setting-container {
+        box-shadow: none;
+        position: fixed;
+        top: 90%;
+        right: 3rem;
+        transition: transform 0.5s;
+        // color: nb-theme(text-hint-color);
+        // color: nb-theme(text-basic-color);
+        z-index: 998;
+    }
+
+    #cog-button {
+        background: #fff;
+        box-shadow: none;
+        color: nb-theme(text-basic-color);
+        background-color: nb-theme(background-basic-color-1);
+        box-shadow: nb-theme(slide-out-shadow-color);
+        border: none;
+        height: 3rem;
+        width: 3rem;
+        padding: 0;
+        text-align: center;
+    }
+
+    #cog-icon {
+        font-size: 1rem;
+        height: var(--icon-height);
+        animation-name: rotate;
+        animation-duration: 5s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    }
+}
+
+.tab-time-picker {
+    width: auto !important;
+}

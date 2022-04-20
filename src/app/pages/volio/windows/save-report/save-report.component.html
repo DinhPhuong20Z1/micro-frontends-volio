@@ -1,0 +1,44 @@
+<nb-stepper #stepper>
+    <nb-step [stepControl]="timeGroupForm" label="Time Group">
+        <form #timeGroupForm="ngForm" class="step-container">
+            <div class="input-group">
+                <label for="selectType" class="label">Time group</label>
+                <nb-select [(selected)]="timeGroup" id="selectType" (selectedChange)="timeGroupChanged($event)" value="Day" fullWidth>
+                    <nb-option *ngFor="let t of timesGroup" [value]="t">{{ t }}</nb-option>
+                </nb-select>
+                <button nbButton nbStepperNext hero fullWidth status="info">next <nb-icon icon="arrow-ios-forward-outline" pack="eva"></nb-icon></button>
+            </div>
+        </form>
+    </nb-step>
+
+    <nb-step [stepControl]="timeRange" label="Time Range">
+        <form #timeRange="ngForm" class="step-container">
+            <div class="input-group">
+                <label for="timeRange" class="label">Time range</label>
+                <input class="form-control" id="timeRange" name="timeRange" nbInput placeholder="Range Picker" [nbDatepicker]="rangePicker" fullWidth nbInput required ngModel #timeRange="ngModel" [status]="timeRange.invalid ? 'danger' : 'basic'">
+                <nb-rangepicker #rangePicker [filter]="filterFn" format="dd/MM/yyyy"></nb-rangepicker>
+            </div>
+            <button type="button" (click)="timePickerChange(timeRange)" nbButton nbStepperNext hero fullWidth status="info">next <nb-icon icon="arrow-ios-forward-outline" pack="eva"></nb-icon></button>
+        </form>
+    </nb-step>
+
+    <nb-step [stepControl]="reportFormat" label="Format">
+        <form #reportFormat="ngForm" class="step-container">
+            <div class="input-group">
+                <label for="reportFormat" class="label">Report format</label>
+                <nb-select [(selected)]="formatReport" placeholder="Select type" id="reportFormat" name="reportFormat" value="xlsx" fullWidth required ngModel #reportFormat="ngModel" [status]="reportFormat.invalid ? 'danger' : 'basic'">
+                    <nb-option value="xlsx" selected>.xlsx</nb-option>
+                    <nb-option value="json">.json</nb-option>
+                </nb-select>
+            </div>
+            <button nbButton nbStepperNext hero fullWidth status="info">next <nb-icon icon="arrow-ios-forward-outline" pack="eva"></nb-icon></button>
+        </form>
+    </nb-step>
+
+    <nb-step [hidden]="true">
+        <div class="step-container">
+            <h3>Get your report!</h3>
+            <button nbButton (click)="saveReport()" hero fullWidth status="info">Download <nb-icon icon="download-outline" pack="eva"></nb-icon></button>
+        </div>
+    </nb-step>
+</nb-stepper>

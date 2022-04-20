@@ -1,0 +1,10 @@
+<nb-card>
+    <nb-card-header>{{ title }}</nb-card-header>
+    <nb-card-body>
+        {{description}}
+    </nb-card-body>
+    <nb-card-footer>
+        <button class="cancel" nbButton hero status="danger" (click)="dismiss()">Oke</button>
+        <button nbButton hero status="success" (click)="onRetry()" *ngIf="showRetry">Retry</button>
+    </nb-card-footer>
+</nb-card>

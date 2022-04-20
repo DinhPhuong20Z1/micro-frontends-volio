@@ -6,7 +6,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
 import { AppComponent } from './app.component';
@@ -20,8 +20,17 @@ import {
     NbToastrModule,
     NbWindowModule,
 } from '@nebular/theme';
+import { AuthGuard } from './pages/volio/auth/guard/auth-guard';
+import { VolioAuthInterceptor } from './pages/volio/interceptor/volio-auth-interceptor';
+import { VolioComponentsModule } from './pages/volio/volio.module';
 
 @NgModule({
+    providers: [{
+        provide: HTTP_INTERCEPTORS,
+        useClass: VolioAuthInterceptor,
+        multi: true
+    }, AuthGuard],
+
     declarations: [AppComponent],
     imports: [
         BrowserModule,

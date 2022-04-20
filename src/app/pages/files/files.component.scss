@@ -1,55 +1,97 @@
-@import '../../../@theme/styles/themes';
+@import "../../@theme/styles/themes.scss";
 
-@include nb-install-component() {
-  button[nbTreeGridRowToggle] {
-    background: transparent;
-    border: none;
-    padding: 0;
-  }
-
-  .search-label {
-    display: block;
-  }
-  .search-input {
+nb-card-body.example-items-col > * {
+    align-items: stretch;
     margin-bottom: 1rem;
-  }
+}
 
-  .nb-column-name {
+input {
     width: 100%;
-  }
+}
 
-  ::ng-deep .row-toggle-button {
-    color: nb-theme(text-basic-color);
-  }
+.cancel {
+    margin-right: 1rem;
+}
 
-  .nb-tree-grid-header-cell,
-  .nb-tree-grid-header-cell button {
-    text-transform: capitalize;
-  }
+.download {
+    margin-left: 1rem;
+}
 
-  @media screen and (min-width: 400px) {
-    .nb-column-name,
-    .nb-column-size {
-      width: 50%;
+.infor-item {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.infor-name {
+    font-weight: 600;
+    min-width: 125px;
+    max-width: 140px;
+}
+
+.infor-content {
+    width: 100%;
+    word-break: break-word;
+}
+
+nb-card-footer.dialog {
+    text-align: right;
+}
+nb-card.dialog {
+    min-width: 600px;
+}
+ @include nb-install-component() {
+    button[nbTreeGridRowToggle] {
+        background: transparent;
+        border: none;
+        padding: 0;
     }
-  }
 
-  @media screen and (min-width: 500px) {
-    .nb-column-name,
-    .nb-column-size,
-    .nb-column-kind {
-      width: 33.333%;
+    .search-label {
+        display: block;
     }
-  }
+    .search-input {
+        margin-bottom: 1rem;
+    }
 
-  @media screen and (min-width: 600px) {
     .nb-column-name {
-      width: 31%;
+        width: 100%;
     }
-    .nb-column-size,
-    .nb-column-kind,
-    .nb-column-items {
-      width: 23%;
+
+    ::ng-deep .row-toggle-button {
+        color: nb-theme(text-basic-color);
     }
-  }
+
+    .nb-tree-grid-header-cell,
+    .nb-tree-grid-header-cell button {
+        text-transform: capitalize;
+    }
+
+    @media screen and (min-width: 400px) {
+        .nb-column-name,
+        .nb-column-size {
+            width: 50%;
+        }
+    }
+
+    @media screen and (min-width: 500px) {
+        .nb-column-name,
+        .nb-column-size,
+        .nb-column-kind {
+            width: 33.333%;
+        }
+    }
+
+    @media screen and (min-width: 600px) {
+        // .nb-column-name {
+        //     width: 31%;
+        // }
+        .nb-column-name,
+        .nb-column-size,
+        .nb-column-kind,
+        .nb-column-items,
+        .nb-column-drs
+        {
+            width: 50%;
+        }
+    }
 }

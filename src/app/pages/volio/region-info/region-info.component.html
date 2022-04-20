@@ -1,0 +1,38 @@
+<div class="accordions-container row">
+    <div class="accordion-container col-md-12 col-lg-12 col-xxxl-12">
+        <div class="col-lg-6">
+            <ng-template #card>
+                <nb-card class="popover-card">
+                    <nb-card-header status="warning">
+                        Hello!
+                    </nb-card-header>
+                    <nb-card-body>
+                        Far
+                    </nb-card-body>
+                </nb-card>
+            </ng-template>
+        </div>
+
+        <nb-accordion multi>
+            <nb-accordion-item>
+                <nb-accordion-item-header class="row flex" style="margin-right: 2px;">
+                    <div status="danger" [nbPopover]="card" nbPopoverTrigger="hint" nbPopoverPlacement="top" class="col-6 col-sm-3 col-md-3 col col-lg-6 col-xl-6 d-flex justify-content-start">
+                        <ngx-flag-name-location location_code="{{region.location_code}}" name="{{region.location}}"></ngx-flag-name-location>
+                    </div>
+                    <div status="danger" nbPopoverPlacement="top" class="col-3 col-sm-3 col-md-3 col col-lg-2 col-xl-2 d-flex justify-content-center" style="color: #17a2b8;">
+                        <nb-icon class="icon" icon="server" pack="fa"></nb-icon>{{!!region?region.servers.length:0}} <span class="object d-none d-md-flex">servers</span>
+                    </div>
+                    <div status="danger" nbPopoverPlacement="top" class="col-3 col-sm-3 col-md-3 col col-lg-2 col-xl-2 justify-content-center d-flex" style="color: #17a2b8;">
+                        <nb-icon class="icon" icon="user-shield" pack="fa"></nb-icon> {{region.clients_count}} <span class="object d-none d-md-flex">client</span>
+                    </div>
+                    <div status="danger" nbPopover="Hello, how are you today?" nbPopoverTrigger="hint" nbPopoverPlacement="top" class="col-sm-3 col-md-3 col-lg-2 col-xl-2 justify-content-center d-none d-sm-flex" style="color: #17a2b8;">
+                        <nb-icon class="icon" icon="rocket" pack="fa"></nb-icon> {{dataTransferConverted}} <span class="object d-none d-md-flex">{{unit}}</span>
+                    </div>
+                </nb-accordion-item-header>
+                <nb-accordion-item-body>
+                    <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="onUserRowSelect($event)"></ng2-smart-table>
+                </nb-accordion-item-body>
+            </nb-accordion-item>
+        </nb-accordion>
+    </div>
+</div>

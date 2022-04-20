@@ -1,0 +1,66 @@
+<div class="row">
+    <div class="col-xxxl-3 col-md-6">
+        <ngx-stats-card type="success" stats="{{!!serverStats?!!serverStats.profiles?serverStats.profiles.length:0:0}}" object="profiles">
+            <nb-icon id="main" class="icon" icon="archive-outline"></nb-icon>
+        </ngx-stats-card>
+    </div>
+
+    <div class="col-xxxl-3 col-md-6">
+        <ngx-stats-card type="info" stats="{{!!serverStats?!!serverStats.clients?serverStats.clients.length:0:0}}" object="ccu" typeFlip="success" statsFlip="{{!!serverStats?!!serverStats.clients?serverStats.clients.length:0:0}}" objectFlip="max ccu">
+            <nb-icon id="flip" class="icon" icon="activity-outline"></nb-icon>
+            <nb-icon id="flip-hide" class="icon" icon="award-outline"></nb-icon>
+        </ngx-stats-card>
+    </div>
+
+    <div class="col-xxxl-3 col-md-6">
+        <ngx-stats-card type="primary" stats="{{!!serverStats?serverStats.data_transfer_avg:0}}" object="avg data transfer" statsUnit="Kb" typeFlip="warning" statsFlip="{{!!serverStats?serverStats.data_transfer:0}}" objectFlip="sum data transfer" statsFlipUnit="Kb">
+            <nb-icon id="flip" class="icon" icon="fill-drip" pack="fa"></nb-icon>
+            <nb-icon id="flip-hide" class="icon" icon="fill" pack="fa"></nb-icon>
+        </ngx-stats-card>
+    </div>
+
+    <div class="col-xxxl-3 col-md-6">
+        <ngx-stats-card type="warning" stats="{{!!serverStats?serverStats.used_count:0}}" object="used count" typeFlip="primary" statsFlip="{{!!serverStats?serverStats.used_time_avg:0}}" objectFlip="avg" statsFlipUnit="Seconds" statsExtra="{{!!serverStats?serverStats.used_time:0}}" objectExtra="Sum used time" statsExtraUnit="Seconds">
+            <nb-icon id="flip" class="icon" icon="user" pack="fa"></nb-icon>
+            <nb-icon id="flip-hide" class="icon" icon="hourglass-empty" pack="fa"></nb-icon>
+        </ngx-stats-card>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <ngx-resource-gauge chartName="CPU" [(value)]="server.cpu_percent" unit="Percent" unitFormatter="%"></ngx-resource-gauge>
+    </div>
+
+    <div class="col-md-3">
+        <ngx-resource-gauge chartName="RAM" [(value)]="server.ram_percent" unit="Percent" unitFormatter="%"></ngx-resource-gauge>
+    </div>
+
+    <div class="col-md-3">
+        <ngx-resource-gauge chartName="Network In" [(value)]="netInPercent" unit="Percent" unitFormatter="%"></ngx-resource-gauge>
+    </div>
+    <!-- server.net_output -->
+    <div class="col-md-3">
+        <ngx-resource-gauge chartName="Network Out" [(value)]="netOutPercent" unit="Percent" unitFormatter="%"></ngx-resource-gauge>
+    </div>
+
+    <div class="col-lg-6">
+        <ngx-pie chartName="Clients Location" [(data)]="clientsDistribution"></ngx-pie>
+    </div>
+
+    <div class="col-lg-6">
+        <ngx-chart-line chartName="Data Transfer" [(data)]="lineAvg"></ngx-chart-line>
+    </div>
+
+    <div class="col-lg-6">
+        <ngx-chart-area chartName="Clients by VPN Server" [(data)]="areaPeakCCU"></ngx-chart-area>
+    </div>
+
+    <div class="col-lg-6">
+        <ngx-chart-area chartName="Data transfer by VPN Server" [(data)]="areaDataTransfer"></ngx-chart-area>
+    </div>
+</div>
+
+<div class="row">
+    <ngx-clients-location-map [(makers)]="makers" class="col-12"></ngx-clients-location-map>
+</div>

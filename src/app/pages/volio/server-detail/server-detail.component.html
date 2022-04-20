@@ -1,0 +1,27 @@
+<nb-card>
+    <nb-card-body>
+        <nb-tabset>
+            <nb-tab tabTitle="Overview">
+                <ngx-server-overview [(server)]="server" [(clients)]="clients" [(serverStats)]="serverStats"></ngx-server-overview>
+            </nb-tab>
+            <nb-tab tabTitle="Clients">
+                <ngx-clients-list [(clients)]="clients"></ngx-clients-list>
+            </nb-tab>
+            <nb-tab tabTitle="Profile">
+                <ng2-smart-table [(settings)]="profilesDataTableSettings" [(source)]="profilesDataSource" (userRowSelect)="onUserRowSelect($event, dialog)"></ng2-smart-table>
+            </nb-tab>
+        </nb-tabset>
+    </nb-card-body>
+</nb-card>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+    <nb-card>
+        <nb-card-header>Menu</nb-card-header>
+        <nb-card-body>Download config file</nb-card-body>
+        <nb-card-footer>
+            <button nbButton (click)="onSaveClick(ref, data)" hero fullWidth status="success">
+                <nb-icon style="padding-top: 3px;" class="icon" icon="cloud-arrow-down" pack="fa"></nb-icon> Save
+            </button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>

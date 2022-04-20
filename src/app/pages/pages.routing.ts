@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { FilesComponent } from './files/files.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
+import { AuthGuard } from './volio/auth/guard/auth-guard';
 
 const routes: Routes = [{
     path: '',
@@ -12,10 +13,12 @@ const routes: Routes = [{
     children: [{
             path: 'profile',
             component: ProfileComponent,
+            canActivate: [AuthGuard],
         },
         {
             path: 'files',
             component: FilesComponent,
+            canActivate: [AuthGuard],
         },
         {
             path: '',
