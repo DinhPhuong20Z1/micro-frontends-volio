@@ -46,7 +46,7 @@ import { VolioComponentsModule } from './pages/volio/volio.module';
         NbChatModule.forRoot({
             messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
         }),
-        CoreModule.forRoot(),
+        // CoreModule.forRoot(),
         ThemeModule.forRoot(),
     ],
     bootstrap: [AppComponent],
