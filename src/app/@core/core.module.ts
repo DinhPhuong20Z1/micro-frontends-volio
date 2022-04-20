@@ -64,6 +64,12 @@ import { VisitorsAnalyticsService } from "./mock/visitors-analytics.service";
 import { SecurityCamerasService } from "./mock/security-cameras.service";
 import { MockDataModule } from "./mock/mock-data.module";
 import { environment } from "../../environments/environment";
+import { RegionsService } from "./http/regions.service";
+import { GoogleOAuthService } from "./http/google-oauth2.service";
+import { AuthsService } from "./http/auth.service";
+import { RegionsData } from "./data/regions";
+import { GoogleOAuthData } from "./data/google-oauth";
+import { AuthsData } from "./data/auth";
 
 const socialLinks = [
     {
@@ -73,6 +79,19 @@ const socialLinks = [
 ];
 
 const DATA_SERVICES = [
+    {
+        provide: RegionsData,
+        useClass: RegionsService,
+    },
+    {
+        provide: GoogleOAuthData,
+        useClass: GoogleOAuthService,
+    },
+    {
+        provide: AuthsData,
+        useClass: AuthsService
+    },
+
     { provide: UserData, useClass: UserService },
     { provide: ElectricityData, useClass: ElectricityService },
     { provide: SmartTableData, useClass: SmartTableService },
@@ -120,14 +139,14 @@ export const NB_CORE_PROVIDERS = [
                     },
                 },
                 register: {
-                    endpoint: "/auth/register",
+                    endpoint: "/page/register",
                 },
                 token: {
                     class: NbAuthJWTToken,
                     key: "data.token",
                 },
                 logout: {
-                    endpoint: "/auth/logout",
+                    endpoint: "/page/logout",
                 },
             }),
             NbOAuth2AuthStrategy.setup({

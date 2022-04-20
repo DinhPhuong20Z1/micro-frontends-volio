@@ -13,21 +13,25 @@ import { rateLimit } from './rate-limit';
 
 @Injectable()
 export class VolioAuthInterceptor implements HttpInterceptor {
-    token: string
+    token: any;
+    tokenString: string
     tokenSubscription: Subscription
     tokenChangeSubscription: Subscription
     constructor(private authService: NbTokenService, private dialogService: NbDialogService) {
         this.tokenSubscription = this.authService.get().subscribe(token => {
-            this.token = token.toString()
+            this.token = token;
+            this.tokenString = token.toString();
         })
         this.tokenChangeSubscription = this.authService.tokenChange().subscribe(token => {
-            this.token = token.toString()
+            this.token = token;
+            this.tokenString = token.toString();
         })
     }
 
     intercept(req: HttpRequest < any > , next: HttpHandler): Observable < HttpEvent < any >> {
-        if (req.url.indexOf('/auth/login')<0 && req.url.indexOf('/auth/swap')<0) {
-            req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + this.token) });
+        console.log('this.token',this.token)
+        if (req.url.indexOf('/auth/login')<0 && req.url.indexOf('/page/swap')<0) {
+            req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + this.token.token.access_token || this.tokenString) });
             req = req.clone({ headers: req.headers.set('App', "Volio VPN Monitor") });
         }
 

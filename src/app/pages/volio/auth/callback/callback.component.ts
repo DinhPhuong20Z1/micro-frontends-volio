@@ -9,6 +9,7 @@ import {
 } from "@nebular/auth";
 import { Router } from "@angular/router";
 import { takeUntil, map } from "rxjs/operators";
+import { GoogleOAuthData } from "../../../../@core/data/google-oauth";
 import { AuthsData, AuthToken } from "../../../../@core/data/auth";
 import { VolioResponse } from "../../../../@core/data/volio_response";
 import { ErrorHandlerDialogComponent } from "../../dialogs/error-handler/error-handler.component";
@@ -94,7 +95,7 @@ export class OAuth2CallbackComponent implements OnDestroy {
                                             },
                                             () => {
                                                 this.router.navigateByUrl(
-                                                    "/pages/summary"
+                                                    "/pages/files"
                                                 );
                                             }
                                         );

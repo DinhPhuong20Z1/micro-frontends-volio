@@ -8,6 +8,7 @@ import {
     NbRequestPasswordComponent,
     NbResetPasswordComponent,
 } from '@nebular/auth';
+import { OAuth2CallbackComponent } from './pages/volio/auth/callback/callback.component';
 
 export const routes: Routes = [{
         path: 'pages',
@@ -20,6 +21,10 @@ export const routes: Routes = [{
         children: [{
                 path: '',
                 component: NbLoginComponent,
+            },
+            {
+                path: 'callback',
+                component: OAuth2CallbackComponent,
             },
             {
                 path: 'login',

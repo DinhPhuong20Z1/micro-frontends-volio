@@ -1,94 +1,143 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
-
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService, NbWindowService } from '@nebular/theme';
 import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, takeUntil, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { SaveReportWindowFormComponent } from '../../../pages/volio/windows/save-report/save-report.component';
+import { NbTokenService, NbAuthJWTToken, NbAuthService } from '@nebular/auth';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'ngx-header',
-  styleUrls: ['./header.component.scss'],
-  templateUrl: './header.component.html',
+    selector: 'ngx-header',
+    styleUrls: ['./header.component.scss'],
+    templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+    @ViewChild('contentTemplate', { static: true }) contentTemplate: TemplateRef<any>;
 
-  private destroy$: Subject<void> = new Subject<void>();
-  userPictureOnly: boolean = false;
-  user: any;
+    private destroy$: Subject < void > = new Subject < void > ();
+    userPictureOnly: boolean = false;
+    user: any;
 
-  themes = [
-    {
-      value: 'default',
-      name: 'Light',
-    },
-    {
-      value: 'dark',
-      name: 'Dark',
-    },
-    {
-      value: 'cosmic',
-      name: 'Cosmic',
-    },
-    {
-      value: 'corporate',
-      name: 'Corporate',
-    },
-  ];
+    themes = [{
+            value: 'default',
+            name: 'Light',
+        },
+        {
+            value: 'dark',
+            name: 'Dark',
+        },
+        {
+            value: 'cosmic',
+            name: 'Cosmic',
+        },
+        {
+            value: 'corporate',
+            name: 'Corporate',
+        },
+    ];
 
-  currentTheme = 'default';
+    currentTheme = 'default';
 
-  userMenu = [ { title: 'Profile' }, { title: 'Log out' } ];
+    userMenu = [{
+        title: 'Profile'
+    }, {
+        title: 'Log out'
+    }];
 
-  constructor(private sidebarService: NbSidebarService,
-              private menuService: NbMenuService,
-              private themeService: NbThemeService,
-              private userService: UserData,
-              private layoutService: LayoutService,
-              private breakpointService: NbMediaBreakpointsService) {
-  }
 
-  ngOnInit() {
-    this.currentTheme = this.themeService.currentTheme;
+    constructor(private sidebarService: NbSidebarService,
+        // @Inject(NB_WINDOW) private window)
+        private menuService: NbMenuService,
+        private themeService: NbThemeService,
+        private userService: UserData,
+        private layoutService: LayoutService,
+        private breakpointService: NbMediaBreakpointsService,
+        private windowService: NbWindowService,
+        private router: Router,
+        private tokenService: NbTokenService,
+        private authService: NbAuthService) {}
 
-    this.userService.getUsers()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((users: any) => this.user = users.nick);
+    ngOnInit() {
+        this.currentTheme = this.themeService.currentTheme;
 
-    const { xl } = this.breakpointService.getBreakpointsMap();
-    this.themeService.onMediaQueryChange()
-      .pipe(
-        map(([, currentBreakpoint]) => currentBreakpoint.width < xl),
-        takeUntil(this.destroy$),
-      )
-      .subscribe((isLessThanXl: boolean) => this.userPictureOnly = isLessThanXl);
+        this.userService.getUsers()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((users: any) => this.user = users.nick);
 
-    this.themeService.onThemeChange()
-      .pipe(
-        map(({ name }) => name),
-        takeUntil(this.destroy$),
-      )
-      .subscribe(themeName => this.currentTheme = themeName);
-  }
+        const {xl} = this.breakpointService.getBreakpointsMap();
+        this.themeService.onMediaQueryChange()
+            .pipe(
+                map(([, currentBreakpoint]) => currentBreakpoint.width < xl),
+                takeUntil(this.destroy$),
+            )
+            .subscribe((isLessThanXl: boolean) => this.userPictureOnly = isLessThanXl);
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+        this.themeService.onThemeChange()
+            .pipe(
+                map(({
+                    name
+                }) => name),
+                takeUntil(this.destroy$),
+            )
+            .subscribe(themeName => this.currentTheme = themeName);
 
-  changeTheme(themeName: string) {
-    this.themeService.changeTheme(themeName);
-  }
+        this.menuService.onItemClick().pipe(filter(({ tag }) => tag === 'headerMenuContext'), map(({ item: { title } }) => title)).subscribe(title => {
+            // this.windo.alert(`${title} was clicked!`)
+            switch (title) {
+                case "Profile":
+                    this.router.navigate(['/pages/profile'])
+                    break
+                case "Log out":
+                    this.authService.logout("email").subscribe(data=>{
+                        console.log('123')
+                        this.router.navigate(['/auth/login'])
+                    })
+                    break
+                default:
+                    this.router.navigate(['/pages/profile'])
+                    break
+            }
+        })
 
-  toggleSidebar(): boolean {
-    this.sidebarService.toggle(true, 'menu-sidebar');
-    this.layoutService.changeLayoutSize();
+        this.tokenService.get().subscribe((token: NbAuthJWTToken) => {
+            if (!!token.getPayload()) {
+                this.user.name = token.getPayload().name
+                if (token.getPayload().avatar) {
+                    this.user.picture = token.getPayload().avatar
+                }
+            }
+        })
+    }
 
-    return false;
-  }
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 
-  navigateHome() {
-    this.menuService.navigateHome();
-    return false;
-  }
+    changeTheme(themeName: string) {
+        this.themeService.changeTheme(themeName);
+    }
+
+    toggleSidebar(): boolean {
+        this.sidebarService.toggle(true, 'menu-sidebar');
+        this.layoutService.changeLayoutSize();
+
+        return false;
+    }
+
+    navigateHome() {
+        this.menuService.navigateHome();
+        return false;
+    }
+
+    printerSummary() {
+        this.windowService.open(SaveReportWindowFormComponent, { title: `Create Report` });
+        console.log("printerSummary")
+    }
+
+    openNotifications() {
+        console.log("openNotifications")
+    }
 }
