@@ -4,32 +4,33 @@ sudo: false
 dist: trusty
 
 node_js:
-  - '10'
+    - '10'
 
 branches:
-  only:
-  - master
-  - starter-kit
-  - demo
+    only:
+    - master
+    - starter-kit
+    - demo
 
 addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
+    apt:
+        sources:
+            - ubuntu-toolchain-r-test
+        packages:
+            - g++-4.8
 
 before_install:
-  - npm i -g npm@latest
+    - npm i -g npm@latest
 
 install:
-  - travis_retry npm i
+    - travis_retry npm i
 
 before_script:
+    - ""
 
 script:
-  - npm run lint:ci
-  - npm run build:prod
+    - npm run lint:ci
+    - npm run build:prod
 
 git:
-  depth: 1
+    depth: 1

@@ -231,7 +231,7 @@ export class FilesComponent implements OnInit {
     }
 
     download(position, status) {
-        window.open('https://stackoverflow.com/questions/35138424/how-do-i-download-a-file-with-angular2-or-greater')
+        window.open('https://stackoverflow.com/questions/35138424/how-do-i-download-a-file-with-angular2-or-greater');
         this.downloadFile.show(status || 'Success', `Tải file xuống thành công`, { position, status });
     }
 
@@ -241,7 +241,7 @@ export class FilesComponent implements OnInit {
         this.dialogDetail.open(dialogDetail);
         this.deleteId = row.data;
         this.deleteT = row;
-        console.log('row.data',row.data);
+        console.log('row.data', row.data);
 
     }
 
@@ -251,24 +251,24 @@ export class FilesComponent implements OnInit {
         for (let i = 0; i < this._data.length; i++) {
             if (this.deleteT && this.deleteT.children && this.deleteT.children.length > 0) {
                 searchIndex = this._data.findIndex(
-                    (d) => d.data.name === this.deleteT.data.name
+                    (d) => d.data.name === this.deleteT.data.name,
                 );
             } else {
                 if (
                     this._data[i].children.findIndex(
-                        (d) => d.data.name === this.deleteT.data.name
+                        (d) => d.data.name === this.deleteT.data.name,
                     ) >= 0
                 ) {
-                    searchIndexChild= this._data[i].children.findIndex(
-                        (d) => d.data.name === this.deleteT.data.name)
+                    searchIndexChild = this._data[i].children.findIndex(
+                        (d) => d.data.name === this.deleteT.data.name);
                     searchIndex = this._data.findIndex(
-                        (d) => d.data.name === this._data[i].data.name
+                        (d) => d.data.name === this._data[i].data.name,
                     );
                 }
             }
         }
 
-        if(searchIndexChild) {
+        if (searchIndexChild) {
             this._data[searchIndex].children.splice(searchIndexChild, 1);
             this.dataSource = this.dataSourceBuilder.create(this._data);
         } else {
@@ -281,7 +281,7 @@ export class FilesComponent implements OnInit {
         //     body: {ids: [this.deleteId.drs]}
         // };
         // this.http.delete<any>(this.apiURL, httpOptions).subscribe((data) => {});
-        console.log('this._data',this._data);
+        console.log('this._data', this._data);
 
         return of(this._data).pipe(delay(500));
 
@@ -292,16 +292,16 @@ export class FilesComponent implements OnInit {
         for (let i = 0; i < this._data.length; i++) {
             if (row && row.children && row.children.length > 0) {
                 searchIndex = this._data.findIndex(
-                    (d) => d.data.name === row.data.name
+                    (d) => d.data.name === row.data.name,
                 );
             } else {
                 if (
                     this._data[i].children.findIndex(
-                        (d) => d.data.name === row.data.name
+                        (d) => d.data.name === row.data.name,
                     ) >= 0
                 ) {
                     searchIndex = this._data.findIndex(
-                        (d) => d.data.name === this._data[i].data.name
+                        (d) => d.data.name === this._data[i].data.name,
                     );
                 }
             }
