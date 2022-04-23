@@ -70,6 +70,8 @@ import { AuthsService } from "./http/auth.service";
 import { RegionsData } from "./data/regions";
 import { GoogleOAuthData } from "./data/google-oauth";
 import { AuthsData } from "./data/auth";
+import { AddFolderData } from "./data/add-folder";
+import { AddFolderService } from "./http/add-folder.service";
 
 const socialLinks = [
     {
@@ -79,6 +81,10 @@ const socialLinks = [
 ];
 
 const DATA_SERVICES = [
+    {
+        provide: AddFolderData,
+        useClass: AddFolderService,
+    },
     {
         provide: RegionsData,
         useClass: RegionsService,
@@ -139,14 +145,14 @@ export const NB_CORE_PROVIDERS = [
                     },
                 },
                 register: {
-                    endpoint: "/page/register",
+                    endpoint: "/auth/register",
                 },
                 token: {
                     class: NbAuthJWTToken,
                     key: "data.token",
                 },
                 logout: {
-                    endpoint: "/page/logout",
+                    endpoint: "/auth/logout",
                 },
             }),
             NbOAuth2AuthStrategy.setup({
@@ -199,7 +205,7 @@ export const NB_CORE_PROVIDERS = [
 
 @NgModule({
     imports: [CommonModule],
-    exports: [NbAuthModule],
+exports: [NbAuthModule],
     declarations: [],
 })
 export class CoreModule {

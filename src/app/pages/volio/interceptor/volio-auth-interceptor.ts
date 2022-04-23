@@ -16,7 +16,7 @@ export class VolioAuthInterceptor implements HttpInterceptor {
     token: any;
     tokenString: string
     tokenSubscription: Subscription
-    tokenChangeSubscription: Subscription
+    tokenChangeSubscription: Subscription;
     constructor(private authService: NbTokenService, private dialogService: NbDialogService) {
         this.tokenSubscription = this.authService.get().subscribe(token => {
             this.token = token;
@@ -29,20 +29,21 @@ export class VolioAuthInterceptor implements HttpInterceptor {
     }
 
     intercept(req: HttpRequest < any > , next: HttpHandler): Observable < HttpEvent < any >> {
-        console.log('this.token',this.token)
         if (req.url.indexOf('/auth/login')<0 && req.url.indexOf('/page/swap')<0) {
-            req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + this.token.token.access_token || this.tokenString) });
+            req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' +( this.token.token.access_token ? this.token.token.access_token :this.tokenString)) });
             req = req.clone({ headers: req.headers.set('App', "Volio VPN Monitor") });
         }
 
         return next.handle(req).pipe(catchError((response) => {
-            console.log("intercept: ", response.error);
+
 
             if (req.url.indexOf('/auth/')<0) {
+
+
                 this.dialogService.open(ErrorHandlerDialogComponent, {
                     context: {
                         title: 'Error',
-                        description: "Can not execute request: " +response.error.data.message
+                        description: "Can not execute request: " + (response.error.data.message ? response.error.data.message : '')
                     },
                 });
             }
@@ -56,7 +57,7 @@ export class VolioAuthInterceptor implements HttpInterceptor {
             this.tokenSubscription.unsubscribe();
         }
         if (!!this.tokenChangeSubscription) {
-            this.tokenChangeSubscription.unsubscribe
+            this.tokenChangeSubscription.unsubscribe()
         }
     }
 }

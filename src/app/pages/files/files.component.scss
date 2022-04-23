@@ -9,9 +9,7 @@ input {
     width: 100%;
 }
 
-.cancel {
-    margin-right: 1rem;
-}
+
 
 .download {
     margin-left: 1rem;
@@ -33,11 +31,13 @@ input {
     word-break: break-word;
 }
 
-nb-card-footer.dialog {
-    text-align: right;
-}
-nb-card.dialog {
-    min-width: 600px;
+
+
+.button-add {
+    border: 1px solid #e4e9f2;
+    margin-left: 1rem;
+    background-color: #f7f9fc !important;
+
 }
  @include nb-install-component() {
     button[nbTreeGridRowToggle] {
@@ -51,6 +51,7 @@ nb-card.dialog {
     }
     .search-input {
         margin-bottom: 1rem;
+        margin-right: 1rem;
     }
 
     .nb-column-name {

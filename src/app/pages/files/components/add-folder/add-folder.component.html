@@ -1,0 +1,42 @@
+
+    <nb-card class="dialog">
+        <nb-card-header>Thêm mới Folder</nb-card-header>
+        <nb-card-body class="example-items-col">
+            <form>
+                <div class="form-group row">
+                    <label for="Name" class="label col-sm-3 col-form-label"
+                        >Tên Folder</label
+                    >
+                    <div class="col-sm-9">
+                        <input
+                            type="text"
+                            nbInput
+                            fullWidth
+                            status="basic"
+                            placeholder="Name"
+                            #name
+                        />
+                    </div>
+                </div>
+            </form>
+        </nb-card-body>
+
+        <nb-card-footer class="dialog">
+            <button
+                class="cancel"
+                nbButton
+                status="danger"
+                (click)="dismiss()"
+            >
+                Đóng
+            </button>
+            <button
+                nbButton
+                status="success"
+                (click)="showToast(positions.TOP_RIGHT, 'success', name.value)"
+            >
+                Thêm mới
+            </button>
+        </nb-card-footer>
+    </nb-card>
+

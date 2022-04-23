@@ -91,7 +91,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
                     break
                 case "Log out":
                     this.authService.logout("email").subscribe(data=>{
-                        console.log('123')
                         this.router.navigate(['/auth/login'])
                     })
                     break
@@ -100,6 +99,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
                     break
             }
         })
+        console.log('this.tokenService',this.tokenService)
 
         this.tokenService.get().subscribe((token: NbAuthJWTToken) => {
             if (!!token.getPayload()) {

@@ -1,5 +1,21 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, DoCheck, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from "@angular/core";
+import {
+    AfterContentChecked,
+    AfterContentInit,
+    AfterViewChecked,
+    AfterViewInit,
+    Component,
+    DoCheck,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+    TemplateRef,
+    OnDestroy,
+    ViewChild,
+    HostListener
+} from "@angular/core";
 import {
     NbSortDirection,
     NbSortRequest,
@@ -9,9 +25,14 @@ import {
     NbToastrService,
     NbGlobalPhysicalPosition,
     NbThemeService,
+    NbContextMenuDirective,
+    NbMenuService,
 } from "@nebular/theme";
-import { combineLatest, of, Subject } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { combineLatest, of, Subject } from "rxjs";
+import { delay ,filter, map} from "rxjs/operators";
+import { environment } from "../../../environments/environment";
+import { Router } from '@angular/router';
+import { AddFolderComponent } from './components/add-folder/add-folder.component';
 
 interface TreeNode<T> {
     data: T;
@@ -27,30 +48,14 @@ interface FSEntry {
     drs: string;
 }
 
-interface Article {
-    id: number;
-    title: string;
-}
-
-const httpOptions = {
-    headers: new HttpHeaders({
-        "Content-Type": "application/json",
-        Authorization: "my-auth-token",
-    }),
-};
-
-
-
-
-
-
 
 @Component({
     selector: "ngx-files",
     templateUrl: "./files.component.html",
     styleUrls: ["./files.component.scss"],
 })
-export class FilesComponent implements OnInit {
+export class FilesComponent implements OnInit, OnDestroy  {
+    @ViewChild(NbContextMenuDirective) contextMenu: NbContextMenuDirective;
     private data: TreeNode<FSEntry>[] = [
         {
             data: {
@@ -158,41 +163,77 @@ export class FilesComponent implements OnInit {
     sortColumn: string;
     sortDirection: NbSortDirection = NbSortDirection.NONE;
     positions = NbGlobalPhysicalPosition;
-    private apiURL = "https://core-api.apitree.com/api/<ACCOUNT-ID>";
+    private apiURL = "https://reqres.in/api/users?page=2";
     deleteId: any = {};
     deleteT: any = {};
-    @Output() _data: any = this.data;
+    httpOptions: any;
+    dataIndexFolder: any = {};
+    dialog: TemplateRef<any>;
 
+    selectedItem = '2';
+    themes: [
+        {name: "name 1", value: '0'},
+        {name: "name 2", value: '1'},
+        {name: "name 3", value: '2'},
+    ]
 
-
-
-
+    items = [
+        { title: 'Thêm mới Folder' },
+        { title: 'Xóa Folder' },
+      ];
 
     constructor(
         private dataSourceBuilder: NbTreeGridDataSourceBuilder<FSEntry>,
         private dialogService: NbDialogService,
         private dialogDetail: NbDialogService,
         private http: HttpClient,
-        private toastrService: NbToastrService,
         private downloadFile: NbToastrService,
-        private theme: NbThemeService,
+        private menuService: NbMenuService,
     ) {
-        this.dataSource = this.dataSourceBuilder.create(this._data);
-
+        this.dataSource = this.dataSourceBuilder.create(this.data);
     }
-
-
 
     ngOnInit(): void {
-        // const httpOptions = {
+        //  this.httpOptions = {
         //     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-
         // };
-        // this.http.get(this.apiURL, httpOptions).subscribe((data) => {console.log('data',data);
+        // this.http.get(this.apiURL, this.httpOptions).subscribe((data) => {console.log('data',data);
         // })
+        this.menuService.onItemClick().pipe(filter(({ tag }) => tag === 'AddFolderMenuContext'),
+         map(({ item: { title } }) => title)).subscribe(title => {
+            switch (title) {
+                case "Thêm mới Folder":
+                    this.addFolder();
+                    break
+                case "Xóa Folder":
+                    this.delete();
+                    break
+                default:
+                    this.addFolder();
+                    break
+            }
+        })
+    }
+    addFolder() {
+        this.dialogService.open(AddFolderComponent, {
+            context: {
+                dataIndexFolder : this.dataIndexFolder,
+                data: this.data
+            }
 
+        });
     }
 
+    open(row: any) {
+        this.contextMenu.show();
+        this.dataIndexFolder = row;
+        return false;
+      }
+
+      @HostListener('document:click')
+      close() {
+        this.contextMenu.hide();
+      }
 
 
 
@@ -214,11 +255,10 @@ export class FilesComponent implements OnInit {
         return minWithForMultipleColumns + nextColumnStep * index;
     }
 
-    onDrop(event: any, dialog: TemplateRef<any>, row: any) {
+    onDrop(event: any,  row: any) {
         console.log("event", event.dataTransfer.files[0]);
         this.getIndex(row, event.dataTransfer.files[0]);
 
-        this.dialogService.open(dialog);
         event.preventDefault();
     }
     onDragOver(event) {
@@ -226,54 +266,61 @@ export class FilesComponent implements OnInit {
         event.preventDefault();
     }
 
-    showToast(position, status) {
-        this.toastrService.show(status || 'Success', `Tải file lên thành công`, { position, status });
-    }
+
 
     download(position, status) {
-        window.open('https://stackoverflow.com/questions/35138424/how-do-i-download-a-file-with-angular2-or-greater')
-        this.downloadFile.show(status || 'Success', `Tải file xuống thành công`, { position, status });
+        window.open(
+            "https://stackoverflow.com/questions/35138424/how-do-i-download-a-file-with-angular2-or-greater"
+        );
+        this.downloadFile.show(
+            status || "Success",
+            `Tải file xuống thành công`,
+            { position, status }
+        );
     }
-
-
 
     onClick(dialogDetail: TemplateRef<any>, row: any) {
         this.dialogDetail.open(dialogDetail);
         this.deleteId = row.data;
         this.deleteT = row;
-        console.log('row.data',row.data);
-
+        console.log("row.data", row.data);
     }
 
     delete() {
         let searchIndex;
         let searchIndexChild;
-        for (let i = 0; i < this._data.length; i++) {
-            if (this.deleteT && this.deleteT.children && this.deleteT.children.length > 0) {
-                searchIndex = this._data.findIndex(
+        for (let i = 0; i < this.data.length; i++) {
+            if (
+                this.deleteT &&
+                this.deleteT.children &&
+                this.deleteT.children.length > 0
+            ) {
+                searchIndex = this.data.findIndex(
                     (d) => d.data.name === this.deleteT.data.name
                 );
             } else {
                 if (
-                    this._data[i].children.findIndex(
+                    this.data[i].children.findIndex(
                         (d) => d.data.name === this.deleteT.data.name
                     ) >= 0
                 ) {
-                    searchIndexChild= this._data[i].children.findIndex(
-                        (d) => d.data.name === this.deleteT.data.name)
-                    searchIndex = this._data.findIndex(
-                        (d) => d.data.name === this._data[i].data.name
+                    searchIndexChild = this.data[i].children.findIndex(
+                        (d) => d.data.name === this.deleteT.data.name
+                    );
+                    searchIndex = this.data.findIndex(
+                        (d) => d.data.name === this.data[i].data.name
                     );
                 }
             }
         }
 
-        if(searchIndexChild) {
-            this._data[searchIndex].children.splice(searchIndexChild, 1);
-            this.dataSource = this.dataSourceBuilder.create(this._data);
-        } else {
-            this._data.splice(searchIndex, 1);
-            this.dataSource = this.dataSourceBuilder.create(this._data);
+        if (searchIndexChild) {
+            this.data[searchIndex].children.splice(searchIndexChild, 1);
+            this.dataSource = this.dataSourceBuilder.create(this.data);
+        } else if (searchIndex && !searchIndexChild) {
+            console.log("searchIndex", searchIndex);
+            this.data.splice(searchIndex, 1);
+            this.dataSource = this.dataSourceBuilder.create(this.data);
         }
 
         // const httpOptions = {
@@ -281,36 +328,35 @@ export class FilesComponent implements OnInit {
         //     body: {ids: [this.deleteId.drs]}
         // };
         // this.http.delete<any>(this.apiURL, httpOptions).subscribe((data) => {});
-        console.log('this._data',this._data);
+        console.log("this.data", this.data);
 
-        return of(this._data).pipe(delay(500));
-
+        return of(this.data).pipe(delay(500));
     }
 
     getIndex(row: any, file: any) {
         let searchIndex;
-        for (let i = 0; i < this._data.length; i++) {
+        for (let i = 0; i < this.data.length; i++) {
             if (row && row.children && row.children.length > 0) {
-                searchIndex = this._data.findIndex(
+                searchIndex = this.data.findIndex(
                     (d) => d.data.name === row.data.name
                 );
             } else {
                 if (
-                    this._data[i].children.findIndex(
+                    this.data[i].children.findIndex(
                         (d) => d.data.name === row.data.name
                     ) >= 0
                 ) {
-                    searchIndex = this._data.findIndex(
-                        (d) => d.data.name === this._data[i].data.name
+                    searchIndex = this.data.findIndex(
+                        (d) => d.data.name === this.data[i].data.name
                     );
                 }
             }
         }
         if (searchIndex) {
-            this._data[searchIndex].children.push(file);
+            this.data[searchIndex].children.push(file);
         }
 
-        // this.addHero(file);
+        this.addHero(file);
     }
     addHero(file: any) {
         console.log("file", file);
@@ -318,7 +364,13 @@ export class FilesComponent implements OnInit {
         formData.append("file", file, file.name);
 
         // return this.http.post(this.apiURL, file, httpOptions)
-        this.http.post<Article>(this.apiURL, formData).subscribe((data) => {});
+        this.http.post<any>(this.apiURL, formData).subscribe((data) => {});
+    }
+
+    ngOnDestroy(){
+        console.log('123');
+        this.httpOptions.unsubscribe()
+
     }
 }
 

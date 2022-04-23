@@ -2,7 +2,13 @@ import { NbMenuItem } from '@nebular/theme';
 
 export const MENU_ITEMS: NbMenuItem[] = [
     {
-        title: 'Files',
+        title: 'Version',
+        icon: 'home-outline',
+        link: '/pages/versions',
+        home: true,
+    },
+    {
+        title: 'Source tree',
         icon: 'home-outline',
         link: '/pages/files',
         home: true,
