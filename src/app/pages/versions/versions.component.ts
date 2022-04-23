@@ -23,11 +23,87 @@ export class VersionsComponent implements OnInit, OnDestroy {
             addButtonContent: '<i class="nb-plus"></i>',
             createButtonContent: '<i class="nb-checkmark"></i>',
             cancelButtonContent: '<i class="nb-close"></i>',
+            confirmCreate: true,
         },
         edit: {
             editButtonContent: '<i class="nb-edit"></i>',
             saveButtonContent: '<i class="nb-checkmark"></i>',
             cancelButtonContent: '<i class="nb-close"></i>',
+            confirmSave: true,
+        },
+        filters: {
+
+        },
+        columns: {
+            id: {
+                sort: true,
+                filter: {
+                    type: "custom",
+                    component: NumberFilterComponent,
+                },
+                addable: false,
+                editable: false,
+                title: 'ID',
+                type: 'number',
+                width: '5%',
+            },
+            version: {
+                title: 'Version',
+                type: 'string',
+                editable: false,
+                filter: {
+                    type: "custom",
+                    component: AutoCompleteFilterComponent,
+                    config: {
+                        data: [],
+                    },
+                },
+            },
+            game_version: {
+                title: 'Game Version',
+                type: 'string',
+                editable: false,
+                filter: {
+                    type: "custom",
+                    component: AutoCompleteFilterComponent,
+                    config: {
+                        data: [],
+                    },
+                },
+            },
+            description: {
+                title: 'Description',
+                type: 'string',
+                filter: false,
+                editable: true,
+            },
+            is_newest: {
+                title: 'Is Newest',
+                type: 'custom',
+                renderComponent: CheckboxCellComponent,
+                filter: false,
+                editable: true,
+                editor: {
+                    type: 'custom',
+                    component: CheckboxEditorComponent,
+                },
+            },
+            created_time: {
+                editable: false,
+                filter: false,
+                addable: false,
+                title: 'Created Time',
+                type: 'string',
+                valuePrepareFunction: this.utilsFunc.secondsToLocalString,
+            },
+            updated_time: {
+                editable: false,
+                filter: false,
+                addable: false,
+                title: 'Updated Time',
+                type: 'string',
+                valuePrepareFunction: this.utilsFunc.secondsToLocalString,
+            },
         },
     };
 
