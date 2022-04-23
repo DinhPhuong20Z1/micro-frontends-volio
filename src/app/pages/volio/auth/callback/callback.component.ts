@@ -26,7 +26,7 @@ export class OAuth2CallbackComponent implements OnDestroy {
         private tokenService: NbTokenService,
         private router: Router,
         private tokenAuthService: AuthsData,
-        private dialogService: NbDialogService
+        private dialogService: NbDialogService,
     ) {
         // Need call swap token
         this.authService
@@ -40,7 +40,7 @@ export class OAuth2CallbackComponent implements OnDestroy {
                         .subscribe(
                             (newToken: VolioResponse<AuthToken>) => {
                                 console.log("NewToken after swap: ", newToken);
-                                if (newToken.message == "error") {
+                                if (newToken.message === "error") {
                                     this.dialogService.open(
                                         ErrorHandlerDialogComponent,
                                         {
@@ -51,7 +51,7 @@ export class OAuth2CallbackComponent implements OnDestroy {
                                                     newToken.message,
                                                 showRetry: false,
                                             },
-                                        }
+                                        },
                                     );
                                 } else if (
                                     !newToken.data ||
@@ -66,44 +66,44 @@ export class OAuth2CallbackComponent implements OnDestroy {
                                                     "Not found any token after swap",
                                                 showRetry: false,
                                             },
-                                        }
+                                        },
                                     );
                                 } else {
                                     console.log(
                                         "Will set token: ",
-                                        newToken.data.token
+                                        newToken.data.token,
                                     );
                                     this.tokenService
                                         .set(
                                             new NbAuthJWTToken(
                                                 newToken.data.token,
-                                                "email"
-                                            )
+                                                "email",
+                                            ),
                                         )
                                         .subscribe(
                                             () => {
                                                 console.log(
                                                     "Was set token ",
-                                                    newToken.data.token
+                                                    newToken.data.token,
                                                 );
                                             },
                                             (err) => {
                                                 console.log(
                                                     "Set token failed: ",
-                                                    err
+                                                    err,
                                                 );
                                             },
                                             () => {
                                                 this.router.navigateByUrl(
-                                                    "/pages/files"
+                                                    "/pages/files",
                                                 );
-                                            }
+                                            },
                                         );
                                 }
                             },
                             (err) => {
                                 console.log("NewToken after swap error: ", err);
-                            }
+                            },
                         );
                 }
             });

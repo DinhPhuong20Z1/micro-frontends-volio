@@ -10,6 +10,7 @@
         "url": "https://github.com/akveo/ngx-admin/issues"
     },
     "scripts": {
+        "browser": "\"C:\\\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe\" --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp",
         "ng": "ng",
         "conventional-changelog": "conventional-changelog",
         "start": "ng serve",

@@ -25,10 +25,12 @@ import { InfiniteListComponent } from "./infinite-list/infinite-list.component";
 import { NewsService } from "./news.service";
 import { NewsPostComponent } from "./infinite-list/news-post/news-post.component";
 import { AddFolderComponent } from './files/components/add-folder/add-folder.component';
+import { VersionsComponent } from './versions/versions.component';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 @NgModule({
     imports: [
-        ReactiveFormsModule,
+ReactiveFormsModule,
         NbFormFieldModule,
         NbInputModule,
         NbButtonModule,
@@ -45,15 +47,18 @@ import { AddFolderComponent } from './files/components/add-folder/add-folder.com
         NbSelectModule,
         NbContextMenuModule,
         NbLayoutModule,
+        Ng2SmartTableModule
     ],
     declarations: [
         PagesComponent,
         ProfileComponent,
+        FsIconComponent,
         FilesComponent,
         FsIconComponent,
         InfiniteListComponent,
         NewsPostComponent,
         AddFolderComponent,
+        VersionsComponent,
     ],
     providers: [NewsService],
 })

@@ -1,11 +1,11 @@
 import {
-    Observable
+    Observable,
 } from 'rxjs';
 
 export interface VPNProfile {
     id: number;
     server_id?: number; // (hubName/?)username
-    name?: string
+    name?: string;
     username: string;
     password?: string;
     content: string; // base64
