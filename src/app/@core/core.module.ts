@@ -64,12 +64,14 @@ import { VisitorsAnalyticsService } from "./mock/visitors-analytics.service";
 import { SecurityCamerasService } from "./mock/security-cameras.service";
 import { MockDataModule } from "./mock/mock-data.module";
 import { environment } from "../../environments/environment";
-import { RegionsService } from "./http/regions.service";
 import { GoogleOAuthService } from "./http/google-oauth2.service";
 import { AuthsService } from "./http/auth.service";
-import { RegionsData } from "./data/regions";
 import { GoogleOAuthData } from "./data/google-oauth";
 import { AuthsData } from "./data/auth";
+import { UtilsFunc } from './data/utils';
+import { UtilsService } from './mock/utils.service';
+import { VersionSourcesService } from './http/version-sources.service';
+import { VersionSourceData } from './data/version_source';
 
 const socialLinks = [
     {
@@ -80,18 +82,21 @@ const socialLinks = [
 
 const DATA_SERVICES = [
     {
-        provide: RegionsData,
-        useClass: RegionsService,
-    },
-    {
         provide: GoogleOAuthData,
         useClass: GoogleOAuthService,
     },
     {
-        provide: AuthsData,
-        useClass: AuthsService
+        provide: UtilsFunc,
+        useClass: UtilsService,
     },
-
+    {
+        provide: AuthsData,
+        useClass: AuthsService,
+    },
+    {
+        provide: VersionSourceData,
+        useClass: VersionSourcesService,
+    },
     { provide: UserData, useClass: UserService },
     { provide: ElectricityData, useClass: ElectricityService },
     { provide: SmartTableData, useClass: SmartTableService },

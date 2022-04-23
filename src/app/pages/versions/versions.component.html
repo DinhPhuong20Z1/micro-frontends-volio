@@ -1,0 +1,6 @@
+<nb-card>
+    <nb-card-header>Versions</nb-card-header>
+    <nb-card-body>
+        <ng2-smart-table [settings]="versionDataSetting" [source]="versionsData" (createConfirm)="onCreateConfirm($event)" (editConfirm)="onSaveConfirm($event)"></ng2-smart-table>
+    </nb-card-body>
+</nb-card>

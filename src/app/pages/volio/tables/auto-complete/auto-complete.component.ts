@@ -49,11 +49,11 @@ export class AutoCompleteFilterComponent extends DefaultFilter implements OnInit
     value: string;
 
     ngOnInit() {
-        this.updateData()
+        this.updateData();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        this.updateData()
+        this.updateData();
     }
 
     updateData() {
@@ -63,27 +63,27 @@ export class AutoCompleteFilterComponent extends DefaultFilter implements OnInit
 
         if (this.isLocationColumn) {
             if (!!this.column.getFilterConfig() && !!this.column.getFilterConfig().data) {
-                const dataRaw = this.column.getFilterConfig().data
+                const dataRaw = this.column.getFilterConfig().data;
                 for (const row of dataRaw) {
-                    let location = row[this.column.id]
-                    let location_code = row['location_code']
+                    const location = row[this.column.id];
+                    const location_code = row['location_code'];
                     if (!!location && !!!this.optionsCheckedMap[location]) {
-                        this.optionsCheckedMap[location] = true
+                        this.optionsCheckedMap[location] = true;
                         this.options.push({
                             value: location,
-                            location_code: location_code
-                        })
+                            location_code: location_code,
+                        });
                     }
                 }
             }
         } else {
             if (!!this.column.getFilterConfig() && !!this.column.getFilterConfig().data) {
-                let dataRaw = this.column.getFilterConfig().data
-                for (let row of dataRaw) {
-                    let data = row[this.column.id]
+                const dataRaw = this.column.getFilterConfig().data;
+                for (const row of dataRaw) {
+                    const data = row[this.column.id];
                     if (!!data && !!!this.optionsCheckedMap[data]) {
-                        this.optionsCheckedMap[data] = true
-                        this.options.push(data)
+                        this.optionsCheckedMap[data] = true;
+                        this.options.push(data);
                     }
                 }
             }

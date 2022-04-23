@@ -9,13 +9,13 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthsService extends AuthsData {
-    constructor(private httpClient: HttpClient, private authTokenService: NbTokenService){
-        super()
+    constructor(private httpClient: HttpClient, private authTokenService: NbTokenService) {
+        super();
     }
 
     swapToken(swapToken: string): Observable<VolioResponse<AuthToken>> {
-        console.log('swapToken123',swapToken)
-        let url = environment.apiUrl + "/auth/swap"
-        return this.httpClient.get<VolioResponse<AuthToken>>(url, {headers: {"Authorization": "Bearer " + swapToken}})
+        console.log('swapToken123', swapToken);
+        const url = environment.apiUrl + "/auth/swap";
+        return this.httpClient.get<VolioResponse<AuthToken>>(url, {headers: {"Authorization": "Bearer " + swapToken}});
     }
 }

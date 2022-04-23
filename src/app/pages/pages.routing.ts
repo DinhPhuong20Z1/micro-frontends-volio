@@ -7,6 +7,7 @@ import { FilesComponent } from './files/files.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import { AuthGuard } from './volio/auth/guard/auth-guard';
 import { OAuth2CallbackComponent } from './volio/auth/callback/callback.component';
+import { VersionsComponent } from './versions/versions.component';
 
 const routes: Routes = [{
     path: '',
@@ -14,6 +15,12 @@ const routes: Routes = [{
     children: [{
             path: 'profile',
             component: ProfileComponent,
+            // canActivate: [AuthGuard],
+        },
+        {
+            path: 'versions',
+            component: VersionsComponent,
+            // canActivate: [AuthGuard],
         },
         {
             path: 'files',
@@ -26,7 +33,7 @@ const routes: Routes = [{
         },
         {
             path: '',
-            redirectTo: 'files',
+            redirectTo: 'versions',
             pathMatch: 'full',
         },
         {

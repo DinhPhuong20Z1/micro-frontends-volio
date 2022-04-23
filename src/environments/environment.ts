@@ -10,6 +10,6 @@
 
 export const environment = {
     production: false,
-    homePage: 'https://jacasource.volio.vn', // http://localhost:4200
-    apiUrl:  'https://d7d6-149-28-154-163.ap.ngrok.io/jacasource/api/v1.0', // http://localhost:4200
+    homePage: 'http://localhost:4200', // http://localhost:4200
+    apiUrl:  'http://localhost:3000/jacasource/api/v1.0', // http://localhost:4200
 };

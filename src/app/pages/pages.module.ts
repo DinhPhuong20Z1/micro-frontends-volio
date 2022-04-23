@@ -9,6 +9,8 @@ import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { ProfileComponent } from './profile/profile.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
+import { VersionsComponent } from './versions/versions.component';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 @NgModule({
     imports: [
@@ -25,13 +27,15 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
         NbMenuModule,
         MiscellaneousModule,
         NbEvaIconsModule,
-        NbListModule
+        NbListModule,
+        Ng2SmartTableModule,
     ],
     declarations: [
         PagesComponent,
         ProfileComponent,
+        FsIconComponent,
         FilesComponent,
-        FsIconComponent
+        VersionsComponent,
     ],
 })
 export class PagesModule {}

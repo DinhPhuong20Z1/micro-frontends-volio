@@ -4,7 +4,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     {
         title: 'Versions',
         icon: 'archive-outline',
-        link: '/pages/files',
+        link: '/pages/versions',
         home: true,
     },
     {

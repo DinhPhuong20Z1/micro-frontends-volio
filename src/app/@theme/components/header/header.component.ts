@@ -4,7 +4,6 @@ import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { SaveReportWindowFormComponent } from '../../../pages/volio/windows/save-report/save-report.component';
 import { NbTokenService, NbAuthJWTToken, NbAuthService } from '@nebular/auth';
 import { Router } from '@angular/router';
 
@@ -41,9 +40,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     currentTheme = 'default';
 
     userMenu = [{
-        title: 'Profile'
+        title: 'Profile',
     }, {
-        title: 'Log out'
+        title: 'Log out',
     }];
 
 
@@ -77,7 +76,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.themeService.onThemeChange()
             .pipe(
                 map(({
-                    name
+                    name,
                 }) => name),
                 takeUntil(this.destroy$),
             )
@@ -87,28 +86,28 @@ export class HeaderComponent implements OnInit, OnDestroy {
             // this.windo.alert(`${title} was clicked!`)
             switch (title) {
                 case "Profile":
-                    this.router.navigate(['/pages/profile'])
-                    break
+                    this.router.navigate(['/pages/profile']);
+                    break;
                 case "Log out":
-                    this.authService.logout("email").subscribe(data=>{
-                        console.log('123')
-                        this.router.navigate(['/auth/login'])
-                    })
-                    break
+                    this.authService.logout("email").subscribe(data => {
+                        console.log('123');
+                        this.router.navigate(['/auth/login']);
+                    });
+                    break;
                 default:
-                    this.router.navigate(['/pages/profile'])
-                    break
+                    this.router.navigate(['/pages/profile']);
+                    break;
             }
-        })
+        });
 
         this.tokenService.get().subscribe((token: NbAuthJWTToken) => {
             if (!!token.getPayload()) {
-                this.user.name = token.getPayload().name
+                this.user.name = token.getPayload().name;
                 if (token.getPayload().avatar) {
-                    this.user.picture = token.getPayload().avatar
+                    this.user.picture = token.getPayload().avatar;
                 }
             }
-        })
+        });
     }
 
     ngOnDestroy() {
@@ -132,12 +131,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         return false;
     }
 
-    printerSummary() {
-        this.windowService.open(SaveReportWindowFormComponent, { title: `Create Report` });
-        console.log("printerSummary")
-    }
-
     openNotifications() {
-        console.log("openNotifications")
+        console.log("openNotifications");
     }
 }
