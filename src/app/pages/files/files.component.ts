@@ -66,6 +66,7 @@ export class FilesComponent implements OnInit, OnDestroy {
     @ViewChild(NbContextMenuDirective) contextMenu: NbContextMenuDirective;
     @ViewChild('escClose', { read: TemplateRef }) escCloseTemplate: TemplateRef<HTMLElement>;
 
+    autoInput: string;
     versionSelected: VersionSource;
     versionsTag: VersionSource[] = [];
     sourceTreeData: TreeNode<DocumentInfo>[] = [];
@@ -132,6 +133,7 @@ export class FilesComponent implements OnInit, OnDestroy {
                     this.versionsTag = resp.data;
                     if (!this.versionSelected && this.versionsTag.length > 0) {
                         this.versionSelected = this.versionsTag[0];
+                        this.autoInput = this.versionSelected.version;
                     }
                 }
             }, err => {}, () => {

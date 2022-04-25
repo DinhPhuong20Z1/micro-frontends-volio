@@ -2,9 +2,9 @@
     <nb-card-body>
         <div class="row flex">
             <div class="col-4 mr-auto">
-                <input nbInput type="text" placeholder="Version" [nbAutocomplete]="auto" #autoInput (input)="onChange($event)" [nbAutocomplete]="auto" />
+                <input nbInput type="text" placeholder="Version" [nbAutocomplete]="auto" [value]="autoInput " (input)="onChange($event)" [nbAutocomplete]="auto" />
 
-                <nb-autocomplete #auto [activeFirst]="true" (selectedChange)="onVersionSelectionChange($event)">
+                <nb-autocomplete #auto (selectedChange)="onVersionSelectionChange($event)">
                     <nb-option *ngFor="let v of versionsTag" [value]="v.version">{{v.version}}</nb-option>
                 </nb-autocomplete>
             </div>
