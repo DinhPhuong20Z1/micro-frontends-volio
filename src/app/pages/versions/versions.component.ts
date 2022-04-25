@@ -113,7 +113,7 @@ export class VersionsComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         setTimeout(() => {
-            this.versionServiceObs = this.versionService.GetAllVersions().subscribe(resp => {
+            this.versionServiceObs = this.versionService.getAllVersions().subscribe(resp => {
                 if (!!resp && resp.message === "success") {
                     this.versionsData = resp.data;
                     console.log("VersionsComponent - GetAllVersions this.versionsData: ", this.versionsData);
@@ -232,7 +232,7 @@ export class VersionsComponent implements OnInit, OnDestroy {
         data.updated_time = 0;
 
         console.log("onCreateConfirm: ", data);
-        this.versionService.CreateVersion(data).subscribe(resp => {
+        this.versionService.createVersion(data).subscribe(resp => {
             console.log("CreateVersion Resp: ", resp);
             event.confirm.resolve(data);
             if (resp.data) {
@@ -253,7 +253,7 @@ export class VersionsComponent implements OnInit, OnDestroy {
         data.updated_time = 0;
 
         console.log("onCreateConfirm: ", data);
-        this.versionService.UpdateVersion(data).subscribe(resp => {
+        this.versionService.updateVersion(data).subscribe(resp => {
             console.log("UpdateVersion Resp: ", resp);
             event.confirm.resolve(data);
             if (resp.data) {

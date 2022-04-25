@@ -27,10 +27,11 @@ import { NewsPostComponent } from "./infinite-list/news-post/news-post.component
 import { AddFolderComponent } from './files/components/add-folder/add-folder.component';
 import { VersionsComponent } from './versions/versions.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { NbAutocompleteModule } from '@nebular/theme';
 
 @NgModule({
     imports: [
-ReactiveFormsModule,
+    ReactiveFormsModule,
         NbFormFieldModule,
         NbInputModule,
         NbButtonModule,
@@ -47,7 +48,8 @@ ReactiveFormsModule,
         NbSelectModule,
         NbContextMenuModule,
         NbLayoutModule,
-        Ng2SmartTableModule
+        Ng2SmartTableModule,
+        NbAutocompleteModule,
     ],
     declarations: [
         PagesComponent,

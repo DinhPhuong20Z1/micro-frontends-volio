@@ -92,6 +92,10 @@ export class AutoCompleteFilterComponent extends DefaultFilter implements OnInit
     }
 
     private filterFunc(value: string): string[] {
+        if (!value) {
+            return;
+        }
+
         const filterValue = value.toLowerCase();
         this.query = value !== null ? value.toString() : '';
         this.setFilter();
