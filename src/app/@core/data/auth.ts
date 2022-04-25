@@ -7,5 +7,5 @@ export interface AuthToken {
 }
 
 export abstract class  AuthsData {
-    abstract swapToken(swapToken: string): Observable<VolioResponse<AuthToken>>
+    abstract swapToken(swapToken: string): Observable<VolioResponse<AuthToken>>;
 }

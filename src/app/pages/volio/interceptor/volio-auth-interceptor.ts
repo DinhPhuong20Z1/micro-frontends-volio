@@ -22,7 +22,8 @@ export class VolioAuthInterceptor implements HttpInterceptor, OnDestroy {
     }
 
     intercept(req: HttpRequest < any > , next: HttpHandler): Observable < HttpEvent < any >> {
-        if (req.url.indexOf('/auth/login') < 0 || req.url.indexOf('/auth/swap') >= 0) {
+        console.log('req',req)
+        if ((req.url.indexOf('/auth/login') < 0 && req.url.indexOf('amazonaws.com') < 0) || req.url.indexOf('/auth/swap') >= 0) {
             req = req.clone({ headers: req.headers.set('App', "JacaSource") });
             req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + (this.token.token.access_token ? this.token.token.access_token : this.token.toString())) });
         }
@@ -30,13 +31,24 @@ export class VolioAuthInterceptor implements HttpInterceptor, OnDestroy {
         return next.handle(req).pipe(catchError((response) => {
             console.log("intercept: ", response.error);
 
+
+
             if (req.url.indexOf('/auth/') < 0) {
-                this.dialogService.open(ErrorHandlerDialogComponent, {
-                    context: {
-                        title: 'Error',
-                        description: "Can not execute request: " + response.error.data.message,
-                    },
-                });
+                if (!response.error.data) {
+                    this.dialogService.open(ErrorHandlerDialogComponent, {
+                        context: {
+                            title: 'Error',
+                            description: "Can not connect to the server",
+                        },
+                    });
+                } else {
+                    this.dialogService.open(ErrorHandlerDialogComponent, {
+                        context: {
+                            title: 'Error',
+                            description: "Can not execute request: " + response.error.data.message,
+                        },
+                    });
+                }
             }
 
             return throwError(response);

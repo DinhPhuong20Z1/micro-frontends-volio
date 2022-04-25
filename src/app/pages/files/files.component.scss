@@ -1,45 +1,6 @@
 @import "../../@theme/styles/themes.scss";
 
-nb-card-body.example-items-col > * {
-    align-items: stretch;
-    margin-bottom: 1rem;
-}
-
-input {
-    width: 100%;
-}
-
-
-
-.download {
-    margin-left: 1rem;
-}
-
-.infor-item {
-    display: flex;
-    margin-bottom: 10px;
-}
-
-.infor-name {
-    font-weight: 600;
-    min-width: 125px;
-    max-width: 140px;
-}
-
-.infor-content {
-    width: 100%;
-    word-break: break-word;
-}
-
-
-
-.button-add {
-    border: 1px solid #e4e9f2;
-    margin-left: 1rem;
-    background-color: #f7f9fc !important;
-
-}
- @include nb-install-component() {
+@include nb-install-component() {
     button[nbTreeGridRowToggle] {
         background: transparent;
         border: none;
@@ -49,6 +10,7 @@ input {
     .search-label {
         display: block;
     }
+
     .search-input {
         margin-bottom: 1rem;
         margin-right: 1rem;
@@ -68,6 +30,7 @@ input {
     }
 
     @media screen and (min-width: 400px) {
+
         .nb-column-name,
         .nb-column-size {
             width: 50%;
@@ -75,6 +38,7 @@ input {
     }
 
     @media screen and (min-width: 500px) {
+
         .nb-column-name,
         .nb-column-size,
         .nb-column-kind {
@@ -83,6 +47,7 @@ input {
     }
 
     @media screen and (min-width: 600px) {
+
         // .nb-column-name {
         //     width: 31%;
         // }
@@ -90,9 +55,40 @@ input {
         .nb-column-size,
         .nb-column-kind,
         .nb-column-items,
-        .nb-column-drs
-        {
+        .nb-column-drs {
             width: 50%;
         }
     }
+}
+
+nb-card-body.items-col>* {
+    align-items: stretch;
+    margin-bottom: 1rem;
+}
+
+input {
+    width: 100%;
+}
+
+.blink_me {
+    animation: blinker 2s linear infinite;
+    border: 2px solid #006fd6
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+div.dialogAddFile {
+    min-width: 600px;
+}
+div.formAddFile {
+    align-items: center;
+}
+
+nb-card-footer.button-submit {
+    display: block;
+    text-align: right;
 }

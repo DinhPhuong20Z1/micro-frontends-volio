@@ -27,4 +27,36 @@ export class UtilsService extends UtilsFunc {
         return date.toLocaleString();
     }
 
+    dataBytesToString(bytes: number): string {
+        let idx: number = 0;
+        let dataTransferConvert = bytes;
+        let dataTransferUnit: string = "bytes";
+        while (Math.abs(dataTransferConvert / 1024) > 1) {
+            idx++;
+            dataTransferConvert = Math.round(dataTransferConvert / 1024);
+        }
+
+        switch (idx) {
+            case 0:
+                dataTransferUnit = "Bytes";
+                break;
+            case 1:
+                dataTransferUnit = "KB";
+                break;
+            case 2:
+                dataTransferUnit = "MB";
+                break;
+            case 3:
+                dataTransferUnit = "GB";
+                break;
+            case 4:
+                dataTransferUnit = "TB";
+                break;
+            case 5:
+                dataTransferUnit = "PB";
+                break;
+        }
+
+        return dataTransferConvert + " " + dataTransferUnit;
+    }
 }
