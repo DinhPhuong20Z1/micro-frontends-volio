@@ -1,126 +1,159 @@
 <nb-card>
     <nb-card-body>
-        <label class="search-label" for="search">Search:</label>
-        <input
-            nbInput
-            [nbFilterInput]="dataSource"
-            id="search"
-            class="search-input"
-        />
+        <div class="row flex">
+            <div class="col-4 mr-auto">
+                <input nbInput type="text" placeholder="Version" [nbAutocomplete]="auto" [value]="autoInput " (input)="onChange($event)" [nbAutocomplete]="auto" />
 
-        <nb-select placeholder="Select Showcase" [(selected)]="selectedItem">
-            <nb-option value="2">Option 1</nb-option>
-            <nb-option langg value="theme.value" *ngFor="let theme of themes">{{ theme.name | langg }}</nb-option>
-          </nb-select>
+                <nb-autocomplete #auto (selectedChange)="onVersionSelectionChange($event)">
+                    <nb-option *ngFor="let v of versionsTag" [value]="v.version">{{v.version}}</nb-option>
+                </nb-autocomplete>
+            </div>
 
+            <input class="col-8" nbInput [nbFilterInput]="dataSource" id="search" class="search-input" placeholder="Search..." />
+        </div>
 
-
-        <table
-            [nbTreeGrid]="dataSource"
-            [nbSort]="dataSource"
-            (sort)="updateSort($event)"
-        >
+        <table [nbTreeGrid]="dataSource" [nbSort]="dataSource" (sort)="updateSort($event)">
             <tr nbTreeGridHeaderRow *nbTreeGridHeaderRowDef="allColumns"></tr>
-            <tr
-                nbTreeGridRow
-                *nbTreeGridRowDef="let row; columns: allColumns"
-            ></tr>
-
-            <ng-container [nbTreeGridColumnDef]="customColumn" >
-                <th
-                    nbTreeGridHeaderCell
-                    [nbSortHeader]="getSortDirection(customColumn)"
-                    *nbTreeGridHeaderCellDef
-
-                >
-                    {{ customColumn }}
-                </th>
-                <td
-                    nbTreeGridCell
-                    *nbTreeGridCellDef="let row"
-                    (drop)="onDrop($event, row)"
-                    (dragover)="onDragOver($event)"
-                    (dblclick)="onClick(dialogDetail, row)"
-                    [nbContextMenu]="items"
-                    nbContextMenuTrigger="noop"
-                    (contextmenu)="open(row, dialog)"
-                    nbContextMenuTag="AddFolderMenuContext"
-                >
-                    <ngx-fs-icon
-                        [kind]="row.data.kind"
-                        [expanded]="row.expanded"
-                    ></ngx-fs-icon>
-
-                    {{ row.data[customColumn] }}
-                </td>
-            </ng-container>
-
-            <ng-container
-                *ngFor="let column of defaultColumns; let index = index"
-                [nbTreeGridColumnDef]="column"
-                [showOn]="getShowOn(index)"
-            >
-                <th
-                    nbTreeGridHeaderCell
-                    [nbSortHeader]="getSortDirection(column)"
-                    *nbTreeGridHeaderCellDef
-
-                >
+            <tr nbTreeGridRow *nbTreeGridRowDef="let row; columns: allColumns" (click)="showFileDetail(dialogDetail, row.data)" (drop)="onDrop($event, row, escClose)" (dragover)="onDragOver($event, row)" (dragleave)="onDragLeave($event, row)"></tr>
+            <ng-container *ngFor="let column of allColumns; let index = index" [nbTreeGridColumnDef]="column" [showOn]="getShowOn(index)">
+                <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(column)" *nbTreeGridHeaderCellDef>
                     {{ column }}
                 </th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
+                    <ngx-fs-icon *ngIf="index==0" [type]="row.data.type" [expanded]="row.expanded"></ngx-fs-icon>
                     {{ row.data[column] || "-" }}
                 </td>
             </ng-container>
-
         </table>
     </nb-card-body>
 </nb-card>
 
-
-
 <ng-template #dialogDetail let-data let-ref="dialogRef">
     <nb-card class="dialog">
-        <nb-card-header>Thông tin thêm</nb-card-header>
-        <nb-card-body class="example-items-col">
-            <div class="infor-item">
-                <div class="infor-name">App Name:</div>
-                <div class="infor-content">{{ deleteId.name }}</div>
-            </div>
-            <div class="infor-item">
-                <div class="infor-name">Version Name:</div>
-                <div class="infor-content">{{ deleteId.kind }}</div>
-            </div>
-            <div class="infor-item">
-                <div class="infor-name">Dung lượng:</div>
-                <div class="infor-content">{{ deleteId.size }}</div>
-            </div>
+        <nb-card-header>{{data.name}}</nb-card-header>
+        <nb-card-body class="items-col">
+            <form>
+                <div class="form-group row">
+                    <label for="bucket_name" class="label col-sm-3 col-form-label">Bucket name</label>
+                    <div class="col-sm-9 dialog-content">
+                        {{data.bucket_name}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword2" class="label col-sm-3 col-form-label">Type</label>
+                    <div class="col-sm-9 dialog-content">
+                        {{data.type}} <span *ngIf="data.ext">- {{data.ext}}</span> <span *ngIf="data.mime_type">- {{data.mime_type}}</span>
+                    </div>
+                </div>
+                <div *ngIf="data.size" class="form-group row">
+                    <label for="inputPassword2" class="label col-sm-3 col-form-label">Size</label>
+                    <div class="col-sm-9 dialog-content">
+                        {{data.size_string}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword2" class="label col-sm-3 col-form-label">Version</label>
+                    <div class="col-sm-9 dialog-content">
+                        {{data.version}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword2" class="label col-sm-3 col-form-label">Version</label>
+                    <div class="col-sm-9 dialog-content">
+                        {{data.game_version}}
+                    </div>
+                </div>
+                <div *ngIf="data.link_cdn" class="form-group row">
+                    <label for="inputPassword2" class="label col-sm-3 col-form-label">Link</label>
+                    <div class="col-sm-9 dialog-content">
+                        {{data.link_cdn}}
+                    </div>
+                </div>
+                <div *ngIf="data.created_time" class="form-group row">
+                    <label for="inputPassword2" class="label col-sm-3 col-form-label">Created at</label>
+                    <div class="col-sm-9 dialog-content">
+                        {{data.created_time_string}}
+                    </div>
+                </div>
+                <div *ngIf="data.updated_time" class="form-group row">
+                    <label for="inputPassword2" class="label col-sm-3 col-form-label">Updated at</label>
+                    <div class="col-sm-9 dialog-content">
+                        {{data.updated_time_string}}
+                    </div>
+                </div>
+            </form>
         </nb-card-body>
 
-        <nb-card-footer class="dialog">
-            <button
-                class="cancel"
-                nbButton
-                status="danger"
-                (click)="ref.close()"
-            >
-                Đóng
-            </button>
-
-            <button nbButton status="danger" (click)="delete(ref.close())">
-                Xóa
-            </button>
-            <button
-                class="download"
-                nbButton
-                status="success"
-                (click)="download(positions.TOP_RIGHT, 'success', ref.close())"
-            >
-                Tải xuống
-            </button>
+        <nb-card-footer>
+            <button nbButton class="mr-3" hero status="success" (click)="download(positions.TOP_RIGHT, 'success', ref.close())">Download</button>
+            <button nbButton hero status="danger" (click)="delete(ref.close())">Delete</button>
         </nb-card-footer>
     </nb-card>
 </ng-template>
 
+<ng-template #escClose>
+    Click escape to close.
+</ng-template>
 
+<ng-template #uploadWindow let-data let-ref="dialogRef">
+    <nb-card class="dialog">
+        <nb-card-header>{{data.name}}</nb-card-header>
+        <nb-card-body class="items-col">
+            <form>
+                <div class="form-group row">
+                    <label for="bucket_name" class="label col-sm-3 col-form-label">Bucket name</label>
+                    <div class="col-sm-9 dialog-content">
+                        {{data.bucket_name}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword2" class="label col-sm-3 col-form-label">Type</label>
+                    <div class="col-sm-9 dialog-content">
+                        {{data.type}} <span *ngIf="data.ext">- {{data.ext}}</span> <span *ngIf="data.mime_type">- {{data.mime_type}}</span>
+                    </div>
+                </div>
+                <div *ngIf="data.size" class="form-group row">
+                    <label for="inputPassword2" class="label col-sm-3 col-form-label">Size</label>
+                    <div class="col-sm-9 dialog-content">
+                        {{data.size_string}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword2" class="label col-sm-3 col-form-label">Version</label>
+                    <div class="col-sm-9 dialog-content">
+                        {{data.version}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword2" class="label col-sm-3 col-form-label">Version</label>
+                    <div class="col-sm-9 dialog-content">
+                        {{data.game_version}}
+                    </div>
+                </div>
+                <div *ngIf="data.link_cdn" class="form-group row">
+                    <label for="inputPassword2" class="label col-sm-3 col-form-label">Link</label>
+                    <div class="col-sm-9 dialog-content">
+                        {{data.link_cdn}}
+                    </div>
+                </div>
+                <div *ngIf="data.created_time" class="form-group row">
+                    <label for="inputPassword2" class="label col-sm-3 col-form-label">Created at</label>
+                    <div class="col-sm-9 dialog-content">
+                        {{data.created_time_string}}
+                    </div>
+                </div>
+                <div *ngIf="data.updated_time" class="form-group row">
+                    <label for="inputPassword2" class="label col-sm-3 col-form-label">Updated at</label>
+                    <div class="col-sm-9 dialog-content">
+                        {{data.updated_time_string}}
+                    </div>
+                </div>
+            </form>
+        </nb-card-body>
 
+        <nb-card-footer>
+            <button nbButton class="mr-3" hero status="success" (click)="download(positions.TOP_RIGHT, 'success', ref.close())">Download</button>
+            <button nbButton hero status="danger" (click)="delete(ref.close())">Delete</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>

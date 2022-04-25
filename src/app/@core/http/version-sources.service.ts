@@ -11,19 +11,19 @@ export class VersionSourcesService extends VersionSourceData {
         super();
     }
 
-    GetAllVersions(): Observable<VolioResponse<VersionSource[]>> {
+    getAllVersions(): Observable<VolioResponse<VersionSource[]>> {
         const url = environment.apiUrl + "/version";
 
         return this.httpClient.get<VolioResponse<VersionSource[]>>(url);
     }
 
-    CreateVersion(data: VersionSource): Observable<VolioResponse<VersionSource>> {
+    createVersion(data: VersionSource): Observable<VolioResponse<VersionSource>> {
         const url = environment.apiUrl + "/version";
 
         return this.httpClient.post<VolioResponse<VersionSource>>(url, data);
     }
 
-    UpdateVersion(data: VersionSource): Observable<VolioResponse<VersionSource>> {
+    updateVersion(data: VersionSource): Observable<VolioResponse<VersionSource>> {
         const url = environment.apiUrl + "/version";
 
         return this.httpClient.put<VolioResponse<VersionSource>>(url, data);

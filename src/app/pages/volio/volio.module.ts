@@ -22,6 +22,7 @@ import { ErrorHandlerDialogComponent } from './dialogs/error-handler/error-handl
 import { OAuth2CallbackComponent } from './auth/callback/callback.component';
 import { CheckboxEditorComponent } from './tables/checkbox-editor/checkbox-editor.component';
 import { CheckboxCellComponent } from './tables/checkbox-cell/checkbox-cell.component';
+import { UploaderWindowComponent } from './windows/uploader-window/uploader-window.component';
 
 const VolioComponents = [
     DialogDeleteProfileComponent, // Dialog
@@ -69,7 +70,7 @@ const VolioComponents = [
         NbSidebarModule,
         NbCheckboxModule,
     ],
-    declarations: [...VolioComponents],
+    declarations: [...VolioComponents, UploaderWindowComponent],
     exports: [...VolioComponents],
     })
 

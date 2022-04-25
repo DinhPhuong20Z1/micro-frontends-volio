@@ -30,13 +30,24 @@ export class VolioAuthInterceptor implements HttpInterceptor, OnDestroy {
         return next.handle(req).pipe(catchError((response) => {
             console.log("intercept: ", response.error);
 
+
+
             if (req.url.indexOf('/auth/') < 0) {
-                this.dialogService.open(ErrorHandlerDialogComponent, {
-                    context: {
-                        title: 'Error',
-                        description: "Can not execute request: " + response.error.data.message,
-                    },
-                });
+                if (!response.error.data) {
+                    this.dialogService.open(ErrorHandlerDialogComponent, {
+                        context: {
+                            title: 'Error',
+                            description: "Can not connect to the server",
+                        },
+                    });
+                } else {
+                    this.dialogService.open(ErrorHandlerDialogComponent, {
+                        context: {
+                            title: 'Error',
+                            description: "Can not execute request: " + response.error.data.message,
+                        },
+                    });
+                }
             }
 
             return throwError(response);

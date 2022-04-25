@@ -74,6 +74,8 @@ import { UtilsService } from './mock/utils.service';
 import { VersionSourcesService } from './http/version-sources.service';
 import { VersionSourceData } from './data/version_source';
 import { UtilsFunc } from "./data/utils";
+import { FilesData } from "./data/files";
+import { FilesService } from './http/files.service';
 
 const socialLinks = [
     {
@@ -102,6 +104,10 @@ const DATA_SERVICES = [
     {
         provide: VersionSourceData,
         useClass: VersionSourcesService,
+    },
+    {
+        provide: FilesData,
+        useClass: FilesService,
     },
     { provide: UserData, useClass: UserService },
     { provide: ElectricityData, useClass: ElectricityService },

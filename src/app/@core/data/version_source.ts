@@ -11,7 +11,7 @@ export interface VersionSource {
 }
 
 export abstract class VersionSourceData {
-    abstract GetAllVersions(): Observable<VolioResponse<VersionSource[]>>;
-    abstract CreateVersion(data: VersionSource): Observable<VolioResponse<VersionSource>>;
-    abstract UpdateVersion(data: VersionSource): Observable<VolioResponse<VersionSource>>;
+    abstract getAllVersions(): Observable<VolioResponse<VersionSource[]>>;
+    abstract createVersion(data: VersionSource): Observable<VolioResponse<VersionSource>>;
+    abstract updateVersion(data: VersionSource): Observable<VolioResponse<VersionSource>>;
 }

@@ -3,8 +3,10 @@
     <nb-card-body>
         {{description}}
     </nb-card-body>
-    <nb-card-footer>
-        <button class="cancel" nbButton hero status="danger" (click)="dismiss()">Oke</button>
-        <button nbButton hero status="success" (click)="onRetry()" *ngIf="showRetry">Retry</button>
+    <nb-card-footer class="row flex">
+        <div class="ml-auto">
+            <button class="cancel" nbButton hero status="danger" (click)="dismiss()">Oke</button>
+            <button nbButton hero status="success" (click)="onRetry()" *ngIf="showRetry">Retry</button>
+        </div>
     </nb-card-footer>
 </nb-card>

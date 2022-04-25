@@ -13,7 +13,7 @@ export class ErrorHandlerDialogComponent {
     @Input() showRetry: boolean = true;
 
     constructor(protected ref: NbDialogRef < ErrorHandlerDialogComponent >) {
-        console.log("ErrorHandlerDialogComponent::constructor")
+        console.log("ErrorHandlerDialogComponent::constructor");
     }
 
     dismiss() {
@@ -21,7 +21,7 @@ export class ErrorHandlerDialogComponent {
     }
 
     onRetry() {
-        console.log("ErrorHandlerDialogComponent::onRetry")
+        console.log("ErrorHandlerDialogComponent::onRetry");
         window.location.reload();
     }
 }
