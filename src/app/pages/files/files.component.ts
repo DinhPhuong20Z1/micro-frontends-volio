@@ -24,11 +24,9 @@ import { VersionSourceData, VersionSource } from '../../@core/data/version_sourc
 import { VolioResponse } from '../../@core/data/volio_response';
 import { FilesData, DocumentInfo } from '../../@core/data/files';
 import { UtilsFunc } from '../../@core/data/utils';
-import { animate } from '@angular/animations';
 import { NbWindowService } from '@nebular/theme';
 import { addFile, addFileData } from "../../@core/data/add-file";
-import { S3Client, UploadPartCommand, UploadPartCopyOutput, UploadPartRequest } from "@aws-sdk/client-s3";
-import { HttpEvent, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 
 interface TreeNode < T > {
     data: T;
@@ -301,15 +299,15 @@ export class FilesComponent implements OnInit, OnDestroy {
         console.log("onDropCDK: ", event);
     }
 
-     submitAdd(position, status,dataFile: any,nameUpload: string)  {
-        console.log('dataFile',dataFile)
+     submitAdd(position, status, dataFile: any, nameUpload: string)  {
+        console.log('dataFile', dataFile);
 
         const ext = dataFile.file.name.split(".");
         const checkPartSplit = dataFile.row.key.split("");
-        const checkPartFilter = checkPartSplit.filter(i => i === "/").length === 1 && dataFile.row.type === 'file'
-        let indexKeySearch = dataFile.row.key.lastIndexOf("/")
+        const checkPartFilter = checkPartSplit.filter(i => i === "/").length === 1 && dataFile.row.type === 'file';
+        const indexKeySearch = dataFile.row.key.lastIndexOf("/");
         const checkKey = dataFile.row.key.substr(0, indexKeySearch );
-        const checkType = dataFile.row.type === 'file' ? checkKey : dataFile.row.key
+        const checkType = dataFile.row.type === 'file' ? checkKey : dataFile.row.key;
         const data = {
             name: nameUpload ? nameUpload : dataFile.file.name,
             mime_type: dataFile.file.type,
@@ -317,7 +315,7 @@ export class FilesComponent implements OnInit, OnDestroy {
             folder: checkPartFilter ? '' : checkType,
             ext:  ext.length > 0 ? ext[ext.length - 1] : null,
             version_source_id: dataFile.row.ver_source_id,
-        }
+        };
 
 
 
@@ -325,14 +323,14 @@ export class FilesComponent implements OnInit, OnDestroy {
         this.versionSourceServiceObs = this.versionAddFileService.postAddFile(data).subscribe((resp: VolioResponse<addFile[]>) => {
             if (resp.message === "success" && resp.data) {
                 this.fileName =  dataFile.file.name;
-                let parentLinkUpload = resp.data.upload_links
+                const parentLinkUpload = resp.data.upload_links;
                 let linkUpload;
-                let partsFile = [];
+                const partsFile = [];
                 this.disableUpload = true;
                 this.buttonLoading = true;
                 // let current = 0
                 // let remaining = dataFile.file.size
-                for(let i = 0; i < parentLinkUpload.length; i++){
+                for (let i = 0; i < parentLinkUpload.length; i++) {
                     // if (remaining <= 0 ) {
                     //     break
                     // }
@@ -350,23 +348,23 @@ export class FilesComponent implements OnInit, OnDestroy {
                     formData.append("thumbnail", dataFile.file, this.fileName);
 
 
-                    linkUpload = parentLinkUpload[i].link
-                    if(linkUpload) {
-                        this.versionSourceServiceObs = this.versionAddFileService.putAddFileToAWS(formData, linkUpload ).subscribe((respHeader:HttpResponse<any>) => {
-                            let Etag = respHeader.headers.get("Etag")
-                            if(Etag) {
+                    linkUpload = parentLinkUpload[i].link;
+                    if (linkUpload) {
+                        this.versionSourceServiceObs = this.versionAddFileService.putAddFileToAWS(formData, linkUpload ).subscribe((respHeader: HttpResponse<any>) => {
+                            const Etag = respHeader.headers.get("Etag");
+                            if (Etag) {
                                 const listpartsFile = {
                                     etag: Etag,
                                     part_idx:  parentLinkUpload[i].part_idx,
-                                }
+                                };
                                 const data = {
                                     file_id: resp.data.id,
                                     upload_id:  resp.data.upload_id,
-                                    uploaded_parts: partsFile.concat(listpartsFile)
-                                }
+                                    uploaded_parts: partsFile.concat(listpartsFile),
+                                };
                                 this.versionSourceServiceObs = this.versionAddFileService.putCompaleteUpload(data).subscribe((resp: VolioResponse<addFile[]>) => {
                                     this.disableButtonUpload = true;
-                                    this.buttonLoading = false
+                                    this.buttonLoading = false;
                                      this.toastrService.show(status || 'Success', `Tải file lên thành công`, { position, status });
                                 }, err => {}, () => {
                                     if (this.versionSelected) {
