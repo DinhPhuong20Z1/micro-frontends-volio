@@ -76,6 +76,8 @@ import { VersionSourceData } from './data/version_source';
 import { UtilsFunc } from "./data/utils";
 import { FilesData } from "./data/files";
 import { FilesService } from './http/files.service';
+import { AddFileService } from "./http/add-file.service";
+import { addFileData } from "./data/add-file";
 
 const socialLinks = [
     {
@@ -85,6 +87,10 @@ const socialLinks = [
 ];
 
 const DATA_SERVICES = [
+    {
+        provide: addFileData,
+        useClass: AddFileService,
+    },
     {
         provide: AddFolderData,
         useClass: AddFolderService,

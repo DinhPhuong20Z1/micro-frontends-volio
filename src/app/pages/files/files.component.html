@@ -91,8 +91,46 @@
     </nb-card>
 </ng-template>
 
-<ng-template #escClose>
-    Click escape to close.
+<ng-template #escClose let-data  let-ref="dialogRef" >
+    <div class="dialogAddFile">
+        <nb-card-body class="example-items-col">
+            <form>
+                <div >
+
+
+                    <div class="form-group row formAddFile">
+                        <label for="nameUpload" class="label col-sm-3 col-form-label"
+                        >Tên File</label
+                    >
+                    <div class="col-sm-9">
+                        <input
+                            type="text"
+                            nbInput
+                            fullWidth
+                            status="basic"
+                            placeholder="Name"
+                            #nameUpload
+                            value="{{data.file.name}}"
+                            [disabled]="disableUpload"
+
+                        />
+                    </div>
+                    </div>
+
+                </div>
+            </form>
+        </nb-card-body>
+        <nb-card-footer class="button-submit">
+            <button disabled={{disableButtonUpload}}
+             nbButton class="mr-3" hero status="success"
+            (click)="submitAdd(positions.TOP_RIGHT, 'success', data,nameUpload.value)">
+            {{buttonLoading ? "Đang tải" : disableButtonUpload ? 'Đã xong' : 'Tải lên'}} </button>
+        </nb-card-footer>
+    </div>
+
+
+
+
 </ng-template>
 
 <ng-template #uploadWindow let-data let-ref="dialogRef">

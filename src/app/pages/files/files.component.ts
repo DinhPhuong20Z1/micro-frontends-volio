@@ -26,6 +26,9 @@ import { FilesData, DocumentInfo } from '../../@core/data/files';
 import { UtilsFunc } from '../../@core/data/utils';
 import { animate } from '@angular/animations';
 import { NbWindowService } from '@nebular/theme';
+import { addFile, addFileData } from "../../@core/data/add-file";
+import { S3Client, UploadPartCommand, UploadPartCopyOutput, UploadPartRequest } from "@aws-sdk/client-s3";
+import { HttpEvent, HttpResponse } from '@angular/common/http';
 
 interface TreeNode < T > {
     data: T;
@@ -66,7 +69,14 @@ export class FilesComponent implements OnInit, OnDestroy {
     @ViewChild(NbContextMenuDirective) contextMenu: NbContextMenuDirective;
     @ViewChild('escClose', { read: TemplateRef }) escCloseTemplate: TemplateRef<HTMLElement>;
 
+    nameUpload: string;
     autoInput: string;
+    addFiles: any;
+    disableUpload: any = true;
+    disableButtonUpload: any = false;
+    buttonLoading: any = false;
+
+    fileName = '';
     versionSelected: VersionSource;
     versionsTag: VersionSource[] = [];
     sourceTreeData: TreeNode<DocumentInfo>[] = [];
@@ -80,7 +90,6 @@ export class FilesComponent implements OnInit, OnDestroy {
     sortColumn: string;
     sortDirection: NbSortDirection = NbSortDirection.NONE;
     positions = NbGlobalPhysicalPosition;
-    deleteId: any = {};
     deleteT: any = {};
     dataIndexFolder: any = {};
     dialog: TemplateRef < any > ;
@@ -105,6 +114,8 @@ export class FilesComponent implements OnInit, OnDestroy {
         private versionSourceService: VersionSourceData,
         private fileService: FilesData,
         private utilsFunc: UtilsFunc,
+        private toastrService: NbToastrService,
+        private versionAddFileService: addFileData,
     ) {
         this.dataSource = this.dataSourceBuilder.create(this.sourceTreeData);
     }
@@ -170,6 +181,8 @@ export class FilesComponent implements OnInit, OnDestroy {
             this.dataSource = this.dataSourceBuilder.create(this.sourceTreeData);
         });
     }
+
+
 
     createNodeSource(listFiles: DocumentInfo[], mapAdded: Map<string, boolean>, parentNode: TreeNode<DocumentInfo>) {
         console.log("createNodeSource - parentNode: ", parentNode);
@@ -243,8 +256,9 @@ export class FilesComponent implements OnInit, OnDestroy {
 
     onDrop(event: any, row: any, windowForm: any) {
         console.log("onDrop", event.dataTransfer.files[0]);
-        console.log("onDrop row:", row);
-        console.log("onDrop window:", windowForm);
+        console.log("onDrop1", event.dataTransfer.files);
+
+
 
         this.getIndex(row, event.dataTransfer.files[0]);
 
@@ -252,7 +266,7 @@ export class FilesComponent implements OnInit, OnDestroy {
 
         this.windowService.open(
             windowForm,
-            { title: 'Window with backdrop', hasBackdrop: true, context: {file: event.dataTransfer.files, row: row.data} },
+            { title: 'Tải File lên', hasBackdrop: true, context: {file: event.dataTransfer.files[0], row: row.data} },
         );
 
         event.stopPropagation();
@@ -285,6 +299,104 @@ export class FilesComponent implements OnInit, OnDestroy {
 
     onDropCDK(event) {
         console.log("onDropCDK: ", event);
+    }
+
+     submitAdd(position, status,dataFile: any,nameUpload: string)  {
+        console.log('dataFile',dataFile)
+
+        const ext = dataFile.file.name.split(".");
+        const checkPartSplit = dataFile.row.key.split("");
+        const checkPartFilter = checkPartSplit.filter(i => i === "/").length === 1 && dataFile.row.type === 'file'
+        let indexKeySearch = dataFile.row.key.lastIndexOf("/")
+        const checkKey = dataFile.row.key.substr(0, indexKeySearch );
+        const checkType = dataFile.row.type === 'file' ? checkKey : dataFile.row.key
+        const data = {
+            name: nameUpload ? nameUpload : dataFile.file.name,
+            mime_type: dataFile.file.type,
+            file_size: dataFile.file.size,
+            folder: checkPartFilter ? '' : checkType,
+            ext:  ext.length > 0 ? ext[ext.length - 1] : null,
+            version_source_id: dataFile.row.ver_source_id,
+        }
+
+
+
+
+        this.versionSourceServiceObs = this.versionAddFileService.postAddFile(data).subscribe((resp: VolioResponse<addFile[]>) => {
+            if (resp.message === "success" && resp.data) {
+                this.fileName =  dataFile.file.name;
+                let parentLinkUpload = resp.data.upload_links
+                let linkUpload;
+                let partsFile = [];
+                this.disableUpload = true;
+                this.buttonLoading = true;
+                // let current = 0
+                // let remaining = dataFile.file.size
+                for(let i = 0; i < parentLinkUpload.length; i++){
+                    // if (remaining <= 0 ) {
+                    //     break
+                    // }
+
+                    // let data
+                    // if (remaining <= resp.data.part_split_size) {
+                    //     data = dataFile.file.slice(current, dataFile.file.size)
+                    // } else {
+                    //     data = dataFile.file.slice(current, current +resp.data.part_split_size)
+                    //     current += resp.data.part_split_size
+                    // }
+
+
+                    const formData = new FormData();
+                    formData.append("thumbnail", dataFile.file, this.fileName);
+
+
+                    linkUpload = parentLinkUpload[i].link
+                    if(linkUpload) {
+                        this.versionSourceServiceObs = this.versionAddFileService.putAddFileToAWS(formData, linkUpload ).subscribe((respHeader:HttpResponse<any>) => {
+                            let Etag = respHeader.headers.get("Etag")
+                            if(Etag) {
+                                const listpartsFile = {
+                                    etag: Etag,
+                                    part_idx:  parentLinkUpload[i].part_idx,
+                                }
+                                const data = {
+                                    file_id: resp.data.id,
+                                    upload_id:  resp.data.upload_id,
+                                    uploaded_parts: partsFile.concat(listpartsFile)
+                                }
+                                this.versionSourceServiceObs = this.versionAddFileService.putCompaleteUpload(data).subscribe((resp: VolioResponse<addFile[]>) => {
+                                    this.disableButtonUpload = true;
+                                    this.buttonLoading = false
+                                     this.toastrService.show(status || 'Success', `Tải file lên thành công`, { position, status });
+                                }, err => {}, () => {
+                                    if (this.versionSelected) {
+                                        this.getFileSystem(this.versionSelected.id, "/");
+                                    }
+                                });
+                            }
+                        }, err => {}, () => {
+
+                        });
+                    }
+                }
+
+
+
+
+
+
+
+
+
+            }
+        }, err => {}, () => {
+            if (this.versionSelected) {
+                this.getFileSystem(this.versionSelected.id, "/");
+            }
+        });
+
+
+
     }
 
 

@@ -80,3 +80,15 @@ input {
         opacity: 0;
     }
 }
+
+div.dialogAddFile {
+    min-width: 600px;
+}
+div.formAddFile {
+    align-items: center;
+}
+
+nb-card-footer.button-submit {
+    display: block;
+    text-align: right;
+}
