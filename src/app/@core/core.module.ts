@@ -68,16 +68,12 @@ import { GoogleOAuthService } from "./http/google-oauth2.service";
 import { AuthsService } from "./http/auth.service";
 import { GoogleOAuthData } from "./data/google-oauth";
 import { AuthsData } from "./data/auth";
-import { AddFolderData } from "./data/add-folder";
-import { AddFolderService } from "./http/add-folder.service";
 import { UtilsService } from './mock/utils.service';
 import { VersionSourcesService } from './http/version-sources.service';
 import { VersionSourceData } from './data/version_source';
 import { UtilsFunc } from "./data/utils";
 import { FilesData } from "./data/files";
 import { FilesService } from './http/files.service';
-import { AddFileService } from "./http/add-file.service";
-import { addFileData } from "./data/add-file";
 
 const socialLinks = [
     {
@@ -87,14 +83,6 @@ const socialLinks = [
 ];
 
 const DATA_SERVICES = [
-    {
-        provide: addFileData,
-        useClass: AddFileService,
-    },
-    {
-        provide: AddFolderData,
-        useClass: AddFolderService,
-    },
     {
         provide: GoogleOAuthData,
         useClass: GoogleOAuthService,

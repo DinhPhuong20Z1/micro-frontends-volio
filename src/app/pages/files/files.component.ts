@@ -16,17 +16,17 @@ import {
     NbGlobalPhysicalPosition,
     NbContextMenuDirective,
     NbMenuService,
+    NbWindowRef,
 } from "@nebular/theme";
-import { of, Subscription } from 'rxjs';
-import { delay, filter, map } from "rxjs/operators";
+import { forkJoin, from, of, Subscription, throwError } from 'rxjs';
+import { delay, filter, map, catchError, mergeMap, tap, switchMap } from 'rxjs/operators';
 import { AddFolderComponent } from './components/add-folder/add-folder.component';
 import { VersionSourceData, VersionSource } from '../../@core/data/version_source';
 import { VolioResponse } from '../../@core/data/volio_response';
 import { FilesData, DocumentInfo } from '../../@core/data/files';
 import { UtilsFunc } from '../../@core/data/utils';
 import { NbWindowService } from '@nebular/theme';
-import { addFile, addFileData } from "../../@core/data/add-file";
-import { HttpResponse } from '@angular/common/http';
+import { HttpResponse, HttpEvent, HttpEventType } from '@angular/common/http';
 
 interface TreeNode < T > {
     data: T;
@@ -65,12 +65,14 @@ export class FsIconComponent {
 })
 export class FilesComponent implements OnInit, OnDestroy {
     @ViewChild(NbContextMenuDirective) contextMenu: NbContextMenuDirective;
-    @ViewChild('escClose', { read: TemplateRef }) escCloseTemplate: TemplateRef<HTMLElement>;
+    @ViewChild('uploadForm', { read: TemplateRef }) uploadForm: TemplateRef<HTMLElement>;
+    @ViewChild('uploadFolderWarning', { read: TemplateRef }) uploadFolderWarning: TemplateRef<HTMLElement>;
+    uploadWindowRef: NbWindowRef;
 
     nameUpload: string;
     autoInput: string;
     addFiles: any;
-    disableUpload: any = true;
+    disableUpload: any = false;
     disableButtonUpload: any = false;
     buttonLoading: any = false;
 
@@ -113,13 +115,61 @@ export class FilesComponent implements OnInit, OnDestroy {
         private fileService: FilesData,
         private utilsFunc: UtilsFunc,
         private toastrService: NbToastrService,
-        private versionAddFileService: addFileData,
+        private versionAddFileService: FilesData,
     ) {
         this.dataSource = this.dataSourceBuilder.create(this.sourceTreeData);
     }
 
+    simulateHttp(val: any, d: number) {
+        return of(val).pipe(delay(d));
+    }
+
     versionSourceServiceObs: Subscription;
     ngOnInit(): void {
+        const list = [1, 2, 3, 4];
+        console.log("TEST ngOnInit");
+
+        from(list).pipe(map(file => {
+            return file;
+        }), mergeMap(file => {
+            return this.simulateHttp(file + " user saved ", 1000).pipe(map(r => {
+                return {file, r};
+            }));
+        }),
+        mergeMap(resp1 => {
+            return this.simulateHttp(" data reloaded " + resp1.r, 2000);
+        }),
+        map(r => {
+            console.log("TEST 1: ", r);
+            return r;
+        }),
+        filter(resp => resp.indexOf("4") > 0),
+        ).subscribe( (r) => {
+                console.log("TEST 2:", r);
+                console.log("TEST ------------");
+            },
+                console.error,
+                () => console.log('TEST completed httpResult$'),
+            );
+
+
+        // const saveUser$ = this.simulateHttp(" user saved ", 1000);
+
+        // const httpResult$ = saveUser$.pipe(
+        //     switchMap(sourceValue => {
+        //         console.log("TEST 1: ", sourceValue);
+        //         return this.simulateHttp(sourceValue + " data reloaded ", 2000);
+        //         },
+        //     ),
+        // );
+        // httpResult$.subscribe( (r) => {
+        //     console.log("TEST 2:", r);
+        // },
+        //     console.error,
+        //     () => console.log('completed httpResult$'),
+        // );
+
+
         this.menuService.onItemClick().pipe(filter(({ tag }) => tag === 'AddFolderMenuContext'),
             map(({ item: { title } }) => title)).subscribe(title => {
             switch (title) {
@@ -182,8 +232,8 @@ export class FilesComponent implements OnInit, OnDestroy {
 
 
 
-    createNodeSource(listFiles: DocumentInfo[], mapAdded: Map<string, boolean>, parentNode: TreeNode<DocumentInfo>) {
-        console.log("createNodeSource - parentNode: ", parentNode);
+    createNodeSource(listFiles: DocumentInfo[], mapAdded: Map < string, boolean > , parentNode: TreeNode<DocumentInfo>) {
+        // console.log("createNodeSource - parentNode: ", parentNode);
         if (!mapAdded) {
             mapAdded = new Map<string, boolean>();
         }
@@ -196,7 +246,7 @@ export class FilesComponent implements OnInit, OnDestroy {
             if (!document.parent_id) {
                 document.parent_id = "";
             }
-            console.log("   ==> Document: ", document.key, document.parent_id, mapAdded[document.key], document.parent_id === parentNode.data.id);
+            // console.log("   ==> Document: ", document.key, document.parent_id, mapAdded[document.key], document.parent_id === parentNode.data.id);
             if (!mapAdded[document.key] && document.parent_id === parentNode.data.id) {
                 mapAdded[document.key] = true;
                 const node = {data: document, children: []};
@@ -208,10 +258,10 @@ export class FilesComponent implements OnInit, OnDestroy {
             }
         }
 
-        console.log("createNodeSource - after parentNode: ", parentNode);
+        // console.log("createNodeSource - after parentNode: ", parentNode);
     }
 
-    showFileDetail(dialogDetail: TemplateRef<any>, document: DocumentInfo) {
+    showFileDetail(dialogDetail: TemplateRef < any > , document: DocumentInfo) {
         if (document.type === "dir" || document.type === "folder") {
             return;
         }
@@ -252,29 +302,83 @@ export class FilesComponent implements OnInit, OnDestroy {
         return minWithForMultipleColumns + nextColumnStep * index;
     }
 
+    parseFileEntry(fileEntry) {
+        return new Promise((resolve, reject) => {
+            fileEntry.file(
+                file => {
+                    resolve(file);
+                },
+                err => {
+                    reject(err);
+                },
+            );
+        });
+    }
+
+    parseDirectoryEntry(directoryEntry: FileSystemDirectoryEntry) {
+        const directoryReader = directoryEntry.createReader();
+        return new Promise((resolve, reject) => {
+            directoryReader.readEntries(
+                entries => {
+                    resolve(entries);
+                },
+                err => {
+                    reject(err);
+                },
+            );
+        });
+    }
+
+
+    uploadProcess: Map<string, number> = new Map<string, number>();
+    trackItem (index, item: any) {
+        return item;
+    }
+
     onDrop(event: any, row: any, windowForm: any) {
-        console.log("onDrop", event.dataTransfer.files[0]);
-        console.log("onDrop1", event.dataTransfer.files);
+        const files: any[] = event.dataTransfer.files;
+        console.log("onDrop", event);
+        console.log("onDrop dataTransfer", files);
 
+        let isValid = true;
+        const items = event.dataTransfer.items;
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            if (item.kind === 'file') {
+                const entry = item.webkitGetAsEntry();
+                console.log("onDrop - entry: ", entry);
 
+                if (entry.isFile) {
+                    console.log("onDrop - isFile: ", entry);
+                } else if (entry.isDirectory) {
+                    isValid = false;
+                    break;
 
-        this.getIndex(row, event.dataTransfer.files[0]);
+                }
+            }
+        }
 
         event.currentTarget.classList.remove("blink_me");
 
-        this.windowService.open(
-            windowForm,
-            { title: 'Tải File lên', hasBackdrop: true, context: {file: event.dataTransfer.files[0], row: row.data} },
-        );
+
+        if (isValid) {
+            for (const file of files) {
+                this.uploadProcess.set(file.name, 0);
+            }
+            const header = "Upload " + files.length + (( files.length > 1) ? ' files' : ' file');
+            this.uploadWindowRef = this.windowService.open(windowForm, { title: header, hasBackdrop: true, context: {files: files, processes: this.uploadProcess, row: row.data} });
+            this.uploadWindowRef.onClose.subscribe(() => {
+                this.uploadProcess = new Map<string, number>();
+            });
+        } else {
+            this.dialogService.open<any>(this.uploadFolderWarning, { autoFocus: true, context: {message: "Can not upload folder"}});
+        }
 
         event.stopPropagation();
         event.preventDefault();
     }
 
     onDragOver(event, row) {
-        console.log("onDragOver: ", event);
-        console.log("onDragOver - Row: ", row);
-
         event.currentTarget.className = "blink_me";
         row.expanded = true;
         event.stopPropagation();
@@ -299,103 +403,140 @@ export class FilesComponent implements OnInit, OnDestroy {
         console.log("onDropCDK: ", event);
     }
 
-     submitAdd(position, status, dataFile: any, nameUpload: string)  {
-        console.log('dataFile', dataFile);
-
-        const ext = dataFile.file.name.split(".");
-        const checkPartSplit = dataFile.row.key.split("");
-        const checkPartFilter = checkPartSplit.filter(i => i === "/").length === 1 && dataFile.row.type === 'file';
-        const indexKeySearch = dataFile.row.key.lastIndexOf("/");
-        const checkKey = dataFile.row.key.substr(0, indexKeySearch );
-        const checkType = dataFile.row.type === 'file' ? checkKey : dataFile.row.key;
-        const data = {
-            name: nameUpload ? nameUpload : dataFile.file.name,
-            mime_type: dataFile.file.type,
-            file_size: dataFile.file.size,
-            folder: checkPartFilter ? '' : checkType,
-            ext:  ext.length > 0 ? ext[ext.length - 1] : null,
-            version_source_id: dataFile.row.ver_source_id,
-        };
 
 
+    uploadFiles(data: any) {
+        if (data.files.length <= 0 ) {
+            this.dialogService.open<any>(this.uploadFolderWarning, { autoFocus: true, context: {message: "Not fond any files"}});
+        }
+
+        const row = data.row;
+        const files = data.files;
+        console.log("Data: ", data);
 
 
-        this.versionSourceServiceObs = this.versionAddFileService.postAddFile(data).subscribe((resp: VolioResponse<addFile[]>) => {
-            if (resp.message === "success" && resp.data) {
-                this.fileName =  dataFile.file.name;
-                const parentLinkUpload = resp.data.upload_links;
-                let linkUpload;
-                const partsFile = [];
-                this.disableUpload = true;
-                this.buttonLoading = true;
-                // let current = 0
-                // let remaining = dataFile.file.size
-                for (let i = 0; i < parentLinkUpload.length; i++) {
-                    // if (remaining <= 0 ) {
-                    //     break
-                    // }
+        from(files).pipe(switchMap((file: any) => {
+            return of("haha" + file.name);
+        }),
+        switchMap((file, resp1: any) => {
+            console.log("Step 1 F: ", file);
+            console.log("Step 1 R: ", resp1);
+            return resp1;
+        }),
+        switchMap((resp2: any) => {
+            console.log("Step 2: ", resp2);
+            return resp2;
+        }),
+        tap(all => all)).subscribe(r => {
+            console.log("RESULT: ", r);
+        }, e => {
+            console.log("ERROR: ", e);
+        }, () => {});
 
-                    // let data
-                    // if (remaining <= resp.data.part_split_size) {
-                    //     data = dataFile.file.slice(current, dataFile.file.size)
-                    // } else {
-                    //     data = dataFile.file.slice(current, current +resp.data.part_split_size)
-                    //     current += resp.data.part_split_size
-                    // }
+        return;
 
+        forkJoin([from(files).pipe(mergeMap<any, any>((file: any) => {
+            const ext = file.name.split(".");
+            const checkPartSplit = row.key.split("");
+            const checkPartFilter = checkPartSplit.filter(i => i === "/").length === 1 && row.type === 'file';
+            const indexKeySearch = row.key.lastIndexOf("/");
+            const checkKey = row.key.substr(0, indexKeySearch );
+            const checkType = row.type === 'file' ? checkKey : row.key;
+            const dataUpload = {
+                name: file.name,
+                mime_type: file.type,
+                file_size: file.size,
+                folder: checkPartFilter ? '' : checkType,
+                ext:  ext.length > 0 ? ext[ext.length - 1] : null,
+                ver_source_id: row.ver_source_id,
+            };
 
-                    const formData = new FormData();
-                    formData.append("thumbnail", dataFile.file, this.fileName);
+            console.log("dataUpload: ", dataUpload);
+            return of(this.versionAddFileService.addFile(dataUpload).subscribe(resp => {
+                console.log("dataUpload addFile: ", resp);
+                if (resp.message === "success" && resp.data) {
+                    this.fileName =  file.name;
+                    const parentLinkUpload = resp.data.upload_links;
+                    let linkUpload;
+                    const partsFile = [];
+                    this.disableUpload = true;
+                    this.buttonLoading = true;
+                    for (let i = 0; i < parentLinkUpload.length; i++) {
+                        const formData = new FormData();
+                        formData.append("file", file, this.fileName);
+                        linkUpload = parentLinkUpload[i].link;
+                        if (linkUpload) {
+                            return of(this.versionAddFileService.uploadFileToAWS(formData, linkUpload ).pipe(map((event: HttpEvent<any>, count: number) => {
+                                switch (event.type) {
+                                    case HttpEventType.Sent:
+                                        console.log(`Uploading file "${file.name}" of size ${file.size}.`);
+                                    break;
+                                    case HttpEventType.UploadProgress:
+                                        const percentDone = Math.round(100 * event.loaded / event.total);
+                                        console.log( `File "${file.name}" is ${percentDone}% uploaded.`);
+                                        data.processes.set(file.name, percentDone);
+                                        break;
+                                    case HttpEventType.Response:
+                                        console.log( `File "${file.name}" was completely uploaded!`);
+                                        break;
+                                    default:
+                                        console.log( `File "${file.name}" surprising upload event: ${event.type}.`);
+                                }
 
+                                return event;
+                            }), filter((event: HttpEvent<any>) => {
+                                return event.type === HttpEventType.Response;
+                            })).pipe(map((headerResp: any) => {
+                                console.log("Upload: ", headerResp);
+                                const Etag = headerResp.headers.get("Etag");
+                                if (Etag) {
+                                    const listPartsFile = {
+                                        etag: Etag,
+                                        part_idx:  parentLinkUpload[i].part_idx,
+                                    };
+                                    const dataUploaded = {
+                                        file_id: resp.data.id,
+                                        upload_id:  resp.data.upload_id,
+                                        uploaded_parts: partsFile.concat(listPartsFile),
+                                    };
+                                    console.log("dataUploaded: ", dataUploaded);
+                                    return this.versionAddFileService.completeUpload(dataUploaded).pipe(map(resp2 => {
+                                        console.log("dataUpload completeUpload: ", resp2);
 
-                    linkUpload = parentLinkUpload[i].link;
-                    if (linkUpload) {
-                        this.versionSourceServiceObs = this.versionAddFileService.putAddFileToAWS(formData, linkUpload ).subscribe((respHeader: HttpResponse<any>) => {
-                            const Etag = respHeader.headers.get("Etag");
-                            if (Etag) {
-                                const listpartsFile = {
-                                    etag: Etag,
-                                    part_idx:  parentLinkUpload[i].part_idx,
-                                };
-                                const data = {
-                                    file_id: resp.data.id,
-                                    upload_id:  resp.data.upload_id,
-                                    uploaded_parts: partsFile.concat(listpartsFile),
-                                };
-                                this.versionSourceServiceObs = this.versionAddFileService.putCompaleteUpload(data).subscribe((resp: VolioResponse<addFile[]>) => {
-                                    this.disableButtonUpload = true;
-                                    this.buttonLoading = false;
-                                     this.toastrService.show(status || 'Success', `Tải file lên thành công`, { position, status });
-                                }, err => {}, () => {
-                                    if (this.versionSelected) {
-                                        this.getFileSystem(this.versionSelected.id, "/");
-                                    }
-                                });
-                            }
-                        }, err => {}, () => {
-
-                        });
+                                        this.disableButtonUpload = true;
+                                        this.buttonLoading = false;
+                                        this.toastrService.show( `File upload successfully`, { status: 'success' });
+                                    }));
+                                }
+                            })));
+                        }
+                    }
+                } else {
+                    this.dialogService.open<any>(this.uploadFolderWarning, {autoFocus: true, context: {message: resp.data.message}});
+                    if (this.uploadWindowRef) {
+                        this.uploadWindowRef.close();
                     }
                 }
-
-
-
-
-
-
-
-
-
-            }
-        }, err => {}, () => {
-            if (this.versionSelected) {
-                this.getFileSystem(this.versionSelected.id, "/");
-            }
+            }, err => {
+                this.dialogService.open<any>(this.uploadFolderWarning, {autoFocus: true, context: {message: err.data.message}});
+                if (this.uploadWindowRef) {
+                    this.uploadWindowRef.close();
+                }
+            }, () => {
+                if (this.versionSelected) {
+                    this.getFileSystem(this.versionSelected.id, "/");
+                }
+                this.disableUpload = false;
+            }));
+        } ))]).subscribe(r => {
+            console.log("RESULT: ", r);
+        }, e => {
+            console.log("ERROR: ", e);
+        }, () => {
+            console.log("COMPLETED");
         });
-
-
-
     }
+
 
 
     download(position, status) {
@@ -408,11 +549,7 @@ export class FilesComponent implements OnInit, OnDestroy {
         let searchIndex;
         let searchIndexChild;
         for (let i = 0; i < this.sourceTreeData.length; i++) {
-            if (
-                this.deleteT &&
-                this.deleteT.children &&
-                this.deleteT.children.length > 0
-            ) {
+            if (this.deleteT && this.deleteT.children && this.deleteT.children.length > 0) {
                 searchIndex = this.sourceTreeData.findIndex(
                     (d) => d.data.id === this.deleteT.data.id,
                 );
@@ -444,32 +581,6 @@ export class FilesComponent implements OnInit, OnDestroy {
         console.log("this.sourceTreeData", this.sourceTreeData);
 
         return of(this.sourceTreeData).pipe(delay(500));
-    }
-
-    getIndex(row: any, file: any) {
-        let searchIndex;
-        for (let i = 0; i < this.sourceTreeData.length; i++) {
-            if (row && row.children && row.children.length > 0) {
-                searchIndex = this.sourceTreeData.findIndex(
-                    (d) => d.data.id === row.data.id,
-                );
-            } else {
-                if (
-                    this.sourceTreeData[i].children.findIndex(
-                        (d) => d.data.id === row.data.id,
-                    ) >= 0
-                ) {
-                    searchIndex = this.sourceTreeData.findIndex(
-                        (d) => d.data.id === this.sourceTreeData[i].data.id,
-                    );
-                }
-            }
-        }
-        if (searchIndex) {
-            this.sourceTreeData[searchIndex].children.push(file);
-        }
-
-        this.addFile(file);
     }
 
     addFile(file: any) {

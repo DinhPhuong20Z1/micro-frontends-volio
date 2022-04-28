@@ -16,6 +16,7 @@ import {
     NbSelectModule,
     NbContextMenuModule,
     NbLayoutModule,
+    NbProgressBarModule,
 } from "@nebular/theme";
 import { MiscellaneousModule } from "./miscellaneous/miscellaneous.module";
 import { ProfileComponent } from "./profile/profile.component";
@@ -44,6 +45,7 @@ import { NbAutocompleteModule } from '@nebular/theme';
         NbMenuModule,
         MiscellaneousModule,
         NbEvaIconsModule,
+        NbProgressBarModule,
         NbListModule,
         NbSelectModule,
         NbContextMenuModule,

@@ -2,8 +2,8 @@ import { AuthsData, AuthToken } from '../data/auth';
 import { Injectable } from '@angular/core';
 import { VolioResponse } from '../data/volio_response';
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpResponse, HttpEvent } from '@angular/common/http';
+import { map, catchError } from 'rxjs/operators';
 import { NbAuthService, NbAuthToken, NbTokenService, NbAuthJWTToken } from '@nebular/auth';
 import { Observable, throwError } from 'rxjs';
 import { DocumentInfo, FilesData } from '../data/files';
@@ -48,5 +48,30 @@ export class FilesService extends FilesData {
         const url = environment.apiUrl + "/file?vid=" + versionID;
 
         return this.httpClient.get<VolioResponse<DocumentInfo[]>>(url);
+    }
+
+    addFolderData(versionID: number, name: string): Observable<VolioResponse <DocumentInfo[]>> {
+        const url = environment.apiUrl + "/folder";
+
+        return this.httpClient.post<VolioResponse<DocumentInfo[]>>(url, {folder: name, ver_source_id: versionID});
+    }
+
+    addFile(data: any): Observable<VolioResponse <DocumentInfo>> {
+        const url = environment.apiUrl + "/file";
+
+        return this.httpClient.post<VolioResponse<DocumentInfo>>(url, data);
+    }
+
+    uploadFileToAWS(data: any, linkUpload: string): Observable<HttpEvent<any>> {
+        const url = linkUpload ;
+
+        return this.httpClient.request("PUT", url, {body: data, observe: 'events', reportProgress: true});
+        // return this.httpClient.put<HttpEvent<any>>(url, data, {observe: 'response', reportProgress: true});
+    }
+
+    completeUpload(data: any): Observable<VolioResponse <DocumentInfo>> {
+        const url = environment.apiUrl + "/file";
+
+        return this.httpClient.put<VolioResponse<DocumentInfo>>(url, data);
     }
 }

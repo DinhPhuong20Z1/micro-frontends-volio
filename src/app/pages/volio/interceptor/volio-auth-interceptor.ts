@@ -22,17 +22,13 @@ export class VolioAuthInterceptor implements HttpInterceptor, OnDestroy {
     }
 
     intercept(req: HttpRequest < any > , next: HttpHandler): Observable < HttpEvent < any >> {
-        console.log('req',req)
+        console.log('req', req);
         if ((req.url.indexOf('/auth/login') < 0 && req.url.indexOf('amazonaws.com') < 0) || req.url.indexOf('/auth/swap') >= 0) {
             req = req.clone({ headers: req.headers.set('App', "JacaSource") });
             req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + (this.token.token.access_token ? this.token.token.access_token : this.token.toString())) });
         }
 
         return next.handle(req).pipe(catchError((response) => {
-            console.log("intercept: ", response.error);
-
-
-
             if (req.url.indexOf('/auth/') < 0) {
                 if (!response.error.data) {
                     this.dialogService.open(ErrorHandlerDialogComponent, {
