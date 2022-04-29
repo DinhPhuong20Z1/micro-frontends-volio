@@ -9,13 +9,11 @@ COPY package.json /app/package.json
 
 RUN rm /app/package-lock.json
 
-# Same as npm install
 RUN yarn install
-
 
 FROM development AS build
 
-RUN npm run build
+RUN yarn run build
 
 # 2. For Nginx setup
 
