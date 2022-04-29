@@ -65,9 +65,9 @@
                     </div>
                 </div>
                 <div *ngIf="data.link_cdn" class="form-group row">
-                    <label for="inputPassword2" class="label col-sm-3 col-form-label">Link</label>
+                    <label for="inputPassword2" class="label col-sm-3 col-form-label" (click)="copyLinkCDNToClipboard(data.link_cdn)">Link</label>
                     <div class="col-sm-9 dialog-content">
-                        {{data.link_cdn}}
+                        <a [href]="data.link_cdn" (click)="copyLinkCDNToClipboard($event, data.link_cdn)">[Click to copy]</a>
                     </div>
                 </div>
                 <div *ngIf="data.created_time" class="form-group row">

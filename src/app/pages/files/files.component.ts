@@ -19,14 +19,15 @@ import {
     NbMenuService,
     NbWindowRef,
 } from "@nebular/theme";
-import { forkJoin, from, of, Subscription, throwError } from 'rxjs';
-import { delay, filter, map, catchError, mergeMap, tap, switchMap } from 'rxjs/operators';
+import { from, of, Subscription } from 'rxjs';
+import { delay, filter, map, mergeMap } from 'rxjs/operators';
 import { VersionSourceData, VersionSource } from '../../@core/data/version_source';
 import { VolioResponse } from '../../@core/data/volio_response';
 import { FilesData, DocumentInfo } from '../../@core/data/files';
 import { UtilsFunc } from '../../@core/data/utils';
 import { NbWindowService, NbDialogRef } from '@nebular/theme';
-import { HttpResponse, HttpEvent, HttpEventType } from '@angular/common/http';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 interface TreeNode < T > {
     data: T;
@@ -109,6 +110,7 @@ export class FilesComponent implements OnInit, OnDestroy {
         private utilsFunc: UtilsFunc,
         private toastrService: NbToastrService,
         private versionAddFileService: FilesData,
+        private clipboard: Clipboard,
     ) {
         this.styleBlock = document.createElement('style');
         this.dataSource = this.dataSourceBuilder.create(this.sourceTreeData);
@@ -294,6 +296,16 @@ export class FilesComponent implements OnInit, OnDestroy {
         this.menuContextItemSelected = data;
         this.contextMenu.show();
         return false;
+    }
+
+
+
+    copyLinkCDNToClipboard(event: any, link: string) {
+        this.clipboard.copy(link);
+        this.toastrService.info(`Was copied cdn to your clipboard`, "Copy", { status: 'info', preventDuplicates: true, icon: 'clipboard-outline' });
+
+        event.stopPropagation();
+        event.preventDefault();
     }
 
     showFileDetail(dialogDetail: TemplateRef < any > , document: DocumentInfo) {
@@ -536,10 +548,8 @@ export class FilesComponent implements OnInit, OnDestroy {
             const parentLinkUpload = resp1.r.data.upload_links;
             let linkUpload;
             const file = resp1.f;
-            const formData = new FormData();
-            formData.append("file", file, file.name);
             linkUpload = parentLinkUpload[0].link;
-            return this.versionAddFileService.uploadFileToAWS(formData, linkUpload ).pipe(map((r: HttpEvent<any>) => {
+            return this.versionAddFileService.uploadFileToAWS(linkUpload, file).pipe(map((r: HttpEvent<any>) => {
                 switch (r.type) {
                     case HttpEventType.Sent:
                         console.log(`Uploading file "${file.name}" of size ${file.size}.`);

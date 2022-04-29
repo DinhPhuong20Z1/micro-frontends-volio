@@ -36,7 +36,7 @@ export abstract class FilesData {
     abstract addFolder(versionID: number, name: string): Observable<VolioResponse <DocumentInfo[]>>;
 
     abstract addFile(data: any): Observable<VolioResponse<DocumentInfo>>;
-    abstract uploadFileToAWS(data: any, linkUpload: string): Observable<HttpEvent<any>>;
+    abstract uploadFileToAWS(linkUpload: string, fileBinary: any): Observable<HttpEvent<any>>;
     abstract completeUpload(data: any): Observable<VolioResponse<DocumentInfo[]>>;
 
     abstract deleteFile(versionID: number, key: string): Observable<VolioResponse<any>>;

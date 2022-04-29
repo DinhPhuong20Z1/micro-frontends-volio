@@ -233,13 +233,13 @@ export class VersionsComponent implements OnInit, OnDestroy {
 
         console.log("onCreateConfirm: ", data);
         this.versionService.createVersion(data).subscribe(resp => {
-            console.log("CreateVersion Resp: ", resp);
+            console.log("onCreateConfirm CreateVersion Resp: ", resp);
             event.confirm.resolve(data);
             if (resp.data) {
                 this.versionsData = resp.data;
             }
         }, err => {
-            console.log("CreateVersion Error: ", err);
+            console.log("onCreateConfirm CreateVersion Error: ", err);
             event.confirm.reject();
         });
     }
@@ -252,15 +252,15 @@ export class VersionsComponent implements OnInit, OnDestroy {
         data.created_time = 0;
         data.updated_time = 0;
 
-        console.log("onCreateConfirm: ", data);
+        console.log("onSaveConfirm: ", data);
         this.versionService.updateVersion(data).subscribe(resp => {
-            console.log("UpdateVersion Resp: ", resp);
+            console.log("UonSaveConfirm pdateVersion Resp: ", resp);
             event.confirm.resolve(data);
             if (resp.data) {
                 this.versionsData = resp.data;
             }
         }, err => {
-            console.log("UpdateVersion Error: ", err);
+            console.log("onSaveConfirm UpdateVersion Error: ", err);
             event.confirm.reject();
         });
 

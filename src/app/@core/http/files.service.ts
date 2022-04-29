@@ -62,10 +62,10 @@ export class FilesService extends FilesData {
         return this.httpClient.post<VolioResponse<DocumentInfo>>(url, data);
     }
 
-    uploadFileToAWS(data: any, linkUpload: string): Observable<HttpEvent<any>> {
+    uploadFileToAWS(linkUpload: string,  fileBinary: any): Observable<HttpEvent<any>> {
         const url = linkUpload ;
 
-        return this.httpClient.request("PUT", url, {body: data, observe: 'events', reportProgress: true});
+        return this.httpClient.request("PUT", url, {body: fileBinary, observe: 'events', reportProgress: true});
         // return this.httpClient.put<HttpEvent<any>>(url, data, {observe: 'response', reportProgress: true});
     }
 
