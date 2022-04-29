@@ -11,12 +11,16 @@ export class ErrorHandlerDialogComponent {
     @Input() title: string;
     @Input() description: string;
     @Input() showRetry: boolean = true;
+    @Input() okeFunc: Function;
 
     constructor(protected ref: NbDialogRef < ErrorHandlerDialogComponent >) {
         console.log("ErrorHandlerDialogComponent::constructor");
     }
 
     dismiss() {
+        if (this.okeFunc) {
+            this.okeFunc();
+        }
         this.ref.close();
     }
 

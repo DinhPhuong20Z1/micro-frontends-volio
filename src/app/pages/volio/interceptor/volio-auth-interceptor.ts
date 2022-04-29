@@ -6,13 +6,14 @@ import { ErrorHandlerDialogComponent } from '../dialogs/error-handler/error-hand
 import { NbDialogService } from '@nebular/theme';
 import { throwError, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 @Injectable()
 export class VolioAuthInterceptor implements HttpInterceptor, OnDestroy {
     token: any;
     tokenString: string;
     tokenSubscription: Subscription;
     tokenChangeSubscription: Subscription;
-    constructor(private authService: NbTokenService, private dialogService: NbDialogService) {
+    constructor(private router: Router, private authService: NbTokenService, private dialogService: NbDialogService) {
         this.tokenSubscription = this.authService.get().subscribe(token => {
             this.token = token;
         });
@@ -37,6 +38,20 @@ export class VolioAuthInterceptor implements HttpInterceptor, OnDestroy {
                             description: "Can not connect to the server",
                         },
                     });
+                } else if (response.error.status === 403) {
+                    this.dialogService.open(ErrorHandlerDialogComponent, {
+                        context: {
+                            title: 'Error',
+                            description: "You need login to access this resource",
+                            showRetry: false,
+                            okeFunc: () => {
+                                this.router.navigateByUrl(
+                                    "/auth/login",
+                                );
+                            },
+                        },
+                    });
+
                 } else {
                     this.dialogService.open(ErrorHandlerDialogComponent, {
                         context: {

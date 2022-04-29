@@ -2,7 +2,6 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NbAccordionModule, NbCardModule, NbDialogModule, NbIconModule, NbInputModule, NbPopoverModule, NbSelectModule, NbTabsetModule, NbButtonModule, NbDatepickerModule, NbStepperModule, NbFormFieldModule, NbAutocompleteModule, NbCalendarRangeModule, NbSidebarModule, NbCheckboxModule } from '@nebular/theme';
-import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
@@ -11,7 +10,6 @@ import { FlagNameLocationComponent } from './flag-name-location/flag-name-locati
 import { NumberFilterComponent } from './tables/number-filter/number-filter.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogDeleteProfileComponent } from './dialogs/dialog-delete-profile/dialog-delete-profile.component';
-import { NbDateFnsDateModule } from '@nebular/date-fns';
 import { AnimatedDigitDirective } from './directives/animated-digit.directive';
 import { FadeInOutDirective } from './directives/fade-in-out.directive';
 import { AutoCompleteFilterComponent } from './tables/auto-complete/auto-complete.component';
@@ -23,6 +21,9 @@ import { OAuth2CallbackComponent } from './auth/callback/callback.component';
 import { CheckboxEditorComponent } from './tables/checkbox-editor/checkbox-editor.component';
 import { CheckboxCellComponent } from './tables/checkbox-cell/checkbox-cell.component';
 import { UploaderWindowComponent } from './windows/uploader-window/uploader-window.component';
+import { MenuContextComponent } from './menu-context/menu-context.component';
+import { NbEvaIconsModule } from '@nebular/eva-icons';
+import { NbDateFnsDateModule } from '@nebular/date-fns';
 
 const VolioComponents = [
     DialogDeleteProfileComponent, // Dialog
@@ -39,6 +40,7 @@ const VolioComponents = [
     InputStringFilterComponent,
     AnimatedDigitDirective, // directives
     FadeInOutDirective,
+    MenuContextComponent, // menu
 ];
 
 @NgModule({
@@ -70,7 +72,7 @@ const VolioComponents = [
         NbSidebarModule,
         NbCheckboxModule,
     ],
-    declarations: [...VolioComponents, UploaderWindowComponent],
+    declarations: [...VolioComponents, UploaderWindowComponent, MenuContextComponent],
     exports: [...VolioComponents],
     })
 

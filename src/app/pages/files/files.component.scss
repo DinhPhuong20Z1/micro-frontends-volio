@@ -70,6 +70,10 @@ input {
     width: 100%;
 }
 
+.blink_me_top_border {
+    border-top: 2px solid #006fd6
+}
+
 .blink_me {
     animation: blinker 2s linear infinite;
     border: 2px solid #006fd6
@@ -84,6 +88,7 @@ input {
 div.dialogAddFile {
     min-width: 600px;
 }
+
 div.formAddFile {
     align-items: center;
 }

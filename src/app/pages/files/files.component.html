@@ -2,7 +2,7 @@
     <nb-card-body>
         <div class="row flex">
             <div class="col-4 mr-auto">
-                <input nbInput type="text" placeholder="Version" [nbAutocomplete]="auto" [value]="autoInput " (input)="onChange($event)" [nbAutocomplete]="auto" />
+                <input nbInput type="text" placeholder="Version" [nbAutocomplete]="auto" [(ngModel)]="autoInput" (change)="onVersionSelectionChange(autoInput)" [nbAutocomplete]="auto" />
 
                 <nb-autocomplete #auto (selectedChange)="onVersionSelectionChange($event)">
                     <nb-option *ngFor="let v of versionsTag" [value]="v.version">{{v.version}}</nb-option>
@@ -14,12 +14,13 @@
 
         <table [nbTreeGrid]="dataSource" [nbSort]="dataSource" (sort)="updateSort($event)">
             <tr nbTreeGridHeaderRow *nbTreeGridHeaderRowDef="allColumns"></tr>
-            <tr nbTreeGridRow *nbTreeGridRowDef="let row; columns: allColumns" (click)="showFileDetail(dialogDetail, row.data)" (drop)="onDrop($event, row, uploadForm)" (dragover)="onDragOver($event, row)" (dragleave)="onDragLeave($event, row)"></tr>
+            <tr nbTreeGridRow *nbTreeGridRowDef="let row; columns: allColumns" (contextmenu)="openContextMenu($event, row.data)" [nbContextMenu]="menuContextItem" nbContextMenuTag="sourceMenuContext" nbContextMenuTrigger="noop" (click)="showFileDetail(dialogDetail, row.data)" (drop)="onDrop($event, row, uploadForm)" (dragover)="onDragOver($event, row)" (dragleave)="onDragLeave($event, row)"></tr>
             <ng-container *ngFor="let column of allColumns; let index = index" [nbTreeGridColumnDef]="column" [showOn]="getShowOn(index)">
                 <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(column)" *nbTreeGridHeaderCellDef>
                     {{ column }}
                 </th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
+                    <ngx-menu-context [x]="contextmenuX" [y]="contextmenuY"></ngx-menu-context>
                     <ngx-fs-icon *ngIf="index==0" [type]="row.data.type" [expanded]="row.expanded"></ngx-fs-icon>
                     {{ row.data[column] || "-" }}
                 </td>
@@ -85,8 +86,14 @@
         </nb-card-body>
 
         <nb-card-footer>
-            <button nbButton class="mr-3" hero status="success" (click)="download(positions.TOP_RIGHT, 'success', ref.close())">Download</button>
-            <button nbButton hero status="danger" (click)="delete(ref.close())">Delete</button>
+            <div class="row flex justify-content-around">
+                <button nbButton hero status="success" class="col-5" (click)="downloadFile(ref, data.link_cdn)">
+                    <nb-icon style="padding-top: 3px;" class="icon" icon="cloud-arrow-down" pack="fa"></nb-icon> Download
+                </button>
+                <button nbButton hero status="danger" class="col-5" (click)="deleteFile(ref, data)">
+                    <nb-icon style="padding-top: 3px;" class="icon" icon="trash" pack="fa"></nb-icon>Delete
+                </button>
+            </div>
         </nb-card-footer>
     </nb-card>
 </ng-template>
@@ -98,27 +105,56 @@
                 <div class="row flex" style="margin: auto">
                     <span>File: {{file.key}}</span>
                     <nb-action class="ml-auto">
-                        <nb-icon class="action-icon" icon="close-circle-outline"></nb-icon>
+                        <nb-icon class="action-icon" icon="close-circle-outline" (click)="onRemoveUploadingFile(data, file)"></nb-icon>
                     </nb-action>
                 </div>
                 <div class="row" style="margin: auto"> </div>
                 <nb-progress-bar class="col-12" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:20px;" [value]="file.value" size="tiny" [status]="file.value<50?'info':file.value<100?'primary':'success'">{{file.value<100?'uploading':'done'}} </nb-progress-bar>
             </div>
         </nb-card-body>
-        <nb-card-footer class="button-submit">
-            <button disabled={{disableButtonUpload}} nbButton class="mr-3" hero status="success" (click)="uploadFiles(data)"> {{buttonLoading ? "Uploading" : disableButtonUpload ? 'Uploaded' : 'Upload'}} </button>
+        <nb-card-footer class="row">
+            <button [disabled]="windowUploadButton!='Upload' && windowUploadButton!='Close'" nbButton hero status="success" (click)="uploadFiles(data)" fullWidth [nbSpinner]="windowUploadButton==='Uploading'" nbSpinnerStatus="success"> {{windowUploadButton}} </button>
         </nb-card-footer>
     </div>
 </ng-template>
 
-<ng-template #uploadFolderWarning let-data let-ref="dialogRef">
+<ng-template #dialogInformation let-data let-ref="dialogRef">
     <nb-card class="dialog">
-        <nb-card-header>Warning</nb-card-header>
+        <nb-card-header>{{data.title}}</nb-card-header>
         <nb-card-body class="items-col">
             {{data.message}}
         </nb-card-body>
         <nb-card-footer class="row flex">
-            <button class="ml-auto" nbButton hero status="danger" (click)="delete(ref.close())">Close</button>
+            <button class="ml-auto" nbButton hero status="danger" (click)="data.closeFunc?(data.closeFunc(ref.close())):ref.close();">Close</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>
+
+<ng-template #addNewFolder let-data let-ref="dialogRef">
+    <nb-card class="dialog">
+        <nb-card-header>New folder</nb-card-header>
+        <nb-card-body class="example-items-col">
+            <div class="form-group row">
+                <label for="Name" class="label col-sm-3 col-form-label">Path</label>
+                <div class="col-sm-9">{{data.location.endsWith('/')?data.location+data.new:data.location+"/"+data.new}}</div>
+            </div>
+            <div class="form-group row">
+                <label for="Name" class="label col-sm-3 col-form-label">Name folder</label>
+                <div class="col-sm-9">
+                    <input type="text" nbInput fullWidth status="basic" placeholder="Name" [ngModel]="data.new" (ngModelChange)="onNameFolderChanged(data, $event)" />
+                </div>
+            </div>
+        </nb-card-body>
+
+        <nb-card-footer class="dialog">
+            <div class="row flex justify-content-around" style="margin: auto">
+                <button nbButton status="success" class="col-5" (click)="onAddNewFolder(ref, data)">
+                    Add new
+                </button>
+                <button class="cancel" class="col-5" nbButton status="danger" (click)="ref.close()">
+                    Close
+                </button>
+            </div>
         </nb-card-footer>
     </nb-card>
 </ng-template>

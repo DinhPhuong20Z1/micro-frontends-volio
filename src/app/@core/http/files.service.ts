@@ -50,8 +50,8 @@ export class FilesService extends FilesData {
         return this.httpClient.get<VolioResponse<DocumentInfo[]>>(url);
     }
 
-    addFolderData(versionID: number, name: string): Observable<VolioResponse <DocumentInfo[]>> {
-        const url = environment.apiUrl + "/folder";
+    addFolder(versionID: number, name: string): Observable<VolioResponse <DocumentInfo[]>> {
+        const url = environment.apiUrl + "/dir";
 
         return this.httpClient.post<VolioResponse<DocumentInfo[]>>(url, {folder: name, ver_source_id: versionID});
     }
@@ -73,5 +73,17 @@ export class FilesService extends FilesData {
         const url = environment.apiUrl + "/file";
 
         return this.httpClient.put<VolioResponse<DocumentInfo>>(url, data);
+    }
+
+    deleteFile(versionID: number, key: string): Observable<VolioResponse<any>> {
+        const url = environment.apiUrl + "/file";
+
+        return this.httpClient.delete<VolioResponse<any>>(url, {body: {key: key, ver_source_id: versionID}});
+    }
+
+    deleteFolder(versionID: number, key: string): Observable<VolioResponse<any>> {
+        const url = environment.apiUrl + "/dir";
+
+        return this.httpClient.delete<VolioResponse<any>>(url, {body: {key: key, ver_source_id: versionID}});
     }
 }

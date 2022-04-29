@@ -15,6 +15,7 @@ import {
     NbChatModule,
     NbDatepickerModule,
     NbDialogModule,
+    NbIconLibraries,
     NbMenuModule,
     NbSidebarModule,
     NbToastrModule,
@@ -51,4 +52,18 @@ import { VolioComponentsModule } from './pages/volio/volio.module';
     ],
     bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+    constructor(iconsLibrary: NbIconLibraries) {
+        iconsLibrary.registerFontPack('fa', {
+            packClass: 'fa',
+            iconClassPrefix: 'fa',
+        });
+        iconsLibrary.registerFontPack('far', {
+            packClass: 'far',
+            iconClassPrefix: 'fa',
+        });
+        iconsLibrary.registerFontPack('ion', {
+            iconClassPrefix: 'ion',
+        });
+    }
+}

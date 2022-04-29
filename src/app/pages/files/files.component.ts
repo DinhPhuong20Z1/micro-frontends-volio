@@ -5,6 +5,7 @@ import {
     TemplateRef,
     OnDestroy,
     ViewChild,
+    HostListener,
 } from "@angular/core";
 import {
     NbSortDirection,
@@ -20,12 +21,11 @@ import {
 } from "@nebular/theme";
 import { forkJoin, from, of, Subscription, throwError } from 'rxjs';
 import { delay, filter, map, catchError, mergeMap, tap, switchMap } from 'rxjs/operators';
-import { AddFolderComponent } from './components/add-folder/add-folder.component';
 import { VersionSourceData, VersionSource } from '../../@core/data/version_source';
 import { VolioResponse } from '../../@core/data/volio_response';
 import { FilesData, DocumentInfo } from '../../@core/data/files';
 import { UtilsFunc } from '../../@core/data/utils';
-import { NbWindowService } from '@nebular/theme';
+import { NbWindowService, NbDialogRef } from '@nebular/theme';
 import { HttpResponse, HttpEvent, HttpEventType } from '@angular/common/http';
 
 interface TreeNode < T > {
@@ -65,18 +65,14 @@ export class FsIconComponent {
 })
 export class FilesComponent implements OnInit, OnDestroy {
     @ViewChild(NbContextMenuDirective) contextMenu: NbContextMenuDirective;
-    @ViewChild('uploadForm', { read: TemplateRef }) uploadForm: TemplateRef<HTMLElement>;
-    @ViewChild('uploadFolderWarning', { read: TemplateRef }) uploadFolderWarning: TemplateRef<HTMLElement>;
+    @ViewChild('dialogInformation', { read: TemplateRef }) dialogInformation: TemplateRef<HTMLElement>;
+    @ViewChild('addNewFolder', { read: TemplateRef }) addNewFolder: TemplateRef<HTMLElement>;
+
     uploadWindowRef: NbWindowRef;
 
-    nameUpload: string;
     autoInput: string;
-    addFiles: any;
-    disableUpload: any = false;
-    disableButtonUpload: any = false;
-    buttonLoading: any = false;
+    windowUploadButton = "Upload";
 
-    fileName = '';
     versionSelected: VersionSource;
     versionsTag: VersionSource[] = [];
     sourceTreeData: TreeNode<DocumentInfo>[] = [];
@@ -89,23 +85,20 @@ export class FilesComponent implements OnInit, OnDestroy {
     dataSource: NbTreeGridDataSource<VersionSource> ;
     sortColumn: string;
     sortDirection: NbSortDirection = NbSortDirection.NONE;
-    positions = NbGlobalPhysicalPosition;
-    deleteT: any = {};
-    dataIndexFolder: any = {};
-    dialog: TemplateRef < any > ;
 
-    selectedItem = '2';
-    themes: [
-        { name: "name 1", value: '0' },
-        { name: "name 2", value: '1' },
-        { name: "name 3", value: '2' },
+    menuContextItem = [
+        { title: 'New folder' },
+        { title: 'Delete item' },
     ];
 
-    items = [
-        { title: 'Thêm mới Folder' },
-        { title: 'Xóa Folder' },
-    ];
+    @HostListener('document:click')
+    close() {
+        if (this.contextMenu) {
+            this.contextMenu.hide();
+        }
+    }
 
+    styleBlock: HTMLStyleElement;
     constructor(
         private dataSourceBuilder: NbTreeGridDataSourceBuilder<VersionSource> ,
         private dialogService: NbDialogService,
@@ -117,6 +110,7 @@ export class FilesComponent implements OnInit, OnDestroy {
         private toastrService: NbToastrService,
         private versionAddFileService: FilesData,
     ) {
+        this.styleBlock = document.createElement('style');
         this.dataSource = this.dataSourceBuilder.create(this.sourceTreeData);
     }
 
@@ -126,65 +120,70 @@ export class FilesComponent implements OnInit, OnDestroy {
 
     versionSourceServiceObs: Subscription;
     ngOnInit(): void {
-        const list = [1, 2, 3, 4];
-        console.log("TEST ngOnInit");
+        // const list = [1, 2, 3, 4];
+        // console.log("TEST ngOnInit");
 
-        from(list).pipe(map(file => {
-            return file;
-        }), mergeMap(file => {
-            return this.simulateHttp(file + " user saved ", 1000).pipe(map(r => {
-                return {file, r};
-            }));
-        }),
-        mergeMap(resp1 => {
-            return this.simulateHttp(" data reloaded " + resp1.r, 2000);
-        }),
-        map(r => {
-            console.log("TEST 1: ", r);
-            return r;
-        }),
-        filter(resp => resp.indexOf("4") > 0),
-        ).subscribe( (r) => {
-                console.log("TEST 2:", r);
-                console.log("TEST ------------");
-            },
-                console.error,
-                () => console.log('TEST completed httpResult$'),
-            );
-
-
-        // const saveUser$ = this.simulateHttp(" user saved ", 1000);
-
-        // const httpResult$ = saveUser$.pipe(
-        //     switchMap(sourceValue => {
-        //         console.log("TEST 1: ", sourceValue);
-        //         return this.simulateHttp(sourceValue + " data reloaded ", 2000);
-        //         },
-        //     ),
-        // );
-        // httpResult$.subscribe( (r) => {
-        //     console.log("TEST 2:", r);
-        // },
-        //     console.error,
-        //     () => console.log('completed httpResult$'),
-        // );
+        // from(list).pipe(map(file => {
+        //     return file;
+        // }), mergeMap(file => {
+        //     return this.simulateHttp(file + " user saved ", 1000).pipe(map(r => {
+        //         return {file, r};
+        //     }));
+        // }),
+        // mergeMap(resp1 => {
+        //     return this.simulateHttp(" data reloaded " + resp1.r, 2000);
+        // }),
+        // map(r => {
+        //     console.log("TEST 1: ", r);
+        //     return r;
+        // }),
+        // filter(resp => resp.indexOf("4") > 0),
+        // ).subscribe( (r) => {
+        //         console.log("TEST 2:", r);
+        //         console.log("TEST ------------");
+        //     },
+        //         console.error,
+        //         () => console.log('TEST completed httpResult$'),
+        //     );
 
 
-        this.menuService.onItemClick().pipe(filter(({ tag }) => tag === 'AddFolderMenuContext'),
+        this.menuService.onItemClick().pipe(filter(({ tag }) => tag === 'sourceMenuContext'),
             map(({ item: { title } }) => title)).subscribe(title => {
-            switch (title) {
-                case "Thêm mới Folder":
-                    this.addFolder();
-                    break;
-                case "Xóa Folder":
-                    this.delete();
-                    break;
-                default:
-                    this.addFolder();
-                    break;
-            }
+                console.log("onItemClick menu context: ", title, this.menuContextItemSelected);
+                const data = this.menuContextItemSelected;
+                if (data) {
+                    switch (title) {
+                        case "New folder":
+                            this.openAddFolderDialog({new: "", data: data});
+                            break;
+                        case "Delete item":
+                            if (data.type === "dir" || data.type === "folder") {
+                                this.fileService.deleteFolder(data.ver_source_id, data.key).pipe(filter(r => r.message === "success" && r.status === 200)).subscribe(resp => {
+                                    this.dialogService.open<any>(this.dialogInformation, { autoFocus: true, context: {title: "Delete", message: "File " + data.name + " deleted successfully"}});
+                                    this.initSourceTree();
+                                }, err => {
+                                    console.error(err);
+                                    this.dialogService.open<any>(this.dialogInformation, { autoFocus: true, context: {title: "Delete", message: "Folder " + data.name + " deleted failed"}});
+                                });
+                            } else {
+                                this.fileService.deleteFile(data.ver_source_id, data.key).pipe(filter(r => r.message === "success" && r.status === 200)).subscribe(resp => {
+                                    this.dialogService.open<any>(this.dialogInformation, { autoFocus: true, context: {title: "Delete", message: "File " + data.name + " deleted successfully"}});
+                                    this.initSourceTree();
+                                }, err => {
+                                    console.error(err);
+                                    this.dialogService.open<any>(this.dialogInformation, { autoFocus: true, context: {title: "Delete", message: "Folder " + data.name + " deleted failed"}});
+                                });
+                            }
+
+                            break;
+                    }
+                }
         });
 
+        this.getAllVersions(this.initSourceTree);
+    }
+
+    getAllVersions(callback: Function) {
         setTimeout(() => {
             this.versionSourceServiceObs = this.versionSourceService.getAllVersions().subscribe((resp: VolioResponse<VersionSource[]>) => {
                 if (resp.message === "success" && resp.data) {
@@ -196,11 +195,17 @@ export class FilesComponent implements OnInit, OnDestroy {
                     }
                 }
             }, err => {}, () => {
-                if (this.versionSelected) {
-                    this.getFileSystem(this.versionSelected.id, "/");
+                if (callback) {
+                    callback.call(this);
                 }
             });
         });
+    }
+
+    initSourceTree() {
+        if (this.versionSelected) {
+            this.getFileSystem(this.versionSelected.id, "/");
+        }
     }
 
     fileServiceObs: Subscription;
@@ -230,12 +235,26 @@ export class FilesComponent implements OnInit, OnDestroy {
         });
     }
 
-
-
     createNodeSource(listFiles: DocumentInfo[], mapAdded: Map < string, boolean > , parentNode: TreeNode<DocumentInfo>) {
         // console.log("createNodeSource - parentNode: ", parentNode);
         if (!mapAdded) {
             mapAdded = new Map<string, boolean>();
+        }
+
+        if (listFiles.length === 0 && parentNode.data.id === "" && parentNode.data.name === "" && parentNode.data.key === "") {
+            parentNode.children.push({data: {
+                id: "",
+                bucket_name: "",
+                name: "Nothing, drag and drop files here",
+                type: "",
+                key: "",
+                access_hash: "",
+                ver_source_id: this.versionSelected.id,
+                owner_id: "",
+                created_time: 0,
+                updated_time: 0,
+            }, children: []});
+            return;
         }
 
         for (const document of listFiles) {
@@ -246,7 +265,7 @@ export class FilesComponent implements OnInit, OnDestroy {
             if (!document.parent_id) {
                 document.parent_id = "";
             }
-            // console.log("   ==> Document: ", document.key, document.parent_id, mapAdded[document.key], document.parent_id === parentNode.data.id);
+
             if (!mapAdded[document.key] && document.parent_id === parentNode.data.id) {
                 mapAdded[document.key] = true;
                 const node = {data: document, children: []};
@@ -257,8 +276,24 @@ export class FilesComponent implements OnInit, OnDestroy {
                 parentNode.children.push(node);
             }
         }
+    }
 
-        // console.log("createNodeSource - after parentNode: ", parentNode);
+    menuContextItemSelected: DocumentInfo;
+    openContextMenu(event, data) {
+        this.styleBlock.type = 'text/css';
+        this.styleBlock.innerHTML = '.menu-context-class { left: ' + event.clientX + 'px!important; top: ' + event.clientY + 'px!important } .menu-context-class li:hover {background-color: #f7f9fc!important;}';
+        document.getElementsByTagName('head')[0].appendChild(this.styleBlock);
+
+        console.log("openContextMenu event: ", event);
+
+        console.log("openContextMenu contextMenuClass: ", this.contextMenu.contextMenuClass);
+        this.contextMenu.contextMenuClass = 'menu-context-class';
+        console.log("openContextMenu contextMenuClass: ", this.contextMenu.contextMenuClass);
+        this.contextMenu.rebuild();
+        console.log("openContextMenu: ", data);
+        this.menuContextItemSelected = data;
+        this.contextMenu.show();
+        return false;
     }
 
     showFileDetail(dialogDetail: TemplateRef < any > , document: DocumentInfo) {
@@ -269,24 +304,80 @@ export class FilesComponent implements OnInit, OnDestroy {
         this.dialogService.open(dialogDetail, { autoFocus: true, context: document});
     }
 
-    addFolder() {
-        this.dialogService.open(AddFolderComponent, {
+    openAddFolderDialog(newOpt) {
+        console.log("addFolder: ", newOpt);
+        const data = newOpt.data;
+        const n = newOpt.new;
+        let location = "";
+        if (data.type === "folder" || data.type === "dir") {
+            location = "./" + data.key.replace(data.ver_source_id + "/", "");
+        } else {
+            location = "." + data.key.substring(data.key.indexOf("/"), data.key.lastIndexOf("/"));
+            if (location === ".") {
+                location = "./";
+            }
+        }
+
+        this.dialogService.open<any>(this.addNewFolder, {
             context: {
-                dataIndexFolder: this.dataIndexFolder,
-                data: this.sourceTreeData,
+                new: n,
+                location: location,
+                data: data,
             },
         });
     }
 
-    open(row: any) {
-        this.contextMenu.show();
-        this.dataIndexFolder = row;
-        return false;
+    onNameFolderChanged(data, name) {
+        console.log("onNameFolderChanged d: ", data);
+        console.log("onNameFolderChanged e: ", name);
+        data.new = name;
     }
 
-    updateSort(sortRequest: NbSortRequest): void {
-        this.sortColumn = sortRequest.column;
-        this.sortDirection = sortRequest.direction;
+    onAddNewFolder(dialog: NbDialogRef < any >, newFolderOpt: any) {
+        console.log("onAddNewFolder: ", newFolderOpt);
+        dialog.close();
+
+        if (newFolderOpt.new.length <= 3) {
+            this.dialogService.open<any>(this.dialogInformation, { autoFocus: true, context: {title: "Warning", message: "Folder name least 3 characters", closeFunc: () => {
+                this.openAddFolderDialog(newFolderOpt);
+            }}});
+
+            return;
+        }
+
+        const data = newFolderOpt.data;
+        console.log("addFolder: ", data);
+        let keyPath = "";
+        if (data.type === "folder" || data.type === "dir") {
+            keyPath = data.key + "/" + newFolderOpt.new;
+            keyPath = keyPath.replace("//", "/");
+        } else {
+            keyPath = data.key.substring(0, data.key.lastIndexOf("/") + 1) + newFolderOpt.new;
+        }
+        console.log("onAddNewFolder addFolder: ", keyPath);
+
+        let keyPathWithOutVer = keyPath;
+        if (keyPathWithOutVer.startsWith('' + data.ver_source_id + "/")) {
+            keyPathWithOutVer = "." + keyPathWithOutVer.substring(keyPathWithOutVer.indexOf("/"));
+        }
+
+        this.fileService.addFolder(data.ver_source_id, keyPath).subscribe(resp => {
+            if (resp.message === "success" && resp.status === 200) {
+                this.dialogService.open<any>(this.dialogInformation, { autoFocus: true, context: {title: "New folder", message: "Folder " + keyPathWithOutVer + " created successfully"}});
+            } else {
+                this.dialogService.open<any>(this.dialogInformation, { autoFocus: true, context: {title: "New folder", message: "Folder " + keyPathWithOutVer + " created failed"}});
+            }
+            this.initSourceTree();
+        }, err => {
+            console.error(err);
+            this.dialogService.open<any>(this.dialogInformation, { autoFocus: true, context: {title: "New folder", message: "Folder " + keyPathWithOutVer + " created failed"}});
+        });
+    }
+
+    getShowOn(index: number) {
+        const minWithForMultipleColumns = 400;
+        const nextColumnStep = 100;
+        return minWithForMultipleColumns + nextColumnStep * index;
     }
 
     getSortDirection(column: string): NbSortDirection {
@@ -296,39 +387,10 @@ export class FilesComponent implements OnInit, OnDestroy {
         return NbSortDirection.NONE;
     }
 
-    getShowOn(index: number) {
-        const minWithForMultipleColumns = 400;
-        const nextColumnStep = 100;
-        return minWithForMultipleColumns + nextColumnStep * index;
+    updateSort(sortRequest: NbSortRequest): void {
+        this.sortColumn = sortRequest.column;
+        this.sortDirection = sortRequest.direction;
     }
-
-    parseFileEntry(fileEntry) {
-        return new Promise((resolve, reject) => {
-            fileEntry.file(
-                file => {
-                    resolve(file);
-                },
-                err => {
-                    reject(err);
-                },
-            );
-        });
-    }
-
-    parseDirectoryEntry(directoryEntry: FileSystemDirectoryEntry) {
-        const directoryReader = directoryEntry.createReader();
-        return new Promise((resolve, reject) => {
-            directoryReader.readEntries(
-                entries => {
-                    resolve(entries);
-                },
-                err => {
-                    reject(err);
-                },
-            );
-        });
-    }
-
 
     uploadProcess: Map<string, number> = new Map<string, number>();
     trackItem (index, item: any) {
@@ -336,9 +398,12 @@ export class FilesComponent implements OnInit, OnDestroy {
     }
 
     onDrop(event: any, row: any, windowForm: any) {
-        const files: any[] = event.dataTransfer.files;
+        const files: any[] = [];
+        Array.prototype.push.apply( files,  event.dataTransfer.files ); // Covert FilesList to Array
+
         console.log("onDrop", event);
         console.log("onDrop dataTransfer", files);
+
 
         let isValid = true;
         const items = event.dataTransfer.items;
@@ -353,13 +418,12 @@ export class FilesComponent implements OnInit, OnDestroy {
                 } else if (entry.isDirectory) {
                     isValid = false;
                     break;
-
                 }
             }
         }
 
         event.currentTarget.classList.remove("blink_me");
-
+        event.currentTarget.classList.remove("blink_me_top_border");
 
         if (isValid) {
             for (const file of files) {
@@ -368,46 +432,76 @@ export class FilesComponent implements OnInit, OnDestroy {
             const header = "Upload " + files.length + (( files.length > 1) ? ' files' : ' file');
             this.uploadWindowRef = this.windowService.open(windowForm, { title: header, hasBackdrop: true, context: {files: files, processes: this.uploadProcess, row: row.data} });
             this.uploadWindowRef.onClose.subscribe(() => {
+                this.windowUploadButton = "Upload";
                 this.uploadProcess = new Map<string, number>();
             });
         } else {
-            this.dialogService.open<any>(this.uploadFolderWarning, { autoFocus: true, context: {message: "Can not upload folder"}});
+            this.dialogService.open<any>(this.dialogInformation, { autoFocus: true, context: {title: "Warning", message: "Can not upload folder"}});
         }
 
         event.stopPropagation();
         event.preventDefault();
     }
 
+    dragOverTimer: NodeJS.Timer;
     onDragOver(event, row) {
-        event.currentTarget.className = "blink_me";
-        row.expanded = true;
+        console.log("onDragOver: ", event);
+        if (row.data.type === 'folder' || row.data.type === 'dir') {
+            event.currentTarget.className = "blink_me";
+            if (!row.expanded) {
+                this.dragOverTimer = setTimeout(() => {
+                    console.log("onDragOver Click----------------------------: ", event);
+                    event.target.dispatchEvent(new Event("click"));
+                    console.log("onDragOver Click----------------------------: ",  row.expanded);
+                }, 1000);
+                row.expanded = true;
+            }
+        } else {
+            event.currentTarget.className = "blink_me_top_border";
+        }
         event.stopPropagation();
         event.preventDefault();
     }
 
     onDragLeave(event, row) {
+        if (this.dragOverTimer) {
+            clearTimeout(this.dragOverTimer);
+        }
         console.log("onDragLeave: ", event);
 
         event.currentTarget.classList.remove("blink_me");
+        event.currentTarget.classList.remove("blink_me_top_border");
 
         event.stopPropagation();
         event.preventDefault();
     }
 
+    onRemoveUploadingFile(data, file: any) {
+        this.uploadProcess.delete(file.key);
+        data.files = data.files.filter(function(f) {
+            return f.name !== file.key;
+        });
 
-    onDragCDK(event) {
-        console.log("onDragCDK: ", event);
+        const header = "Upload " + data.files.length + (( data.files.length > 1) ? ' files' : ' file');
+        data.title = header;
+        if (this.uploadWindowRef) {
+            this.uploadWindowRef.config.title = header;
+        }
+
+        if (data.files.length <= 0 || this.uploadProcess.size <= 0) {
+            this.windowUploadButton = "Close";
+        }
     }
-
-    onDropCDK(event) {
-        console.log("onDropCDK: ", event);
-    }
-
-
 
     uploadFiles(data: any) {
+        if (this.windowUploadButton === "Close") {
+            this.uploadWindowRef.close();
+            this.windowUploadButton = "Upload";
+            return;
+        }
+
         if (data.files.length <= 0 ) {
-            this.dialogService.open<any>(this.uploadFolderWarning, { autoFocus: true, context: {message: "Not fond any files"}});
+            this.dialogService.open<any>(this.dialogInformation, { autoFocus: true, context: {title: "Warning", message: "Not fond any files"}});
         }
 
         const row = data.row;
@@ -415,27 +509,8 @@ export class FilesComponent implements OnInit, OnDestroy {
         console.log("Data: ", data);
 
 
-        from(files).pipe(switchMap((file: any) => {
-            return of("haha" + file.name);
-        }),
-        switchMap((file, resp1: any) => {
-            console.log("Step 1 F: ", file);
-            console.log("Step 1 R: ", resp1);
-            return resp1;
-        }),
-        switchMap((resp2: any) => {
-            console.log("Step 2: ", resp2);
-            return resp2;
-        }),
-        tap(all => all)).subscribe(r => {
-            console.log("RESULT: ", r);
-        }, e => {
-            console.log("ERROR: ", e);
-        }, () => {});
-
-        return;
-
-        forkJoin([from(files).pipe(mergeMap<any, any>((file: any) => {
+        from(files).pipe(map(file => file), mergeMap((file: any) => {
+            this.windowUploadButton = "Uploading";
             const ext = file.name.split(".");
             const checkPartSplit = row.key.split("");
             const checkPartFilter = checkPartSplit.filter(i => i === "/").length === 1 && row.type === 'file';
@@ -451,150 +526,127 @@ export class FilesComponent implements OnInit, OnDestroy {
                 ver_source_id: row.ver_source_id,
             };
 
-            console.log("dataUpload: ", dataUpload);
-            return of(this.versionAddFileService.addFile(dataUpload).subscribe(resp => {
-                console.log("dataUpload addFile: ", resp);
-                if (resp.message === "success" && resp.data) {
-                    this.fileName =  file.name;
-                    const parentLinkUpload = resp.data.upload_links;
-                    let linkUpload;
-                    const partsFile = [];
-                    this.disableUpload = true;
-                    this.buttonLoading = true;
-                    for (let i = 0; i < parentLinkUpload.length; i++) {
-                        const formData = new FormData();
-                        formData.append("file", file, this.fileName);
-                        linkUpload = parentLinkUpload[i].link;
-                        if (linkUpload) {
-                            return of(this.versionAddFileService.uploadFileToAWS(formData, linkUpload ).pipe(map((event: HttpEvent<any>, count: number) => {
-                                switch (event.type) {
-                                    case HttpEventType.Sent:
-                                        console.log(`Uploading file "${file.name}" of size ${file.size}.`);
-                                    break;
-                                    case HttpEventType.UploadProgress:
-                                        const percentDone = Math.round(100 * event.loaded / event.total);
-                                        console.log( `File "${file.name}" is ${percentDone}% uploaded.`);
-                                        data.processes.set(file.name, percentDone);
-                                        break;
-                                    case HttpEventType.Response:
-                                        console.log( `File "${file.name}" was completely uploaded!`);
-                                        break;
-                                    default:
-                                        console.log( `File "${file.name}" surprising upload event: ${event.type}.`);
-                                }
-
-                                return event;
-                            }), filter((event: HttpEvent<any>) => {
-                                return event.type === HttpEventType.Response;
-                            })).pipe(map((headerResp: any) => {
-                                console.log("Upload: ", headerResp);
-                                const Etag = headerResp.headers.get("Etag");
-                                if (Etag) {
-                                    const listPartsFile = {
-                                        etag: Etag,
-                                        part_idx:  parentLinkUpload[i].part_idx,
-                                    };
-                                    const dataUploaded = {
-                                        file_id: resp.data.id,
-                                        upload_id:  resp.data.upload_id,
-                                        uploaded_parts: partsFile.concat(listPartsFile),
-                                    };
-                                    console.log("dataUploaded: ", dataUploaded);
-                                    return this.versionAddFileService.completeUpload(dataUploaded).pipe(map(resp2 => {
-                                        console.log("dataUpload completeUpload: ", resp2);
-
-                                        this.disableButtonUpload = true;
-                                        this.buttonLoading = false;
-                                        this.toastrService.show( `File upload successfully`, { status: 'success' });
-                                    }));
-                                }
-                            })));
-                        }
-                    }
-                } else {
-                    this.dialogService.open<any>(this.uploadFolderWarning, {autoFocus: true, context: {message: resp.data.message}});
-                    if (this.uploadWindowRef) {
-                        this.uploadWindowRef.close();
-                    }
-                }
-            }, err => {
-                this.dialogService.open<any>(this.uploadFolderWarning, {autoFocus: true, context: {message: err.data.message}});
-                if (this.uploadWindowRef) {
-                    this.uploadWindowRef.close();
-                }
-            }, () => {
-                if (this.versionSelected) {
-                    this.getFileSystem(this.versionSelected.id, "/");
-                }
-                this.disableUpload = false;
+            console.log("STEP 1: ", dataUpload);
+            return this.versionAddFileService.addFile(dataUpload).pipe(filter(resp => resp.message === "success" && resp.data && resp.data.upload_links.length > 0), map(r => {
+                return {f: file, r};
             }));
-        } ))]).subscribe(r => {
-            console.log("RESULT: ", r);
-        }, e => {
-            console.log("ERROR: ", e);
-        }, () => {
-            console.log("COMPLETED");
-        });
-    }
+        }),
+        mergeMap(resp1 => {
+            console.log("STEP 2: resp1", resp1);
+            const parentLinkUpload = resp1.r.data.upload_links;
+            let linkUpload;
+            const file = resp1.f;
+            const formData = new FormData();
+            formData.append("file", file, file.name);
+            linkUpload = parentLinkUpload[0].link;
+            return this.versionAddFileService.uploadFileToAWS(formData, linkUpload ).pipe(map((r: HttpEvent<any>) => {
+                switch (r.type) {
+                    case HttpEventType.Sent:
+                        console.log(`Uploading file "${file.name}" of size ${file.size}.`);
+                    break;
+                    case HttpEventType.UploadProgress:
+                        const percentDone = Math.round(100 * r.loaded / r.total);
+                        console.log( `File "${file.name}" is ${percentDone}% uploaded.`);
+                        data.processes.set(file.name, percentDone);
+                        break;
+                    case HttpEventType.Response:
+                        console.log( `File "${file.name}" was completely uploaded!`);
+                        break;
+                    default:
+                        console.log( `File "${file.name}" surprising upload event: ${r.type}.`);
+                }
 
+                return {r: r, d: resp1.r.data, p: parentLinkUpload[0].part_idx};
+            }));
+        }),
+        filter((event: any) => {
+            console.log("STEP 3: filter", event);
+            return event.r.type === HttpEventType.Response && event.r.headers.get("Etag") !== "";
+        }),
+        mergeMap((resp2: any) => {
+            console.log("STEP 4: ", resp2);
+            const Etag = resp2.r.headers.get("Etag");
+            const listPartsFile = {
+                etag: Etag,
+                part_idx:  resp2.p,
+            };
+            const dataUploaded = {
+                file_id: resp2.d.id,
+                upload_id:  resp2.d.upload_id,
+                uploaded_parts: [listPartsFile],
+            };
+            console.log("STEP 4 dataUploaded: ", dataUploaded);
 
+            return this.versionAddFileService.completeUpload(dataUploaded).pipe(map(r => {
+                console.log("STEP 4 completeUpload resp: ", r);
 
-    download(position, status) {
-        window.open(
-            "https://stackoverflow.com/questions/35138424/how-do-i-download-a-file-with-angular2-or-greater",
+                this.toastrService.success(`File ` + r.data.name + ` uploaded successfully`, "Upload", { status: 'success' });
+
+                return r;
+            }));
+        })).subscribe( (r) => {
+            console.log("STEP 5:", r);
+            console.log("STEP ------------");
+        },
+            (err) => {
+                console.error("STEP FINAL error:", err);
+                this.windowUploadButton = "Close";
+                this.uploadProcess = new Map<string, number>();
+            },
+            () => {
+                this.windowUploadButton = "Close";
+                this.uploadProcess = new Map<string, number>();
+                this.initSourceTree();
+                console.log('STEP FINAL completed httpResult$');
+            },
         );
     }
 
-    delete() {
-        let searchIndex;
-        let searchIndexChild;
-        for (let i = 0; i < this.sourceTreeData.length; i++) {
-            if (this.deleteT && this.deleteT.children && this.deleteT.children.length > 0) {
-                searchIndex = this.sourceTreeData.findIndex(
-                    (d) => d.data.id === this.deleteT.data.id,
-                );
-            } else {
-                if (
-                    this.sourceTreeData[i].children.findIndex(
-                        (d) => d.data.id === this.deleteT.data.id,
-                    ) >= 0
-                ) {
-                    searchIndexChild = this.sourceTreeData[i].children.findIndex(
-                        (d) => d.data.id === this.deleteT.data.id,
-                    );
-                    searchIndex = this.sourceTreeData.findIndex(
-                        (d) => d.data.id === this.sourceTreeData[i].data.id,
-                    );
+    downloadFile(dialog: NbDialogRef < any > , linkFile: string) {
+        window.open(linkFile);
+        dialog.close();
+    }
+
+    deleteFile(dialog: NbDialogRef < any > , data: DocumentInfo) {
+        console.log("deleteFile - data:", data);
+        if (data.type === "folder" || data.type === "dir") {
+            this.fileService.deleteFolder(data.ver_source_id, data.key).pipe(filter(r => r.message === "success" && r.status === 200)).subscribe(resp => {
+                this.dialogService.open<any>(this.dialogInformation, { autoFocus: true, context: {title: "Delete", message: "Folder " + data.name + " deleted successfully"}});
+            }, err => {
+                console.error(err);
+                this.dialogService.open<any>(this.dialogInformation, { autoFocus: true, context: {title: "Delete", message: "Folder " + data.name + " deleted failed:"}});
+            }, () => {
+                this.initSourceTree();
+                dialog.close();
+            });
+        } else {
+            this.fileService.deleteFile(data.ver_source_id, data.key).pipe(filter(r => r.message === "success" && r.status === 200)).subscribe(resp => {
+                this.dialogService.open<any>(this.dialogInformation, { autoFocus: true, context: {title: "Delete", message: "File " + data.name + " deleted successfully"}});
+            }, err => {
+                console.error(err);
+                this.dialogService.open<any>(this.dialogInformation, { autoFocus: true, context: {title: "Delete", message: "File " + data.name + " deleted failed"}});
+            }, () => {
+                this.initSourceTree();
+                dialog.close();
+            });
+        }
+    }
+
+    onVersionSelectionChange(version: string) {
+        console.log("onVersionSelectionChange", version);
+        if (version && version !== "") {
+            for (const v of this.versionsTag) {
+                if (v.version === version) {
+                    this.versionSelected = v;
+                    this.autoInput = version;
+                    this.initSourceTree();
+                    return;
                 }
             }
+            this.autoInput = this.versionSelected.version;
+            console.log("onVersionSelectionChange: this.autoInput ", this.autoInput);
+            this.dialogService.open<any>(this.dialogInformation, { autoFocus: true, context: {title: "Error", message: "Version " + version + " is invalid"}});
         }
-
-        if (searchIndexChild) {
-            this.sourceTreeData[searchIndex].children.splice(searchIndexChild, 1);
-            this.dataSource = this.dataSourceBuilder.create(this.sourceTreeData);
-        } else if (searchIndex && !searchIndexChild) {
-            console.log("searchIndex", searchIndex);
-            this.sourceTreeData.splice(searchIndex, 1);
-            this.dataSource = this.dataSourceBuilder.create(this.sourceTreeData);
-        }
-
-        console.log("this.sourceTreeData", this.sourceTreeData);
-
-        return of(this.sourceTreeData).pipe(delay(500));
-    }
-
-    addFile(file: any) {
-        console.log("file", file);
-        const formData = new FormData();
-        formData.append("file", file, file.name);
-    }
-
-    onChange(event: any) {
-        console.log("onChange: ", event);
-    }
-
-    onVersionSelectionChange(event: any) {
-        console.log(event);
     }
 
     ngOnDestroy() {

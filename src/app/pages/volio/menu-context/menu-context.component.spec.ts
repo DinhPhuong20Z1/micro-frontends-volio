@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddFolderComponent } from './add-folder.component';
+import { MenuContextComponent } from './menu-context.component';
 
-describe('AddFolderComponent', () => {
-  let component: AddFolderComponent;
-  let fixture: ComponentFixture<AddFolderComponent>;
+describe('MenuContextComponent', () => {
+  let component: MenuContextComponent;
+  let fixture: ComponentFixture<MenuContextComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddFolderComponent ]
+      declarations: [ MenuContextComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddFolderComponent);
+    fixture = TestBed.createComponent(MenuContextComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

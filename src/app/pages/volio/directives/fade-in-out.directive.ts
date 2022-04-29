@@ -1,10 +1,10 @@
 import {
     Directive,
     Input,
-    OnInit
+    OnInit,
 } from '@angular/core';
 import {
-    ElementRef
+    ElementRef,
 } from '@angular/core';
 import {
     AnimationPlayer,
@@ -39,16 +39,15 @@ export class FadeInOutDirective implements OnInit {
 
     constructor(private builder: AnimationBuilder, private el: ElementRef) {}
 
-    ngOnInit(): void {
-    }
+    ngOnInit(): void {}
 
     private fadeIn(): AnimationMetadata[] {
         return [
             style({
-                opacity: 0
+                opacity: 0,
             }),
             animate('400ms ease-in', style({
-                opacity: 1
+                opacity: 1,
             })),
         ];
     }
@@ -56,10 +55,10 @@ export class FadeInOutDirective implements OnInit {
     private fadeOut(): AnimationMetadata[] {
         return [
             style({
-                opacity: '*'
+                opacity: '*',
             }),
             animate('400ms ease-in', style({
-                opacity: 0
+                opacity: 0,
             })),
         ];
     }
