@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MENU_ITEMS, MENU_ITEMS_BOTTOM } from './pages-menu';
+import { MENU_ITEMS, MENU_ITEMS_BOTTOM } from './pages.menu';
 
 @Component({
     selector: 'ngx-pages',

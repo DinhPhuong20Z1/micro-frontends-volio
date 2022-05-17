@@ -15,17 +15,17 @@ const routes: Routes = [{
     children: [{
             path: 'profile',
             component: ProfileComponent,
-            // canActivate: [AuthGuard],
+            canActivate: [AuthGuard],
         },
         {
             path: 'versions',
             component: VersionsComponent,
-            // canActivate: [AuthGuard],
+            canActivate: [AuthGuard],
         },
         {
             path: 'files',
             component: FilesComponent,
-            // canActivate: [AuthGuard],
+            canActivate: [AuthGuard],
         },
         {
             path: "callback",

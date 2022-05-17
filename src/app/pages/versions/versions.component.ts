@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { CheckboxEditorComponent } from '../volio/tables/checkbox-editor/checkbox-editor.component';
 import { LocalDataSource } from 'ng2-smart-table';
 import { CheckboxCellComponent } from '../volio/tables/checkbox-cell/checkbox-cell.component';
+import { filter } from 'rxjs/operators';
 
 @Component({
     selector: 'ngx-versions',
@@ -116,10 +117,8 @@ export class VersionsComponent implements OnInit, OnDestroy {
             this.versionServiceObs = this.versionService.getAllVersions().subscribe(resp => {
                 if (!!resp && resp.message === "success") {
                     this.versionsData = resp.data;
-                    console.log("VersionsComponent - GetAllVersions this.versionsData: ", this.versionsData);
                 }
             }, err => {
-                console.log("VersionsComponent call GetAllVersions error: ", err);
             }, () => {
                 this.updateTableSettings();
             });
@@ -221,8 +220,6 @@ export class VersionsComponent implements OnInit, OnDestroy {
     }
 
     onCreateConfirm(event: any): void {
-        console.log("onCreateConfirm - event: ", event);
-
         const data = event.newData;
         if (!data.is_newest) {
             data.is_newest = false;
@@ -231,15 +228,12 @@ export class VersionsComponent implements OnInit, OnDestroy {
         data.created_time = 0;
         data.updated_time = 0;
 
-        console.log("onCreateConfirm: ", data);
         this.versionService.createVersion(data).subscribe(resp => {
-            console.log("onCreateConfirm CreateVersion Resp: ", resp);
             event.confirm.resolve(data);
             if (resp.data) {
                 this.versionsData = resp.data;
             }
         }, err => {
-            console.log("onCreateConfirm CreateVersion Error: ", err);
             event.confirm.reject();
         });
     }
@@ -252,15 +246,12 @@ export class VersionsComponent implements OnInit, OnDestroy {
         data.created_time = 0;
         data.updated_time = 0;
 
-        console.log("onSaveConfirm: ", data);
-        this.versionService.updateVersion(data).subscribe(resp => {
-            console.log("UonSaveConfirm pdateVersion Resp: ", resp);
+        this.versionService.updateVersion(data).pipe(filter(r => r.message === "success" && r.status === 200)).subscribe(resp => {
             event.confirm.resolve(data);
             if (resp.data) {
                 this.versionsData = resp.data;
             }
         }, err => {
-            console.log("onSaveConfirm UpdateVersion Error: ", err);
             event.confirm.reject();
         });
 

@@ -23,7 +23,6 @@ export class InputStringFilterComponent extends DefaultFilter implements OnInit,
     ngOnChanges(changes: SimpleChanges) {}
 
     onModelChange(value: any) {
-        console.log('onModelChange - value: ', value)
         this.query = value !== null ? value.toString() : '';
         this.setFilter();
     }

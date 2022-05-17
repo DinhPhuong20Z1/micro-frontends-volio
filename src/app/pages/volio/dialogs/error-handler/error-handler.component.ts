@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { NbDialogRef } from '@nebular/theme';
+import { NbDialogRef, NbDialogService } from '@nebular/theme';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,7 +14,7 @@ export class ErrorHandlerDialogComponent {
     @Input() okeFunc: Function;
 
     constructor(protected ref: NbDialogRef < ErrorHandlerDialogComponent >) {
-        console.log("ErrorHandlerDialogComponent::constructor");
+
     }
 
     dismiss() {
@@ -25,7 +25,6 @@ export class ErrorHandlerDialogComponent {
     }
 
     onRetry() {
-        console.log("ErrorHandlerDialogComponent::onRetry");
         window.location.reload();
     }
 }

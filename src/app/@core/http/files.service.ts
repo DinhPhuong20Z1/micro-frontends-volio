@@ -59,7 +59,7 @@ export class FilesService extends FilesData {
     addFile(data: any): Observable<VolioResponse <DocumentInfo>> {
         const url = environment.apiUrl + "/file";
 
-        return this.httpClient.post<VolioResponse<DocumentInfo>>(url, data);
+        return this.httpClient.post<VolioResponse<DocumentInfo>>(url, data, {headers: {'error-handler': 'no'}});
     }
 
     uploadFileToAWS(linkUpload: string,  fileBinary: any): Observable<HttpEvent<any>> {
@@ -72,7 +72,7 @@ export class FilesService extends FilesData {
     completeUpload(data: any): Observable<VolioResponse <DocumentInfo>> {
         const url = environment.apiUrl + "/file";
 
-        return this.httpClient.put<VolioResponse<DocumentInfo>>(url, data);
+        return this.httpClient.put<VolioResponse<DocumentInfo>>(url, data, {headers: {'error-handler': 'no'}});
     }
 
     deleteFile(versionID: number, key: string): Observable<VolioResponse<any>> {

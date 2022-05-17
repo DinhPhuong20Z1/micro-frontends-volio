@@ -19,13 +19,11 @@ export class CheckboxCellComponent implements ViewCell, AfterViewInit {
 
 
     onButtonClick(event: MouseEvent) {
-        console.log("CheckboxCellComponent event: ", event);
         event.preventDefault();
         this.value = this.initValue;
     }
 
     checkedChange(event) {
-        console.log("CheckboxCellComponent: ", event);
         this.value = this.initValue;
     }
 }

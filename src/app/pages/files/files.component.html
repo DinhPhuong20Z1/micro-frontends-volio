@@ -104,16 +104,16 @@
             <div *ngFor="let file of data.processes | keyvalue; trackBy: trackItem">
                 <div class="row flex" style="margin: auto">
                     <span>File: {{file.key}}</span>
-                    <nb-action class="ml-auto">
+                    <nb-action class="ml-auto" *ngIf="!file.value">
                         <nb-icon class="action-icon" icon="close-circle-outline" (click)="onRemoveUploadingFile(data, file)"></nb-icon>
                     </nb-action>
                 </div>
                 <div class="row" style="margin: auto"> </div>
-                <nb-progress-bar class="col-12" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:20px;" [value]="file.value" size="tiny" [status]="file.value<50?'info':file.value<100?'primary':'success'">{{file.value<100?'uploading':'done'}} </nb-progress-bar>
+                <nb-progress-bar class="col-12" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:20px;" [value]="file.value?file.value.percent:0" size="tiny" [status]="file.value.percent<0?'danger':file.value.percent<50?'info':file.value.percent<100?'primary':'success'">{{file.value.error?file.value.error:file.value.percent<0?'error':file.value.percent<100?'uploading':file.value.percent==100?'done':"upload"}} </nb-progress-bar>
             </div>
         </nb-card-body>
         <nb-card-footer class="row">
-            <button [disabled]="windowUploadButton!='Upload' && windowUploadButton!='Close'" nbButton hero status="success" (click)="uploadFiles(data)" fullWidth [nbSpinner]="windowUploadButton==='Uploading'" nbSpinnerStatus="success"> {{windowUploadButton}} </button>
+            <button [disabled]="windowUploadButton!='Upload' && windowUploadButton!='Close'" nbButton hero [status]="windowUploadButtonStatus" (click)="uploadFiles(data)" fullWidth [nbSpinner]="windowUploadButton==='Uploading'" nbSpinnerStatus="success"> {{windowUploadButton}} </button>
         </nb-card-footer>
     </div>
 </ng-template>

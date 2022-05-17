@@ -32,13 +32,11 @@ export class OAuth2CallbackComponent implements OnDestroy {
             .authenticate("google")
             .pipe(takeUntil(this.destroy$))
             .subscribe((authResult: NbAuthResult) => {
-                console.log("OAuth2CallbackComponent - Result: ", authResult);
                 if (authResult.isSuccess()) {
                     this.tokenAuthService
                         .swapToken(authResult.getToken().getValue())
                         .subscribe(
                             (newToken: VolioResponse<AuthToken>) => {
-                                console.log("NewToken after swap: ", newToken);
                                 if (newToken.message === "error") {
                                     this.dialogService.open(
                                         ErrorHandlerDialogComponent,
@@ -78,10 +76,6 @@ export class OAuth2CallbackComponent implements OnDestroy {
                                         },
                                     );
                                 } else {
-                                    console.log(
-                                        "Will set token: ",
-                                        newToken.data.token,
-                                    );
                                     this.tokenService
                                         .set(
                                             new NbAuthJWTToken(
@@ -91,16 +85,8 @@ export class OAuth2CallbackComponent implements OnDestroy {
                                         )
                                         .subscribe(
                                             () => {
-                                                console.log(
-                                                    "Was set token ",
-                                                    newToken.data.token,
-                                                );
                                             },
                                             (err) => {
-                                                console.log(
-                                                    "Set token failed: ",
-                                                    err,
-                                                );
                                             },
                                             () => {
                                                 this.router.navigateByUrl(
@@ -111,7 +97,6 @@ export class OAuth2CallbackComponent implements OnDestroy {
                                 }
                             },
                             (err) => {
-                                console.log("NewToken after swap error: ", err);
                             },
                         );
                 }

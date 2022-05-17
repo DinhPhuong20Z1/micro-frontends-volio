@@ -3,7 +3,7 @@ import { NbCalendarRange, NbPopoverModule } from '@nebular/theme';
 import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import {
     NbDateService,
-    NbSidebarService
+    NbSidebarService,
 } from '@nebular/theme';
 import { interval, Observable } from 'rxjs';
 import { animate, state, style, transition, trigger } from '@angular/animations';
@@ -34,14 +34,14 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
         trigger('showhide', [
             state('invisible', style({opacity: '0'})),
             state('visible', style({opacity: '1'})),
-            transition('invisible <=> visible', animate('1000ms ease'))
-        ])
-    ]
+            transition('invisible <=> visible', animate('1000ms ease')),
+        ]),
+    ],
 })
 export class FloatingButtonComponent implements OnInit, OnDestroy {
-    @Output() OnRangeChanged = new EventEmitter<{start: number, end: number, type: string}>()
+    @Output() OnRangeChanged = new EventEmitter<{start: number, end: number, type: string}>();
     timeDisplay: string;
-    typeRange: string = "now"
+    typeRange: string = "now";
     range: NbCalendarRange<Date>;
     rangeMax: Date;
     rangeMin: Date;
@@ -51,26 +51,25 @@ export class FloatingButtonComponent implements OnInit, OnDestroy {
     index: number = 0;
     heading: string = 'invisible';
     constructor(private datePipe: DatePipe, protected dateService: NbDateService<Date>) {
-        this.rangeMax = new Date()
+        this.rangeMax = new Date();
         this.rangeMin = this.dateService.addDay(this.rangeMax, -3),
         this.range = {
             start: this.rangeMin,
-            end: this.rangeMax
+            end: this.rangeMax,
         };
 
         interval(1000).subscribe(x => {
-            console.log(x);
-            this.heading = (this.heading == 'visible') ? 'invisible' : 'visible';
-            if (x % 2 == 0) {
+            this.heading = (this.heading === 'visible') ? 'invisible' : 'visible';
+            if (x % 2 === 0) {
                 this.index = (x / 2) % 3;
             }
-        })
+        });
     }
 
     ngOnInit(): void {
-        if (this.typeRange == "now") {
+        if (this.typeRange === "now") {
             this.timeDisplayInterval = interval(1000).subscribe(() => {
-                this.timeDisplay = "Now: " + this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy')
+                this.timeDisplay = "Now: " + this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy');
             });
         }
     }
@@ -85,50 +84,48 @@ export class FloatingButtonComponent implements OnInit, OnDestroy {
         if (!!this.timeDisplayInterval) {
             this.timeDisplayInterval.unsubscribe();
         }
-        this.timeDisplay = "From: " + this.datePipe.transform(this.range.start, 'dd/MM/yyyy')
+        this.timeDisplay = "From: " + this.datePipe.transform(this.range.start, 'dd/MM/yyyy');
         if (this.range.end) {
-            this.timeDisplay += " To: " + this.datePipe.transform(this.range.end, 'dd/MM/yyyy')
+            this.timeDisplay += " To: " + this.datePipe.transform(this.range.end, 'dd/MM/yyyy');
         }
     }
 
     onPicked() {
         if (!!this.range.start && !!this.range.end) {
-            this.OnRangeChanged.emit({start: Math.round(this.range.start.getTime()/1000), end: Math.round(this.range.end.getTime()/1000), type: this.typeRange})
-        } else {
-            console.log("Invalid date range: ", this.range)
+            this.OnRangeChanged.emit({start: Math.round(this.range.start.getTime() / 1000), end: Math.round(this.range.end.getTime() / 1000), type: this.typeRange});
         }
     }
 
     onClickNowButton() {
-        this.timeDisplay = "Now: " + this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy')
-        this.typeRange = "now"
+        this.timeDisplay = "Now: " + this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy');
+        this.typeRange = "now";
         this.timeDisplayInterval = interval(1000).subscribe(() => {
-            this.timeDisplay = "Now: " + this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy')
+            this.timeDisplay = "Now: " + this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy');
         });
     }
 
-    onClickHourButton(){
-        this.rangeMax = new Date()
+    onClickHourButton() {
+        this.rangeMax = new Date();
         this.rangeMin = this.dateService.addDay(this.rangeMax, -3),
-        this.typeRange = "hour"
+        this.typeRange = "hour";
         if (!!this.timeDisplayInterval) {
             this.timeDisplayInterval.unsubscribe();
         }
     }
 
     onClickDayButton() {
-        this.rangeMax = new Date()
+        this.rangeMax = new Date();
         this.rangeMin = this.dateService.addDay(this.rangeMax, -30),
-        this.typeRange = "day"
+        this.typeRange = "day";
         if (!!this.timeDisplayInterval) {
             this.timeDisplayInterval.unsubscribe();
         }
     }
 
     onClickMonthButton() {
-        this.rangeMax = new Date()
-        this.rangeMin = this.dateService.addMonth(this.rangeMax, -3*12),
-        this.typeRange = "month"
+        this.rangeMax = new Date();
+        this.rangeMin = this.dateService.addMonth(this.rangeMax, -3 * 12),
+        this.typeRange = "month";
         if (!!this.timeDisplayInterval) {
             this.timeDisplayInterval.unsubscribe();
         }

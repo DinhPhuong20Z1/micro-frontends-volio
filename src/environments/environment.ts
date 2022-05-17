@@ -10,6 +10,6 @@
 
 export const environment = {
     production: false,
-    homePage: 'https://source.jacatgames.com', // http://source.jacatgames.com
-    apiUrl:  'https://source.jacatgames.com/jacasource/api/v1.0', // http://source.jacatgames.com/jacasource/api/v1.0
+    homePage: 'http://localhost:4200', // http://source.jacatgames.com
+    apiUrl:  'http://localhost:3000/jacasource/api/v1.0', // http://source.jacatgames.com/jacasource/api/v1.0
 };

@@ -3,7 +3,7 @@ import { AfterViewInit, ElementRef } from '@angular/core';
 import { Directive, Input } from '@angular/core';
 
 @Directive({
-    selector: '[AnimatedBlink]'
+    selector: '[AnimatedBlink]',
 })
 export class AnimatedBlinkDirective implements AfterViewInit {
     durationValue: number = 1000;
@@ -25,14 +25,13 @@ export class AnimatedBlinkDirective implements AfterViewInit {
         this.player = factory.create(this.el.nativeElement);
 
         this.player.play();
-        console.log("Player: ", this.player)
     }
 
     private blink(): AnimationMetadata[] {
         return [
             state("hide", style({opacity: 0})),
             state("show", style({opacity: 1})),
-            transition({fromState: "hide", toState: "show", }, [animate(1000)])
+            transition({fromState: "hide", toState: "show" }, [animate(1000)]),
         ];
     }
 }

@@ -23,7 +23,6 @@ import { MiscellaneousModule } from "./miscellaneous/miscellaneous.module";
 import { ProfileComponent } from "./profile/profile.component";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { NbEvaIconsModule } from "@nebular/eva-icons";
-import { NewsService } from "./news.service";
 import { VersionsComponent } from './versions/versions.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NbAutocompleteModule } from '@nebular/theme';
@@ -61,6 +60,5 @@ import { NbAutocompleteModule } from '@nebular/theme';
         FsIconComponent,
         VersionsComponent,
     ],
-    providers: [NewsService],
 })
 export class PagesModule {}

@@ -159,6 +159,23 @@ export const NB_CORE_PROVIDERS = [
                 logout: {
                     endpoint: "/auth/logout",
                 },
+                requestPass: {
+                    endpoint: "/auth/request-pass",
+                    redirect: {
+                        success: "",
+                    },
+                },
+                validation: {
+                    password: {
+                        required: true,
+                        minLength: 6,
+                        maxLength: 50,
+                    },
+                    email: {
+                        required: true,
+                        regexp: `[a-zA-Z0-9\.-_]+@volio\.vn$`,
+                    },
+                },
             }),
             NbOAuth2AuthStrategy.setup({
                 name: "google",
