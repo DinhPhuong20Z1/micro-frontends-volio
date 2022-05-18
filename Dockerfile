@@ -11,7 +11,7 @@ RUN yarn install
 
 FROM development AS build
 
-RUN yarn run build
+RUN yarn run build:prod
 
 # 2. For Nginx setup
 
