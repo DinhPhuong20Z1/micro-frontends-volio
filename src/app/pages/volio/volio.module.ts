@@ -3,9 +3,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NbAccordionModule, NbCardModule, NbDialogModule, NbIconModule, NbInputModule, NbPopoverModule, NbSelectModule, NbTabsetModule, NbButtonModule, NbDatepickerModule, NbStepperModule, NbFormFieldModule, NbAutocompleteModule, NbCalendarRangeModule, NbSidebarModule, NbCheckboxModule } from '@nebular/theme';
 import { NgxEchartsModule } from 'ngx-echarts';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
-import { ClientsLocationMapComponent } from './maps/clients-location-map/clients-location-map.component';
 import { FlagNameLocationComponent } from './flag-name-location/flag-name-location.component';
 import { NumberFilterComponent } from './tables/number-filter/number-filter.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -28,7 +25,6 @@ import { NbDateFnsDateModule } from '@nebular/date-fns';
 const VolioComponents = [
     DialogDeleteProfileComponent, // Dialog
     ErrorHandlerDialogComponent,
-    ClientsLocationMapComponent, // maps
     FlagNameLocationComponent, // main
     DateRangeComponent,
     FloatingButtonComponent,
@@ -49,8 +45,6 @@ const VolioComponents = [
         FormsModule,
         ReactiveFormsModule,
         FormsModule,
-        LeafletModule,
-        LeafletMarkerClusterModule,
         NbCardModule,
         NbIconModule,
         NbAccordionModule,
