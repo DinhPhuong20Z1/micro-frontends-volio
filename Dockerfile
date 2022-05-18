@@ -7,8 +7,6 @@ COPY . /app
 #
 COPY package.json /app/package.json
 
-RUN rm /app/package-lock.json
-
 RUN yarn install
 
 FROM development AS build
