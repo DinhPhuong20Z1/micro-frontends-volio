@@ -9,7 +9,7 @@ variables:
   PROJECT: tech
   APP_NAME: volio-frontend-jacasource
   APP_NAME_ECR: volio-frontend-jacasource
-  IMAGE_TAG: $VOLIO_ECR_REPOSITORY_URL/$PROJECT/$APP_NAME_ECR
+  IMAGE_TAG_RAW: $VOLIO_ECR_REPOSITORY_URL/$PROJECT/$APP_NAME_ECR
 
 before_script:
   - docker login $VOLIO_ECR_REPOSITORY_URL -u $VOLIO_REPO_PUSHER -p $VOLIO_REPO_PUSHER_PWD
