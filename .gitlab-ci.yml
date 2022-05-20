@@ -20,12 +20,13 @@ build:
   allow_failure: false
   script:
     - echo "Building image."
-    - docker pull $IMAGE_TAG || echo "Building runtime from scratch"
+    - docker pull $IMAGE_TAG_RAW || echo "Building runtime from scratch"
+    - echo $IMAGE_TAG_RAW:$VERSION
     - >
       docker build
-      --cache-from $IMAGE_TAG
-      -t $IMAGE_TAG .
-    - docker push $IMAGE_TAG
+      --cache-from $IMAGE_TAG_RAW
+      -t $IMAGE_TAG_RAW:$VERSION .
+    - docker push $IMAGE_TAG_RAW:$VERSION
 
 clean:
   stage: clean
