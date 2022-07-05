@@ -8,6 +8,10 @@ import { NotFoundComponent } from './miscellaneous/not-found/not-found.component
 import { AuthGuard } from './volio/auth/guard/auth-guard';
 import { OAuth2CallbackComponent } from './volio/auth/callback/callback.component';
 import { VersionsComponent } from './versions/versions.component';
+import { HomeComponent } from './home/home.component';
+import { UserComponent } from './user/user.component';
+import { MediaComponent } from './media/media.component';
+import { MenuComponent } from './menu/menu.component';
 
 const routes: Routes = [{
     path: '',
@@ -18,15 +22,26 @@ const routes: Routes = [{
             canActivate: [AuthGuard],
         },
         {
-            path: 'versions',
-            component: VersionsComponent,
+            path: 'home',
+            component: HomeComponent,
             canActivate: [AuthGuard],
         },
         {
-            path: 'files',
-            component: FilesComponent,
+            path: 'user',
+            component: UserComponent,
             canActivate: [AuthGuard],
         },
+        {
+            path: 'media',
+            component: MediaComponent,
+            canActivate: [AuthGuard],
+        },
+        {
+            path: 'menu',
+            component: MenuComponent,
+            canActivate: [AuthGuard],
+        },
+
         {
             path: "callback",
             component: OAuth2CallbackComponent,

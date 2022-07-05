@@ -74,6 +74,8 @@ import { VersionSourceData } from './data/version_source';
 import { UtilsFunc } from "./data/utils";
 import { FilesData } from "./data/files";
 import { FilesService } from './http/files.service';
+import { UserTable } from "./data/user-table";
+import {UserTableService} from "./mock/user-table.service";
 
 const socialLinks = [
     {
@@ -125,6 +127,7 @@ const DATA_SERVICES = [
     { provide: StatsProgressBarData, useClass: StatsProgressBarService },
     { provide: VisitorsAnalyticsData, useClass: VisitorsAnalyticsService },
     { provide: SecurityCamerasData, useClass: SecurityCamerasService },
+    { provide:UserTable, useClass: UserTableService },
 ];
 
 export class NbSimpleRoleProvider extends NbRoleProvider {

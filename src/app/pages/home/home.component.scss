@@ -1,0 +1,8 @@
+@import '../../@theme/styles/themes.scss';
+
+.file-input {
+    display: none;
+  }
+  nb-card-body input, .file-upload, nb-card-body button {
+    margin-top: 1rem;
+  }

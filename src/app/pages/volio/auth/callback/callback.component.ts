@@ -90,7 +90,7 @@ export class OAuth2CallbackComponent implements OnDestroy {
                                             },
                                             () => {
                                                 this.router.navigateByUrl(
-                                                    "/pages/files",
+                                                    "/pages/user",
                                                 );
                                             },
                                         );

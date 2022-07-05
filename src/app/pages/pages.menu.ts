@@ -2,15 +2,39 @@ import { NbMenuItem } from '@nebular/theme';
 
 export const MENU_ITEMS: NbMenuItem[] = [
     {
-        title: 'Versions',
+        title: 'Home',
         icon: 'archive-outline',
-        link: '/pages/versions',
+        link: '/pages/home',
         home: true,
     },
     {
-        title: 'Source Tree',
+        title: 'user management',
         icon: 'folder-outline',
-        link: '/pages/files',
+        link: '/pages/user',
+        home: true,
+    },
+    {
+        title: 'Media',
+        icon: 'folder-outline',
+        link: '/pages/media',
+        home: true,
+    },
+    {
+        title: 'Menu',
+        icon: 'folder-outline',
+        link: '/pages/menu',
+        home: true,
+    },
+    {
+        title: 'Page',
+        icon: 'folder-outline',
+        link: '/pages/page',
+        home: true,
+    },
+    {
+        title: 'Component',
+        icon: 'folder-outline',
+        link: '/pages/component',
         home: true,
     },
 ];

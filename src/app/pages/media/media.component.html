@@ -1,0 +1,25 @@
+<nb-card>
+    <nb-card-body class="example-items-col">
+        <input
+            id="browse"
+            class="file-input"
+            type="file"
+            (change)="previewFiles()"
+            multiple
+            accept="image/png, image/jpeg, image/webp"
+            #fileUpload
+        />
+        <div class="file-upload">
+            <span>Upload Media</span>
+
+            <button
+                color="primary"
+                class="upload-btn"
+                (click)="fileUpload.click()"
+            >
+                <nb-icon icon="upload-outline"></nb-icon>
+            </button>
+        </div>
+        <div id="preview"></div>
+    </nb-card-body>
+</nb-card>

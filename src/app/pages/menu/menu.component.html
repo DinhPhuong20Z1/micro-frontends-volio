@@ -1,0 +1,100 @@
+<nb-card>
+    <nb-card-body class="example-items-col">
+        <div class="add-menu">
+            <input
+                type="text"
+                nbInput
+                placeholder="name menu"
+                [ngModel]="nameAdd"
+                (ngModelChange)="onNameAddMenu($event)"
+                name="nameAdd"
+            />
+            <input
+                type="text"
+                nbInput
+                placeholder="url menu"
+                [ngModel]="UrlAdd"
+                (ngModelChange)="onUrlAddMenu($event)"
+                name="nameAdd"
+            />
+            <button
+                class="btn-add-menu"
+                nbButton
+                status="success"
+                (click)="clickAddName(nameAdd)"
+            >
+                Add Menu
+            </button>
+        </div>
+
+        <div
+            cdkDropList
+            class="example-list"
+            (cdkDropListDropped)="drop($event)"
+        >
+            <div
+                class="example-box"
+                *ngFor="let movie of movies; let i = index"
+                cdkDrag
+            >
+                <div class="menu-item-bar">
+                    <div class="menu-item-handle ui-sortable-handle">
+                        <span>{{ movie }}</span>
+                        <button
+                            color="primary"
+                            class="upload-btn"
+                            (click)="openEditMenu(i)"
+                        >
+                            <nb-icon icon="more-vertical-outline"></nb-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nb-card-body>
+</nb-card>
+
+<ng-template #dialogEditMenu let-data let-ref="dialogRef">
+    <nb-card class="dialog">
+        <nb-card-header>Edit Menu</nb-card-header>
+        <nb-card-body class="example-items-col">
+            <input
+                type="text"
+                nbInput
+                placeholder="name menu"
+                fullWidth
+                [ngModel]="nameEdit"
+                (ngModelChange)="onNameEditMenu($event)"
+            />
+            <input
+                type="text"
+                nbInput
+                placeholder="url menu"
+                fullWidth
+                [ngModel]="urlNameEdit"
+                (ngModelChange)="onNameEditMenu($event)"
+            />
+        </nb-card-body>
+        <nb-card-footer class="row flex">
+            <button nbButton status="success">Save</button>
+            <button
+                nbButton
+                status="danger"
+                (click)="deleteMenu(data.indexMenu)"
+            >
+                Delete
+            </button>
+            <button
+                class="ml-auto"
+                nbButton
+                hero
+                status="danger"
+                (click)="
+                    data.closeFunc ? data.closeFunc(ref.close()) : ref.close()
+                "
+            >
+                Close
+            </button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>
