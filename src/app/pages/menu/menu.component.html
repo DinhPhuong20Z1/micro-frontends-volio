@@ -21,7 +21,7 @@
                 class="btn-add-menu"
                 nbButton
                 status="success"
-                (click)="clickAddName(nameAdd)"
+                (click)="clickAddName(nameAdd, UrlAdd)"
             >
                 Add Menu
             </button>
@@ -39,7 +39,7 @@
             >
                 <div class="menu-item-bar">
                     <div class="menu-item-handle ui-sortable-handle">
-                        <span>{{ movie }}</span>
+                        <span>{{ movie.name }}</span>
                         <button
                             color="primary"
                             class="upload-btn"
@@ -72,15 +72,15 @@
                 placeholder="url menu"
                 fullWidth
                 [ngModel]="urlNameEdit"
-                (ngModelChange)="onNameEditMenu($event)"
+                (ngModelChange)="onUrlEditMenu($event)"
             />
         </nb-card-body>
         <nb-card-footer class="row flex">
-            <button nbButton status="success">Save</button>
+            <button nbButton status="success" (click)="saveMenu(data.indexMenu, ref)">Save</button>
             <button
                 nbButton
                 status="danger"
-                (click)="deleteMenu(data.indexMenu)"
+                (click)="deleteMenu(data.indexMenu, ref)"
             >
                 Delete
             </button>

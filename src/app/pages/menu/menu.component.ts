@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
 import { CdkDragDrop, moveItemInArray, CdkDrag } from "@angular/cdk/drag-drop";
-import { NbDialogService } from "@nebular/theme";
+import { NbDialogRef, NbDialogService } from "@nebular/theme";
 
 @Component({
     selector: "ngx-menu",
@@ -9,13 +9,20 @@ import { NbDialogService } from "@nebular/theme";
 })
 export class MenuComponent implements OnInit {
     movies = [
-        "Trang chủ",
-        "Giới thiệu",
-        "Sản Phẩm",
-        "Hoạt động",
-        "Thư viện",
-        "Tuyển dụng",
-        "Liên hệ",
+        {name: "Trang chủ", url: "https://www.youtube.com/c/vtv24"},
+        {name: "Giới thiệu", url: "https://www.youtube.com/c/vtv24"},
+        {name:  "Sản Phẩm", url: "https://www.youtube.com/c/vtv24"},
+        {name: "Hoạt động", url: "https://www.youtube.com/c/vtv24"},
+        {name:  "Thư viện", url: "https://www.youtube.com/c/vtv24"},
+        {name: "Tuyển dụng", url: "https://www.youtube.com/c/vtv24"},
+        {name: "Liên hệ", url: "https://www.youtube.com/c/vtv24"},
+        
+        
+       
+        
+       
+        
+        
     ];
     @ViewChild("dialogEditMenu", { read: TemplateRef })
     dialogEditMenu: TemplateRef<HTMLElement>;
@@ -40,26 +47,42 @@ export class MenuComponent implements OnInit {
         console.log("this.movies[index]", this.movies[index]);
         console.log("index", index);
 
-        if (!this.nameEdit) {
-            this.nameEdit = this.movies[index];
-        }
+        // if (!this.nameEdit) {
+            this.nameEdit = this.movies[index].name;
+        // }
+        // if(!this.urlNameEdit) {
+            this.urlNameEdit = this.movies[index].url;
+        // }
     }
 
     onNameEditMenu(name) {
         this.nameEdit = name;
     }
 
-    deleteMenu(index: number) {
+    onUrlEditMenu(url) {
+        this.urlNameEdit = url;
+    }
+
+    deleteMenu(index: number, dialog: NbDialogRef < any >,) {
         const deleteData = this.movies.filter(
             (i: any, idx: any) => idx !== index
         );
         this.movies = deleteData;
-    }
-    clickAddName(name: string) {
-        console.log("nameAdd", this.nameAdd);
+        dialog.close();
 
-        this.movies.push(name);
+        
+    }
+    saveMenu(index: number, dialog: NbDialogRef < any >,) {
+        this.movies[index].name = this.nameEdit
+        this.movies[index].url = this.urlNameEdit
+        dialog.close();
+    }
+    clickAddName(name: string, UrlAdd: string) {
+        console.log("nameAdd", this.nameAdd);
+        let addMenu = {name: name, url: UrlAdd}
+        this.movies.push(addMenu);
         this.nameAdd = "";
+        this.UrlAdd = "";
     }
 
     onNameAddMenu(name: string) {
@@ -69,4 +92,6 @@ export class MenuComponent implements OnInit {
     onUrlAddMenu(url: string) {
         this.UrlAdd = url;
     }
+
+    onDes
 }
