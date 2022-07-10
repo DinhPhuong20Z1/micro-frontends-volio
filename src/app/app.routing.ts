@@ -10,7 +10,12 @@ import {
 } from '@nebular/auth';
 import { OAuth2CallbackComponent } from './pages/volio/auth/callback/callback.component';
 
-export const routes: Routes = [{
+export const routes: Routes = [
+    {
+        path: 'calendar',
+        loadChildren: () => import('../../projects/calendar/src/app/app.module').then(m => m.AppModule)
+      },
+    {
         path: 'pages',
         loadChildren: () => import('./pages/pages.module')
             .then(m => m.PagesModule),

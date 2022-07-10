@@ -1,0 +1,123 @@
+$color_main: #f2c94c;
+$color_text: #363636;
+$space_desktop: 50px;
+$color_level: #FFBA34;
+$color_background: #FFC934;
+
+
+.header-container {
+  margin-right: auto;
+  margin-left: auto;
+
+  display: grid;
+  /* grid-template-columns: auto auto auto; */
+  grid-template-columns:  1fr 7fr ;
+  padding: 0 15px;
+  .icon-mobile {
+    cursor: pointer;
+    display: none;
+    span {
+      font-size: 30px;
+    }
+    &:hover, &:active {
+      color: $color_main;
+
+    }
+  }
+}
+#menu-mobile {
+  display: block;
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 300px;
+    max-width: 100%;
+    padding-bottom: 30px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-size: 15px;
+    background-color: #fff;
+    box-shadow: 0px 8px 40px rgb(0 0 0 / 12%);
+    color: #555;
+    user-select: none;
+    z-index: 9999;
+    transition: left 0.3s ease 0s;
+    left: -300px;
+    right: auto;
+    .close-menu-mobile {
+      display: flex;
+      background-color: $color_background;
+      padding: 20px 10px;
+      align-items: center;
+      cursor: pointer;
+      span {
+        margin-right: 10px;
+      }
+      p {
+        font-size: 18px;
+      }
+    }
+    ul {
+      margin: 0;
+      padding: 0;
+      li {
+        list-style: none;
+        padding: 20px 10px;
+        a {
+          font-size: 14px;
+          font-weight: 600;
+          text-decoration: none;
+          color: $color_text;
+          &:hover, &.is-active {
+            color: $color_main;
+          }
+        }
+      }
+    }
+}
+// #menu-mobile.topnav {
+//   left: 0;
+// }
+// mat-grid-tile {
+//   padding: 0 15px;
+//   padding-top: 0 !important;
+//   margin: 0 ;
+//   height: 80px;
+// }
+.header-container mat-grid-tile.list-iteam {
+
+
+}
+.header-logo {
+  display: flex;
+  align-items: center;
+}
+.header-container #nav {
+  display: flex;
+  align-items: flex-end;
+}
+.header-container  nav > ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+.header-container  nav > ul > li {
+  list-style: none;
+}
+.header-container nav > ul > li.nav-item a {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 28px;
+  color: #363636;
+  padding: 26px 38.64px;
+  display: block;
+  width: 100%;
+}
+.header-container nav > ul > li.nav-item a:hover {
+  color: #FFBA34;
+}
+.header-container nav > ul > li.nav-item a.is-active {
+  color: #FFBA34;
+}
+

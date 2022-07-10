@@ -1,0 +1,164 @@
+<ng-container>
+  <div class="header-container container-header">
+    <div class="header-logo">
+      <div>
+        <img
+          src="../../../../assets/img/home/logo-volio.png"
+          style="cursor: pointer"
+          width="100%"
+          height="100%"
+          alt="image"
+          [routerLink]="['']"
+        />
+      </div>
+    </div>
+    <div class="list-iteam-2">
+      <div>
+        <nav id="nav">
+          <ul id="navigation">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                [routerLinkActiveOptions]="{ exact: true }"
+                [routerLinkActive]="['is-active']"
+                [routerLink]="['/']"
+                >Trang chủ</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                [routerLinkActiveOptions]="{ exact: true }"
+                [routerLinkActive]="['is-active']"
+                [routerLink]="['gioi-thieu']"
+                >Giới thiệu</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                [routerLinkActiveOptions]="{ exact: true }"
+                [routerLinkActive]="['is-active']"
+                [routerLink]="['san-pham']"
+                >Sản phẩm</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                [routerLinkActiveOptions]="{ exact: true }"
+                [routerLinkActive]="['is-active']"
+                [routerLink]="['hoat-dong']"
+                >Hoạt động</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                [routerLinkActiveOptions]="{ exact: true }"
+                [routerLinkActive]="['is-active']"
+                [routerLink]="['thu-vien']"
+                >Thư viện</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                [routerLinkActiveOptions]="{ exact: false }"
+                [routerLinkActive]="['is-active']"
+                [routerLink]="['tuyen-dung']"
+                >Tuyển dụng</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                [routerLinkActiveOptions]="{ exact: true }"
+                [routerLinkActive]="['is-active']"
+                [routerLink]="['lien-he']"
+                >Liên hệ</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div class="icon-mobile" (click)="myFunction()">
+      <span class="material-symbols-outlined"> menu </span>
+    </div>
+  </div>
+</ng-container>
+
+<div id="menu-mobile">
+  <div (click)="myFunction()" class="close-menu-mobile">
+    <span class="material-symbols-outlined"> cancel </span>
+    <p>Đóng danh sách</p>
+  </div>
+  <nav id="nav-mobile">
+    <ul id="navigation-mobile">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+          [routerLinkActive]="['is-active']"
+          [routerLink]="['/']"
+          >Trang chủ</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+          [routerLinkActive]="['is-active']"
+          [routerLink]="['gioi-thieu']"
+          >Giới thiệu</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+          [routerLinkActive]="['is-active']"
+          [routerLink]="['san-pham']"
+          >Sản phẩm</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+          [routerLinkActive]="['is-active']"
+          [routerLink]="['hoat-dong']"
+          >Hoạt động</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+          [routerLinkActive]="['is-active']"
+          [routerLink]="['thu-vien']"
+          >Thư viện</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [routerLinkActiveOptions]="{ exact: false }"
+          [routerLinkActive]="['is-active']"
+          [routerLink]="['tuyen-dung']"
+          >Tuyển dụng</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+          [routerLinkActive]="['is-active']"
+          [routerLink]="['lien-he']"
+          >Liên hệ</a
+        >
+      </li>
+    </ul>
+  </nav>
+</div>

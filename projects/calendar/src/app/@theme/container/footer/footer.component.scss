@@ -1,0 +1,114 @@
+.footer-container {
+  padding-top: 45px;
+  padding-bottom: 45px;
+  display: grid;
+  /* grid-template-columns: auto auto auto; */
+  grid-template-columns: 2fr 2fr 4fr 2fr;
+  gap: 15px;
+}
+/* .footer-container .item-footer-1, .footer-container .item-footer-2, .footer-container .item-footer-4 {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  display: contents;
+}
+.footer-container .item-footer-3 {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  display: contents;
+} */
+.footer-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  > div {
+    display: inherit;
+  }
+}
+.footer-container {
+  .item-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .list-footer {
+
+    width: 100%;
+
+    nav#nav-footer {
+      display: flex;
+      justify-content: center;
+      border-right: 1px solid rgba(54, 54, 54, 0.2);
+      border-left: 1px solid rgba(54, 54, 54, 0.2);
+      padding-right: 30px;
+      ul {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+        padding-left: 50px;
+        li {
+          &:not(:last-child) {
+            margin-bottom: 20px;
+          }
+          a {
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 24px;
+            color: #363636;
+            text-decoration: unset;
+            &.is-active {
+              color: #ffba34;
+            }
+            &:hover {
+              color: #ffba34;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .information:not(:last-child) {
+    margin-bottom: 20px;
+  }
+  .information-footer {
+    display: flex;
+    align-items: center;
+    .information-item-list:not(:last-child) {
+      margin-right: 30px;
+    }
+  }
+  .information-item {
+    display: flex;
+    line-height: 24px;
+    span.icon-footer {
+      margin-right: 10px;
+    }
+  }
+}
+
+@media only screen and (max-width: 1440px) {
+  .footer-container .list-footer nav#nav-footer{
+    padding-right: 15px;
+    ul {
+      padding-left: 30px;
+    }
+  }
+  .footer-container .information-footer {
+    display: block;
+    .information-item-list {
+      display: inline-block;
+    }
+    // .information-item-list:not(:last-child) {
+    //   margin-right: 15px;
+    // }
+    .information-item-list:last-child {
+      margin-top: 20px;
+    }
+  }
+}
+@media only screen and (max-width: 1023px) {
+  .footer-container {
+    grid-template-columns: 2fr 2fr ;
+  }
+
+}
