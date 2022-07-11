@@ -1,0 +1,94 @@
+<img
+  class="volio-contact"
+  src="assets/img/contact/banner-contact.png"
+  alt="volio-contact"
+/>
+<h6>Liên hệ với chúng tôi</h6>
+<div class="contact">
+  <div class="container-home contact-section-v1 contact-section">
+    <img
+      class="volio-team"
+      src="assets/img/contact/team-contact.png"
+      alt="volio-team"
+    />
+
+    <div class="colum-form">
+      <div class="list-form-contact">
+        <form class="form-dialog">
+          <mat-form-field class="name-contact" appearance="outline">
+            <mat-icon class="icon-contact" matPrefix><span class="material-symbols-outlined">
+              person
+              </span></mat-icon>
+            <mat-label>Tên của bạn</mat-label>
+            <input matInput placeholder="" value="" required>
+            <mat-error *ngIf="nameRq.invalid">{{getErrorMessage()}}</mat-error>
+          </mat-form-field>
+
+          <div class="email-phone">
+            <mat-form-field class="phone-contact" appearance="outline">
+              <mat-icon class="icon-contact" matPrefix><span class="material-symbols-outlined">
+                call
+                </span></mat-icon>
+              <mat-label>Điện thoại </mat-label>
+              <input matInput placeholder="" value="" required />
+            </mat-form-field>
+
+            <mat-form-field class="email-contact" appearance="outline">
+              <mat-icon class="icon-contact" matPrefix><span class="material-symbols-outlined icon-footer">
+                mail
+                </span></mat-icon>
+              <mat-label>Email</mat-label>
+              <input matInput placeholder="" value="" />
+            </mat-form-field>
+          </div>
+
+          <mat-form-field class="des-contact" appearance="outline">
+            <mat-label>Nhập nội dung</mat-label>
+            <textarea rows="6" matInput placeholder="" value=""></textarea>
+          </mat-form-field>
+        </form>
+
+        <div class="file-upload">
+          <div class="header-upload">
+            <div class="mb">{{datafile}}/100MB</div>
+            <div class="bt-upload">
+
+              <input
+                type="file"
+                class="file-input"
+                (change)="onFileSelected($event)"
+                #fileUploadContact
+                multiple
+              />
+              <a  (click)="fileUploadContact.click()" class="title-upload"><span class="material-symbols-outlined icon-upload"> file_upload </span>Tải lên file</a>
+            </div>
+          </div>
+          <div class="content-upload">
+            <div class="list-file"  *ngIf="files?.length > 0 else elseBlock">
+              <div class="item-file"*ngFor="let file of files; let i = index">
+
+                <span class="material-symbols-outlined icon-file"> file_present </span>
+                <div  (click)="handleFileDelete(i)">
+                  <span class="material-symbols-outlined icon-cancel">
+                    cancel
+                    </span>
+                </div>
+
+              <p>{{file.name }}</p>
+              </div>
+
+            </div>
+            <ng-template #elseBlock class="no-file">
+              <span class="material-symbols-outlined"> file_present </span>
+              <p>File đính kèm</p>
+
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <button mat-stroked-button class="sumbitform" (click)="sumbitForm()">
+        Gửi
+      </button>
+    </div>
+  </div>
+</div>

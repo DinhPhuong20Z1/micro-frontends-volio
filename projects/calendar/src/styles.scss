@@ -1,1 +1,275 @@
 /* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+$color_main: #FFC934;
+$color_text: #363636;
+$space_desktop: 100px;
+
+@font-face {
+    font-family: Inter;
+    src: url(./assets/font-family/Inter/static/Inter-SemiBold.ttf) format("opentype");
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    font-family:  'Inter', sans-serif !important;
+    color: #363636;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+    background: #FAFAFA;
+}
+
+p {
+    margin: 0;
+}
+
+
+
+header {
+
+    width: 100%;
+    z-index: 9999;
+    background: #fff;
+    position: relative;
+}
+header.sticky {
+    position: fixed;
+    top: 0;
+    transition: all 0.4s ease-out;
+}
+header.header-down {
+
+    transition: all 0.4s ease-out;
+    -ms-transform: translateY(0);
+    -webkit-transform: translateY(0);
+    -o-transform: translateY(0);
+    -moz-transform: translateY(0);
+    transform: translateY(0);
+    box-shadow: 0px 4px 8px rgb(0 0 0 / 8%);
+}
+header.header-up{
+    transition: all 0.4s ease-out;
+    -ms-transform: translateY(-100%);
+    -webkit-transform: translateY(-100%);
+    -o-transform: translateY(-100%);
+    -moz-transform: translateY(-100%);
+    transform: translateY(-100%);
+}
+
+footer {
+    background-color: #f1f1f1;
+}
+.wrapper {
+    .owl-carousel .owl-nav {
+        position: absolute;
+        margin: 0 !important;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100%;
+
+        .owl-next {
+            right: 0;
+            position: absolute;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 100%;
+            padding: 4px 4px;
+
+            &:hover {
+                color: $color_main;
+                background: rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        .owl-prev {
+            left: 0;
+            position: absolute;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 100%;
+            padding: 4px 4px;
+
+            &:hover {
+                color: $color_main;
+                background: rgba(0, 0, 0, 0.2);
+            }
+        }
+    }
+}
+
+.timeline-section .wrapper {
+    .owl-carousel .owl-nav {
+        top: 0;
+        transform: unset;
+
+        .owl-prev,
+        .owl-next {
+            background: rgba(0, 0, 0, 0.4);
+            color: $color_text;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            margin: 0;
+
+            span {
+                line-height: 42px;
+            }
+        }
+
+        .owl-prev {
+            left: -50px;
+        }
+
+        .owl-next {
+            right: -50px;
+        }
+    }
+
+
+
+    .owl-item:last-child {
+        #timeline {
+            position: absolute;
+
+            .status {
+                padding-right: 0;
+
+                .border-content {
+                    &::before {
+                        content: "";
+                        width: 0;
+                        height: 0;
+                        border-left: 20px solid transparent;
+                        border-right: 20px solid transparent;
+                        border-bottom: 20px solid #ffba34;
+                        position: absolute;
+                        top: -20px;
+                        right: 50%;
+                        transform: translateX(50%);
+                    }
+
+                    .bgr-content {
+                        padding: 20px;
+                        background: #ffba34;
+                        border-radius: 20px;
+
+                        .content {
+                            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.12);
+                            z-index: 2;
+                            position: relative;
+                            padding: 20px;
+                        }
+
+                        .item-border {
+                            position: absolute;
+                            width: calc(100% - 4px);
+                            height: calc(50% - 4px);
+                            bottom: 0;
+                            border-radius: 0 0 20px 20px;
+                            border-right: 2px dashed #ffba34;
+                            background: #fff;
+                            left: 0;
+                            z-index: 1;
+                            border-left: 2px dashed #ffba34;
+                            border-bottom: 2px dashed #ffba34;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+.container,
+.container-home,
+.container-header,
+.container-product {
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0 15px;
+}
+
+.mat-dialog-container {
+    border-radius: 20px;
+
+    .title-dialog {
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 24px;
+        color: $color_main;
+        margin: 0 0 20px 0;
+
+        &.title-success-dialog {
+            color: #00CD39;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+
+            .mat-icon {
+                margin-right: 5px;
+            }
+        }
+    }
+
+    .des-success-dialog {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 24px;
+        margin: 0 0 20px 0;
+    }
+}
+
+.mat-stroked-button.mat-button-disabled.mat-button-disabled {
+    background: #E1E1E1;
+    color: #fff;
+    cursor: not-allowed;
+}
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: unset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+@media (min-width: 1441px) {
+    .container {
+        max-width: 1560px !important;
+
+    }
+
+
+    .container-header {
+        max-width: 1240px !important;
+
+    }
+    .container-home {
+        max-width: 1270px !important;
+        box-sizing: border-box;
+    }
+
+    .container-product {
+        max-width: 740px !important;
+
+    }
+}
+
+@media (max-width: 1440px) {
+    .container-header {
+        max-width: 1130px !important;
+
+    }
+    .container-home {
+        max-width: 1160px !important;
+    }
+}

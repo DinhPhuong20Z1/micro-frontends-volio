@@ -1,0 +1,142 @@
+$color_main: #FFC934;
+$color_text: #363636;
+$space_desktop: 100px;
+
+.volio-team {
+    width: 100%;
+}
+
+.logo-introduce {
+    position: relative;
+    padding-bottom: 80px;
+
+    img {
+        padding: 0 15px;
+        position: absolute;
+        top: -80px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+.introduce-section {
+    padding-top: 43px;
+
+    .line-straight-introduce {
+        width: 2px;
+        background-color: $color_main;
+        height: 80px;
+        margin: 0 auto;
+    }
+
+    .content-introduce-2 {
+        text-align: center;
+        padding-bottom: 50px;
+
+        h6 {
+            font-weight: 700;
+            font-size: 36px;
+            line-height: 40px;
+            padding: 0 15px;
+            margin: 0;
+            margin-top: $space_desktop;
+        }
+
+        &.update {
+            h6 {
+                margin-bottom: 80px;
+            }
+        }
+    }
+
+    .list-5t {
+        .item-5t {
+            padding: 20px 40px;
+
+            p {
+                font-weight: 500;
+                font-size: 16px;
+                line-height: 28px;
+                margin-top: 0px;
+            }
+        }
+    }
+
+    .list-5t-v1 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 15px;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .list-5t-v2 {
+        padding-top: 13px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 15px;
+        gap: 15px;
+        text-align: center;
+
+        .item-5t {
+            &:first-child {
+                text-align: right;
+
+                img {
+                    margin: 0 25px;
+                }
+
+                p {
+                    text-align: center;
+                    padding-left: 205px;
+                }
+            }
+
+            &:last-child {
+                text-align: left;
+
+                img {
+                    margin: 0 40px;
+                }
+
+                p {
+                    text-align: center;
+                    padding-right: 205px;
+                }
+            }
+
+        }
+
+    }
+
+    .list-3c {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 15px;
+        gap: 15px;
+        text-align: center;
+        margin-top: 13px;
+
+        .item-3c {
+            padding: 20px 40px;
+
+            p {
+                font-weight: 500;
+                font-size: 16px;
+                line-height: 28px;
+                margin-top: 0px;
+            }
+        }
+    }
+
+    .img-banner {
+        text-align: center;
+        margin-top: 48px;
+        margin-bottom: $space_desktop;
+    }
+
+}
+
+.introduce-section-v2.introduce-section.section-5t {
+    padding-top: $space_desktop;
+}

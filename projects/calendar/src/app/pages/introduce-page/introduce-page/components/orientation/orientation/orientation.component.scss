@@ -1,0 +1,273 @@
+$color_main: #FFC934;
+$color_text: #363636;
+$space_desktop: 100px;
+
+.orientation {
+    margin-top: 70px;
+}
+
+.orientation-section {
+    position: relative;
+    padding-top: 72px;
+}
+
+.orientation-section::before {
+    content: "";
+    background-image: url(../../../../../../../assets/img/introduce/img_mountain-v2.png);
+    width: 972px;
+    height: 751px;
+    background-repeat: no-repeat;
+    z-index: -2;
+    position: absolute;
+    left: 50%;
+    right: 0;
+    transform: translateX(-50%);
+    margin-left: 9px;
+}
+
+.orientation-section-v1::after {
+    content: "";
+    background-image: url(../../../../../../../assets/img/introduce/Flag.png);
+    width: 53px;
+    height: 80px;
+    background-repeat: no-repeat;
+    z-index: -2;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: 9px;
+}
+
+.section-timeline {
+    position: relative;
+}
+
+/* The actual timeline (the vertical ruler) */
+.timeline {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.timeline-pillar {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* The actual timeline (the vertical ruler) */
+.timeline-pillar-child {
+    position: absolute;
+    width: 2px;
+    background-color: $color_main;
+    // top: 14px;
+    bottom: 248px;
+    left: 50%;
+    margin-left: 9px;
+
+    &.slideUp {
+        animation-name: example;
+        animation-duration: 2s;
+        animation-iteration-count: 1;
+        animation-direction: alternate-reverse;
+        animation-timing-function: linear;
+        height: 624px;
+    }
+}
+
+/* Container around content */
+.container-item-text {
+    padding: 10px 40px;
+    position: relative;
+    background-color: inherit;
+    width: 35%;
+
+    &:nth-child(1) {
+        transform: translateY(-17px);
+    }
+
+    &:nth-child(2) {
+        transform: translateY(-55px);
+    }
+
+    &:nth-child(3) {
+        transform: translateY(-97px);
+    }
+
+    &:last-child {
+        transform: translateY(-62px);
+    }
+}
+
+/* The circles on the timeline */
+.container-item-text::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    right: -120px;
+    background-color: $color_main;
+    top: 14px;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+/* Place the container-item-text to the left */
+.left {
+    left: 0;
+
+    .content {
+        left: -55px;
+        &::after {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            right: -11px;
+            background-color: #FFC934;
+            border: 3px solid #ff9f55;
+            top: 50%;
+            border-radius: 50%;
+            z-index: 1;
+        }
+    }
+}
+
+/* Place the container-item-text to the right */
+.right {
+    left: 50%;
+
+    .content {
+        left: 170px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            left: -11px;
+            background-color: #FFC934;
+            border: 3px solid #ff9f55;
+            top: 50%;
+            border-radius: 50%;
+            z-index: 1;
+        }
+    }
+}
+
+/* Add arrows to the left container-item-text (pointing right) */
+.left::before {
+    content: " ";
+    height: 0;
+    position: absolute;
+    top: 22px;
+    width: 190px;
+    height: 2px;
+    z-index: 1;
+    right: -107px;
+    background-color: $color_main;
+}
+
+/* Add arrows to the right container-item-text (pointing left) */
+.right::before {
+    content: " ";
+    height: 0;
+    position: absolute;
+    top: 22px;
+    width: 190px;
+    height: 2px;
+    z-index: 1;
+    left: 10px;
+    background-color: $color_main;
+}
+
+/* Fix the circle for containers on the right side */
+.right::after {
+    left: 0px;
+}
+
+/* The actual content */
+.content {
+    padding: 25px;
+    background-color: white;
+    position: relative;
+    border-radius: 6px;
+    transform: translateY(-50%);
+    border-radius: 20px;
+    border: 2px dashed $color_main;
+    position: relative;
+
+    .title-content {
+        color: $color_main;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 32px;
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+
+    .des-content {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 28px;
+        margin: 0;
+    }
+
+    ul {
+        margin: 4px 0 0;
+        padding: 0 0 0 25px;
+
+        li {
+            font-weight: 400;
+            font-size: 15px;
+            line-height: 26px;
+        }
+    }
+}
+@keyframes example {
+    0% {
+        height: 624px;
+    }
+
+    25% {
+        height: 400px;
+    }
+    50% {
+        height: 200px;
+    }
+    100% {
+        height: 0px;
+    }
+}
+
+/* Media queries - Responsive timeline on screens less than 600px wide */
+@media screen and (max-width: 600px) {
+    /* Place the timelime to the left */
+    .timeline::after {
+        left: 31px;
+    }
+
+    /* Full-width containers */
+    .container-item-text {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+    }
+
+    /* Make sure that all arrows are pointing leftwards */
+    .container-item-text::before {
+        left: 60px;
+        height: 2px;
+        width: 200px;
+    }
+
+    /* Make sure all circles are at the same spot */
+    .left::after,
+    .right::after {
+        left: 15px;
+    }
+
+    /* Make all right containers behave like the left ones */
+    .right {
+        left: 0%;
+    }
+}

@@ -1,0 +1,54 @@
+<img class="volio-recruit" src="assets/img/recruit/banner-recuit.png" alt="volio-recruit" />
+<div class="recruit">
+    <div class="container-home recruit-section-v1 recruit-section">
+        <img src="assets/img/home/Group 28523.png" width="auto" />
+        <p class="title-recruit">Tại sao bạn nên trở thành 1 Volior?</p>
+        <p class="des-recruit">
+            VOLIO VIETNAM là công ty công nghệ chuyên phát triển ứng dụng và trò chơi
+            cho thiết bị di động trên 2 nền tảng chính là Android và iOS. Sau 2 năm
+            hoạt động, VOLIO đã đạt mốc 50 triệu lượt tải với nhiều ứng dụng đạt TOP 1
+            trên thị trường Việt Nam cũng như thế giới.
+        </p>
+        <img class="image-bgr" src="assets/img/recruit/image-bgr.png" />
+    </div>
+    <div class="bgr-sup">
+        <img src="assets/img/recruit/bgr-sup.png" alt="bgr-v1" />
+    </div>
+    <div class="search">
+        <div class="container-home recruit-section-v2">
+            <form class="example-form">
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Từ khóa và tên công việc</mat-label>
+                    <input matInput placeholder="" value="" />
+                </mat-form-field>
+            </form>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Lĩnh vực chyên ngành</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let location of locations" [value]="location.value">
+                        {{ location.viewValue }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <button mat-stroked-button>Tìm kiếm</button>
+        </div>
+    </div>
+    <div class="data">
+        <div class="container-home recruit-section-v3">
+            <div class="list-data">
+                <div class="gallery-cell" *ngFor="let item of dataRecruitment">
+                    <div class="border-bt">
+                        <a routerLink="/tuyen-dung/{{item.id}}" class="title-recruitment">{{ item.title }}</a>
+
+                        <span class="up-recruitment">Mức lương: ${{ item.amount }} </span>
+                    </div>
+                </div>
+            </div>
+            <div class="fb">
+                <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Ffacebook.com%2Fvolio.vn%2F&tabs=timeline&width=292&height=486&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="292" height="486" style="border: none; overflow: hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+            </div>
+        </div>
+    </div>
+</div>

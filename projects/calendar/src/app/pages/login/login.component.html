@@ -1,0 +1,31 @@
+<div class="login-section-v1 login-section">
+    <div class="colum-form">
+        <div class="list-form-login">
+          <form class="form-dialog">
+            <h2>Đăng nhập</h2>
+            <mat-form-field class="name-login" appearance="outline">
+              <mat-icon class="icon-contact" matPrefix><span class="material-symbols-outlined">
+                person
+                </span></mat-icon>
+              <mat-label>Tên đăng nhập</mat-label>
+              <input matInput type="text" placeholder=""  required  id="username" name="username" [(ngModel)]="username">
+              <mat-error *ngIf="nameRq.invalid">{{getErrorMessageUser()}}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="pass-login" appearance="outline">
+                <mat-icon class="icon-contact" matPrefix><span class="material-symbols-outlined">
+                  person
+                  </span></mat-icon>
+                <mat-label>Mật khẩu</mat-label>
+                <input matInput placeholder=""  required id="password" name="password" [(ngModel)]="password">
+                <mat-error *ngIf="nameRq.invalid">{{getErrorMessagePass()}}</mat-error>
+              </mat-form-field>
+          </form>
+        </div>
+        <button [disabled]="!username || !password"  mat-stroked-button class="sumbitform" (click)="sumbitForm()">
+          Đăng nhập
+        </button>
+
+      </div>
+</div>
+

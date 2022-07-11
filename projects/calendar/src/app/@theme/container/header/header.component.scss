@@ -1,32 +1,34 @@
-$color_main: #f2c94c;
+$color_main: #ffc934;
 $color_text: #363636;
 $space_desktop: 50px;
-$color_level: #FFBA34;
-$color_background: #FFC934;
-
+$color_level: #ffba34;
+$color_background: #ffc934;
 
 .header-container {
-  margin-right: auto;
-  margin-left: auto;
+    margin-right: auto;
+    margin-left: auto;
 
-  display: grid;
-  /* grid-template-columns: auto auto auto; */
-  grid-template-columns:  1fr 7fr ;
-  padding: 0 15px;
-  .icon-mobile {
-    cursor: pointer;
-    display: none;
-    span {
-      font-size: 30px;
-    }
-    &:hover, &:active {
-      color: $color_main;
+    display: grid;
+    /* grid-template-columns: auto auto auto; */
+    grid-template-columns: 1fr 7fr;
 
+    .icon-mobile {
+        cursor: pointer;
+        display: none;
+
+        span {
+            font-size: 30px;
+        }
+
+        &:hover,
+        &:active {
+            color: $color_main;
+        }
     }
-  }
 }
+
 #menu-mobile {
-  display: block;
+    display: block;
     position: fixed;
     top: 0;
     height: 100%;
@@ -37,44 +39,52 @@ $color_background: #FFC934;
     overflow-y: auto;
     font-size: 15px;
     background-color: #fff;
-    box-shadow: 0px 8px 40px rgb(0 0 0 / 12%);
+    box-shadow: 0px 8px 40px rgb(0 0 0 / 6%);
     color: #555;
     user-select: none;
     z-index: 9999;
     transition: left 0.3s ease 0s;
     left: -300px;
     right: auto;
+
     .close-menu-mobile {
-      display: flex;
-      background-color: $color_background;
-      padding: 20px 10px;
-      align-items: center;
-      cursor: pointer;
-      span {
-        margin-right: 10px;
-      }
-      p {
-        font-size: 18px;
-      }
-    }
-    ul {
-      margin: 0;
-      padding: 0;
-      li {
-        list-style: none;
+        display: flex;
+        background-color: $color_background;
         padding: 20px 10px;
-        a {
-          font-size: 14px;
-          font-weight: 600;
-          text-decoration: none;
-          color: $color_text;
-          &:hover, &.is-active {
-            color: $color_main;
-          }
+        align-items: center;
+        cursor: pointer;
+
+        span {
+            margin-right: 10px;
         }
-      }
+
+        p {
+            font-size: 18px;
+        }
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+
+        li {
+            list-style: none;
+            padding: 20px 10px;
+
+            a {
+                font-size: 14px;
+                text-decoration: none;
+                color: $color_text;
+
+                &:hover,
+                &.is-active {
+                    color: $color_main;
+                }
+            }
+        }
     }
 }
+
 // #menu-mobile.topnav {
 //   left: 0;
 // }
@@ -85,39 +95,55 @@ $color_background: #FFC934;
 //   height: 80px;
 // }
 .header-container mat-grid-tile.list-iteam {
-
-
 }
+
 .header-logo {
-  display: flex;
-  align-items: center;
-}
-.header-container #nav {
-  display: flex;
-  align-items: flex-end;
-}
-.header-container  nav > ul {
-  display: flex;
-  margin: 0;
-  padding: 0;
-}
-.header-container  nav > ul > li {
-  list-style: none;
-}
-.header-container nav > ul > li.nav-item a {
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 28px;
-  color: #363636;
-  padding: 26px 38.64px;
-  display: block;
-  width: 100%;
-}
-.header-container nav > ul > li.nav-item a:hover {
-  color: #FFBA34;
-}
-.header-container nav > ul > li.nav-item a.is-active {
-  color: #FFBA34;
+    display: flex;
+    align-items: center;
 }
 
+.header-container #nav {
+    display: flex;
+    align-items: flex-end;
+}
+
+.header-container nav > ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.header-container nav > ul > li {
+    list-style: none;
+    height: 80px;
+    line-height: 80px;
+    padding: 0 36px;
+}
+
+.header-container nav > ul > li.nav-item a {
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 28px;
+    color: #363636;
+    // padding: 26px 38.64px;
+    display: block;
+    width: 100%;
+    line-height: 80px;
+    opacity: 0.8;
+}
+
+.header-container nav > ul > li.nav-item a:hover {
+    color: #ffba34;
+    opacity: 1;
+}
+
+.header-container nav > ul > li.nav-item a.is-active {
+    color: #ffba34;
+    opacity: 1;
+}
+
+@media (max-width: 1440px) {
+    .header-container nav > ul > li {
+        padding: 0 30px;
+    }
+}

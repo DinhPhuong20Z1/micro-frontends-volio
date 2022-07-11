@@ -1,0 +1,164 @@
+$color_main: #FFC934;
+$color_text: #363636;
+$space_desktop: 100px;
+
+.volio-activity-page {
+    width: 100%;
+}
+
+.activity {
+    .title-activity {
+        font-style: italic;
+        font-weight: 500;
+        font-size: 32px;
+        line-height: 56px;
+        text-align: center;
+        margin-top: 80px;
+
+        span {
+            color: $color_main;
+        }
+    }
+
+    .list-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        row-gap: 110px;
+        column-gap: 62px;
+        // display: flex;
+        margin-top: 100px;
+
+        .item-content {
+            p {
+                font-weight: 700;
+                font-size: 36px;
+                line-height: 40px;
+                margin-bottom: 30px;
+                text-transform: capitalize;
+            }
+
+            span {
+                font-weight: 400;
+                font-size: 16px;
+                line-height: 28px;
+            }
+        }
+
+        .item-content-2 {
+            ul {
+                margin-top: 30px;
+
+                li {
+                    padding: 10px 0;
+                    font-weight: 400;
+                    font-size: 16px;
+                    line-height: 28px;
+                }
+            }
+        }
+
+        .item-content-3 {
+
+            p,
+            span {
+                text-align: right;
+            }
+
+            span {
+                float: right;
+            }
+        }
+    }
+}
+
+.logo-team-activity {
+    margin-top: $space_desktop;
+    background-image: url(../../../../assets/img/activity/bgr-activity.png);
+    padding-bottom: 210px;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    background-position: bottom;
+}
+
+.wrapper {
+    position: relative;
+    height: 370px;
+
+    .owl-nav {
+        position: absolute;
+        margin: 0;
+        top: 50%;
+
+        .owl-next {
+            right: 0;
+            float: right;
+        }
+    }
+}
+
+owl-carousel-o {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.owl-item {
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+/* img {
+  width: 100%;
+  height: auto;
+  max-width: 99vh;
+} */
+
+/* Feel free to change duration  */
+.animated {
+    -webkit-animation-duration: 1000 ms;
+    animation-duration: 1000 ms;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+/* .owl-animated-out - only for current item */
+/* This is very important class. Use z-index if you want move Out item above In item */
+.owl-animated-out {
+    z-index: 1;
+}
+
+/* .owl-animated-in - only for upcoming item
+/* This is very important class. Use z-index if you want move In item above Out item */
+.owl-animated-in {
+    z-index: 0;
+}
+
+/* .fadeOut is style taken from Animation.css and this is how it looks in owl.carousel.css:  */
+.fadeOut {
+    -webkit-animation-name: fadeOut;
+    animation-name: fadeOut;
+}
+
+@-webkit-keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}

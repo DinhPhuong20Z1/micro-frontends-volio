@@ -1,0 +1,177 @@
+$color_main: #FFC934;
+$color_text: #363636;
+$space_desktop: 100px;
+
+.volio-recruit {
+    width: 100%;
+}
+
+.recruit-section {
+    text-align: center;
+    margin-top: $space_desktop;
+    position: relative;
+
+    .title-recruit {
+        margin-top: 20px;
+        font-weight: 700;
+        font-size: 40px;
+        line-height: 48px;
+        color: $color_main;
+    }
+
+    .des-recruit {
+        margin-top: 30px;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 32px;
+    }
+
+    .image-bgr {
+        margin-top: 50px;
+    }
+}
+
+.bgr-sup img {
+    width: 100%;
+    margin-top: -200px;
+}
+
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+.recruit {
+    margin-bottom: $space_desktop;
+
+    .search {
+        background-color: #ffc934;
+        padding: 38px 0 20px 0;
+
+        .recruit-section-v2 {
+            display: flex;
+            align-items: center;
+
+            .mat-stroked-button {
+                background: #fff;
+                border: unset;
+                font-weight: 700;
+                font-size: 18px;
+                line-height: 28px;
+                color: $color_main;
+                line-height: 60px;
+                text-transform: uppercase;
+                padding: 0 58px;
+                margin-bottom: 17px;
+                width: 20%;
+            }
+
+            form.example-form {
+                max-width: 40%;
+                margin-right: 24px;
+
+                .example-full-width {
+                    width: 100%;
+                }
+            }
+
+            .mat-form-field {
+                width: 40%;
+                margin-right: 24px;
+            }
+        }
+    }
+}
+
+::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: #fff;
+    border-radius: 4px !important;
+    line-height: 24px;
+}
+
+::ng-deep .mat-form-field-appearance-fill .mat-form-field-underline::before {
+    background-color: unset;
+}
+
+::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 17px;
+}
+
+.recruit-section-v3 {
+    display: flex;
+    margin-top: 30px;
+
+    .list-data {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 20px;
+        row-gap: 20px;
+
+        .gallery-cell {
+            position: relative;
+            padding-left: 50px;
+
+            &::before {
+                content: "new";
+                position: relative;
+                font-weight: 500;
+                font-size: 14px;
+                padding: 7px 5px;
+                left: -50px;
+                background-color: #00cd39;
+                color: #fff;
+                line-height: 16px;
+                top: 30px;
+                border-radius: 8px 8px 0px 8px;
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                left: 29px;
+                width: 0;
+                height: 0;
+                border-left: 9px solid transparent;
+                border-top: 6px solid #00a32e;
+                top: 53px;
+                right: 0;
+            }
+
+            .border-bt {
+                padding-bottom: 30px;
+                border-bottom: 2px dashed #e1e1e1;
+            }
+
+            .title-recruitment {
+                font-weight: 700;
+                font-size: 16px;
+                line-height: 28px;
+                margin-top: 0;
+                position: relative;
+                -webkit-line-clamp: 1;
+                /* số dòng hiển thị */
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                color: $color_text;
+                text-decoration: unset;
+
+                &:hover {
+                    color: $color_main;
+                }
+            }
+
+            .up-recruitment {
+                font-weight: 500;
+                font-size: 16px;
+                line-height: 28px;
+            }
+        }
+    }
+}

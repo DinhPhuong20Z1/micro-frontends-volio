@@ -40,7 +40,14 @@
                             "node_modules/socicon/css/socicon.css",
                             "node_modules/nebular-icons/scss/nebular-icons.scss",
                             "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
-                            "src/app/@theme/styles/styles.scss"
+                            "src/app/@theme/styles/styles.scss",
+                            "src/styles.css",
+                            "src/styles.scss",
+                            "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+                            "node_modules/jquery/dist/jquery.min.js",
+                            "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
+                            "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.min.css",
+                            "node_modules/font-awesome/css/font-awesome.min.css"
                         ],
                         "scripts": [
                             "node_modules/pace-js/pace.min.js",
@@ -280,6 +287,7 @@
                             "projects/calendar/src/assets"
                         ],
                         "styles": [
+                            "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
                             "projects/calendar/src/styles.scss"
                         ],
                         "scripts": []

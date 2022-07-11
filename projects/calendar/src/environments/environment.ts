@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  homePage: 'http://localhost:4200', // http://source.jacatgames.com
+    apiUrl:  'http://localhost:3000', // http://source.jacatgames.com/jacasource/api/v1.0
 };
 
 /*

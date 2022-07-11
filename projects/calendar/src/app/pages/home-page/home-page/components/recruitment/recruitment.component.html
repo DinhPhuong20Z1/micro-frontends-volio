@@ -1,0 +1,24 @@
+<div class="recruitment">
+    <div class="main">
+        <h6>Tuyển dụng</h6>
+        <owl-carousel-o [options]="customOptions">
+            <ng-template *ngFor="let item of dataRecruitment" carouselSlide>
+                <div class="content">
+                    <div [ngSwitch]="item.tag">
+                        <p class="title" *ngSwitchCase="">{{ item.title }}</p>
+                        <p class="title-new" *ngSwitchCase="'new'">{{ item.title }}</p>
+                        <p class="title-hot" *ngSwitchCase="'hot'">{{ item.title }}</p>
+                    </div>
+
+                    <div class="subtitle">
+                        <span class="first">Mức lương: ${{ item.amount }}</span>
+                        <span class="last">Hạn nộp hồ sơ: {{ item.deadline }}</span>
+                    </div>
+
+                    <p class="description">{{ item.des }}</p>
+                    <button type="button"><a routerLink="/tuyen-dung/{{item.index}}" target="_blank">ứng tuyển</a></button>
+                </div>
+            </ng-template>
+        </owl-carousel-o>
+    </div>
+</div>

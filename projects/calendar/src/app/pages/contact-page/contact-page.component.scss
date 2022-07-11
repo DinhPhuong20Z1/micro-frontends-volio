@@ -1,0 +1,162 @@
+$color_main: #FFC934;
+$color_text: #363636;
+$space_desktop: 100px;
+
+.volio-contact {
+    width: 100%;
+}
+
+h6 {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 40px;
+    margin: 0;
+    margin-bottom: 80px;
+    text-align: center;
+    margin-top: $space_desktop;
+}
+
+.contact {
+
+    margin-bottom: $space_desktop;
+
+    .contact-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 15px;
+
+        .colum-form {
+            margin-top: 15px;
+
+            .list-form-contact {
+                .form-dialog {
+
+                    .name-contact,
+                    .des-contact {
+                        width: 100%;
+                    }
+
+                    .email-phone {
+                        display: flex;
+
+                        .email-contact,
+                        .phone-contact {
+                            width: 50%;
+                        }
+
+                        .email-contact {
+                            margin-left: 10px;
+                        }
+
+                        .phone-contact {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+            }
+
+            .sumbitform {
+                background: #ffc934;
+                border-radius: 4px;
+                font-size: 18px;
+                line-height: 56px;
+                color: #fff;
+                font-family: "Inter";
+                border: none;
+                padding: 0 87px;
+
+                &:hover {
+                    background-color: #494949;
+                }
+            }
+        }
+    }
+}
+
+.file-upload {
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px dashed #e1e1e1;
+    margin-bottom: 20px;
+
+    .header-upload {
+        display: flex;
+        align-items: center;
+
+        .bt-upload {
+            flex: 1 1 auto;
+            display: flex;
+            justify-content: flex-end;
+
+            color: #0098ed;
+
+            a {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .content-upload {
+        text-align: center;
+        padding: 20px 10px;
+
+        span.icon-file {
+            font-size: 45px;
+        }
+
+        span.icon-cancel {
+            top: 0;
+            position: absolute;
+            color: #fff;
+            background: red;
+            border-radius: 50px;
+            cursor: pointer;
+            /* left: 0; */
+            transform: translateX(50%);
+        }
+
+        p {
+            line-height: 15px;
+        }
+
+        .list-file {
+            display: flex;
+            overflow-y: hidden;
+            overflow-x: scroll;
+            padding-bottom: 10px;
+
+            .item-file:not(:last-child) {
+                margin-right: 20px;
+            }
+
+            .item-file {
+                position: relative;
+            }
+        }
+    }
+}
+
+.file-input {
+    display: none;
+}
+
+::ng-deep label.mat-form-field-label,
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding-left: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $color_main;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar {
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}

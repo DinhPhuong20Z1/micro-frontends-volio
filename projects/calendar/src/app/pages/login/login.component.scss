@@ -1,0 +1,31 @@
+.login-section {
+    max-width: 35rem;
+    margin: 0 auto;
+    .colum-form {
+        margin: 100px 0;
+        box-shadow: 0px 0px 8px rgb(0 0 0 / 20%);
+        padding: 20px;
+        .form-dialog {
+            .name-login,
+            .pass-login {
+                width: 100%;
+            }
+        }
+        .sumbitform {
+            width: 100%;
+
+            line-height: 45px;
+            font-size: 18px;
+
+            font-family: "Inter";
+            border: none;
+            &:not(.mat-button-disabled) {
+                background: #ffc934;
+                color: #fff;
+            }
+        }
+    }
+
+}
+
+

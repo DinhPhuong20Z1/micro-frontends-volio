@@ -1,0 +1,697 @@
+// define the variable
+$color_main: #FFC934;
+$color_text: #363636;
+$space_desktop: 50px;
+$color_level: #ffba34;
+$color_background: #ffc934;
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Verdana, sans-serif;
+    margin: 0;
+}
+
+// Strat Slider main
+.mySlides {
+    display: none;
+}
+
+img {
+    vertical-align: middle;
+}
+
+/* Slideshow container */
+.slideshow-container {
+    /* max-width: 1000px; */
+    position: relative;
+    height: inherit !important;
+    /* margin: auto; */
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,
+.next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.list-dost {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 0%);
+    -ms-transform: translate(-50%, 0%);
+    margin-top: 16px !important;
+    margin-bottom: 16px !important;
+    padding: 0.01em 16px;
+
+}
+
+/* The dots/bullets/indicators */
+.dot {
+    cursor: pointer;
+    height: 8px;
+    width: 54px;
+    margin: 0 6px;
+    background-color: #ffffff;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+    border-radius: 20px;
+    opacity: 0.4;
+}
+
+.active,
+.dot:hover {
+    background-color: #ffffff;
+    opacity: 1;
+}
+
+/* Fading animation */
+// .fade {
+//   animation-name: fade;
+//   animation-duration: 1.5s;
+// }
+
+// @keyframes fade {
+//   from {
+//     opacity: 0.4;
+//   }
+//   to {
+//     opacity: 1;
+//   }
+// }
+// End Slider main
+
+// Start Line & Logo & Policy main
+.box-v1 {
+    margin-top: $space_desktop;
+}
+
+.line-straight-main {
+    width: 2px;
+    background-color: $color_main;
+    height: 80px;
+    margin: 0 auto;
+}
+
+.logo-main {
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+.logo-main-center {
+    width: 100%;
+    text-align: center;
+}
+
+.content-box-1 {
+    margin-top: 20px;
+}
+
+.content-box-1 h2 {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 48px;
+    text-align: center;
+    color: $color_main;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    margin-top: 25px;
+}
+
+.content-box-1 p,
+.content-box-2 p {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 32px;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 60px;
+}
+
+.policy {
+    position: relative;
+    margin-bottom: 220px;
+}
+
+// .policy-main {
+//     padding: 0 15px;
+// }
+
+.policy::before {
+    content: "";
+    position: absolute;
+    bottom: -220px;
+    background-image: url("../../../../assets/img/home/background-image-main.png");
+    background-repeat: no-repeat;
+    /* Do not repeat the image */
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: -2;
+}
+
+.policy .boy-girl::before {
+    content: "";
+    position: absolute;
+    bottom: -270px;
+    left: 0;
+    background-image: url("../../../../assets/img/home/boy.png");
+    background-repeat: no-repeat;
+    /* Do not repeat the image */
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: -1;
+}
+
+.policy .boy-girl::after {
+    content: "";
+    position: absolute;
+    bottom: -270px;
+    right: 0;
+    background-image: url("../../../../assets/img/home/girl.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 480px;
+    height: 100%;
+    display: block;
+    z-index: -1;
+}
+
+.policy-main .list-policy {
+    background: #ffffff;
+    box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.06);
+    border-radius: 24px;
+    padding: 32px 42px 56px 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 15px;
+    gap: 15px;
+}
+
+.policy-main .list-policy .item-policy {
+    text-align: center;
+}
+
+.policy-main .list-policy .item-policy h6 {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 36px;
+    color: $color_main;
+    padding: 0 15px;
+    margin: 0;
+    margin-top: 15px;
+}
+
+.policy-main .list-policy .item-policy p {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: $color_text;
+    padding: 0 33px;
+    margin-bottom: 0;
+}
+
+.policy-main .list-policy .item-policy:nth-child(3) p {
+    padding: 0 55px;
+}
+
+// End Line & Logo  & Policy main
+
+// Strart achievement\
+.achievement {
+    position: relative;
+    margin-bottom: 160px;
+}
+
+.achievement::before {
+    content: "";
+    position: absolute;
+    bottom: -145px;
+    background-image: url("../../../../assets/img/home/bgr-v1.png");
+    background-repeat: no-repeat;
+    /* Do not repeat the image */
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: -2;
+}
+
+.box-v2 {
+    padding-top: 50px;
+}
+
+.content-box-2 {
+    margin-top: 100px;
+    text-align: center;
+}
+
+.content-box-2 h6 {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 40px;
+    color: $color_text;
+    margin: 0;
+}
+
+.list-achievement {
+    background: #ffffff;
+    box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.06);
+    border-radius: 24px;
+    padding: 80px 35px 50px 35px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 15px;
+    gap: 15px;
+    margin-top: $space_desktop;
+}
+
+.list-achievement .item-achievement {
+    text-align: center;
+}
+
+// .numbers-item-left > div {
+//   height: 10px;
+// }
+// .numbers-item-left > div i {
+//   font-size: 30px;
+//   color: #FFC934;
+//   animation-duration: 1.5s;
+//   animation-iteration-count: infinite;
+//   animation-name: scroll;
+// }
+.numbers-item-left {
+    margin-right: 20px;
+    margin-top: -10px;
+}
+
+.numbers-item-left > div {
+    height: 20px;
+}
+
+span.icon-level {
+    color: $color_level;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-name: scroll;
+    bottom: 20px;
+    left: 35px;
+    position: relative;
+    font-size: 50px;
+}
+
+@keyframes scroll {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(0px);
+    }
+}
+
+.numbers-item-left > div:nth-child(1) span.icon-level {
+    animation-delay: 1s;
+}
+
+.numbers-item-left > div:nth-child(2) span.icon-level {
+    animation-delay: 0.5s;
+}
+
+.statistical-item {
+    position: relative;
+    padding-left: 35px;
+}
+
+.item-achievement .statistical {
+    display: flex;
+}
+
+.statistical-item .number {
+    font-size: 56px;
+    line-height: 64px;
+    color: $color_level;
+    margin-right: 14px;
+}
+
+.statistical-item .unit {
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 32px;
+    color: $color_level;
+    position: absolute;
+}
+
+.type-statistical {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 32px;
+    color: $color_text;
+    padding: 25px 0 40px 0;
+}
+
+// End achievement
+
+// Start Product
+.content-box-2 p {
+    padding-right: 40px;
+    padding-left: 40px;
+}
+
+.product {
+    position: relative;
+}
+
+.product .product-bgr::before {
+    content: "";
+    position: absolute;
+    // bottom: -220px;
+    left: 90px;
+    background-image: url("../../../../assets/img/home/list-con-v1.png");
+    background-repeat: no-repeat;
+    /* Do not repeat the image */
+    background-size: contain;
+    width: 410px;
+    height: 410px;
+    display: block;
+    z-index: -1;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.product .product-bgr::after {
+    content: "";
+    position: absolute;
+    right: 90px;
+    background-image: url("../../../../assets/img/home/list-con-v1.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 410px;
+    height: 410px;
+    display: block;
+    z-index: -1;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.product-main {
+    position: relative;
+    background-image: url("../../../../assets/img/home/img_bg_sp.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+    background-position: center;
+}
+
+.product-main .logo-product {
+    text-align: center;
+}
+
+.product-main .logo-product p {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 36px;
+    text-transform: uppercase;
+    color: $color_main;
+}
+
+.product-main .item-product {
+    width: 200px;
+    height: 200px;
+    background: #ffffff;
+    backdrop-filter: blur(3px);
+    border-radius: 100%;
+    box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.06);
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate-reverse;
+    animation-timing-function: linear;
+
+    &:hover {
+        div p {
+            color: $color_main;
+        }
+    }
+}
+
+.product-main .item-product > div {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: 100%;
+}
+
+.product-main .item-product > div p {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 28px;
+    color: $color_text;
+    margin: 0;
+    transition: all 0.4s ease-out;
+}
+
+.product-main .item-product-v1 {
+    left: 50%;
+    top: 28px;
+    transform: translateX(-150%);
+
+    animation-name: item-product-v1;
+}
+
+.product-main .item-product-v2 {
+    left: 42%;
+    top: 57px;
+    animation-name: item-product-v2;
+}
+
+.product-main .item-product-v3 {
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-150%);
+    animation-name: item-product-v3;
+}
+
+.product-main .item-product-v4 {
+    left: 36%;
+    bottom: 0px;
+    animation-name: item-product-v4;
+}
+
+@keyframes item-product-v1 {
+    0% {
+        left: 50%;
+        top: 28px;
+    }
+
+    25% {
+        left: 55%;
+        top: 13px;
+    }
+
+    50% {
+        left: 60%;
+        top: -2px;
+    }
+
+    75% {
+        left: 65%;
+        top: -17px;
+    }
+
+    100% {
+        left: 70%;
+        top: -32px;
+    }
+}
+
+@keyframes item-product-v2 {
+    0% {
+        left: 42%;
+        top: 57px;
+    }
+
+    25% {
+        left: 43%;
+        top: 85px;
+    }
+
+    50% {
+        left: 44%;
+        top: 113px;
+    }
+
+    75% {
+        left: 45%;
+        top: 141px;
+    }
+
+    100% {
+        left: 46%;
+        top: 170px;
+    }
+}
+
+@keyframes item-product-v3 {
+    0% {
+        left: 50%;
+        bottom: 30px;
+    }
+
+    20% {
+        left: 48%;
+        bottom: 51px;
+    }
+
+    40% {
+        left: 46%;
+        bottom: 72px;
+    }
+
+    60% {
+        left: 44%;
+        bottom: 93px;
+    }
+
+    80% {
+        left: 42%;
+        bottom: 114px;
+    }
+
+    100% {
+        left: 40%;
+        bottom: 135px;
+    }
+}
+
+@keyframes item-product-v4 {
+    0% {
+        left: 36%;
+        bottom: 0px;
+    }
+
+    10% {
+        left: 34%;
+        bottom: -3px;
+    }
+
+    20% {
+        left: 32%;
+        bottom: -5px;
+    }
+
+    30% {
+        left: 30%;
+        bottom: -10px;
+    }
+
+    // 25% { left:31%; bottom:-11px;}
+
+    40% {
+        left: 28%;
+        bottom: -15px;
+    }
+
+    50% {
+        left: 26%;
+        bottom: -20px;
+    }
+
+    60% {
+        left: 24%;
+        bottom: -25px;
+    }
+
+    70% {
+        left: 22%;
+        bottom: -30px;
+    }
+
+    // 75% { left:21%; bottom:-33px;}
+
+    80% {
+        left: 20%;
+        bottom: -35px;
+    }
+
+    90% {
+        left: 18%;
+        bottom: -40px;
+    }
+
+    100% {
+        left: 16%;
+        bottom: -45px;
+    }
+}
+
+// End Product
+@media only screen and (max-width: 1440px) {
+    .product .product-bgr {
+        &::before {
+            left: 15px;
+            width: 320px;
+            height: 320px;
+        }
+
+        &::after {
+            right: 15px;
+            width: 320px;
+            height: 320px;
+        }
+    }
+}
+
+@media only screen and (max-width: 1280px) {
+    .policy .boy-girl::before,
+    .policy .boy-girl::after {
+        background-size: 30%;
+        height: 66%;
+        bottom: -320px;
+    }
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+    .prev,
+    .next {
+        font-size: 11px;
+    }
+}

@@ -1,0 +1,396 @@
+<img class="volio-library" src="assets/img/library/banner-library-page.png" alt="volio-team" />
+<!-- <section class="timeline">
+  <ul  *ngFor="let item of listTimeLine">
+    <li class="container left">
+      <div class="content">
+        {{item.year}}
+      </div>
+    </li>
+  </ul>
+</section> -->
+<!-- <div class="container-home library-section-v1 library-section">
+  <div class="scroll-time">
+    <div class="timeline" *ngFor="let item of listTimeLine; let i = index">
+      <div class="container-library right">
+        <div (click)="openTimeLine($event, i)" class="content tablink">
+          <p>{{ item.year }}</p>
+          <ul id="list-time-{{ i }}" class="itemContent">
+            <li
+              *ngFor="let items of item.month; let j = index"
+              (click)="onData($event, items.itemMonth)"
+            >
+              {{ items.itemMonth }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+
+
+<article class="timeline container-home">
+  <nav id="timeline" class="timeline__nav">
+    <div (click)="openTimeLine($event, 'list-time-1')" class="content tablink">
+      <p class="year-timeline">2022</p>
+      <ul id="list-time-1" class="itemContent">
+        <li class=""><span>30/12</span></li>
+        <li class=""><span>20/10</span></li>
+        <li class=""><span>15/9</span></li>
+        <li class=""><span>01/6</span></li>
+        <li class=""><span>30/04</span></li>
+        <li class=""><span>08/03</span></li>
+      </ul>
+    </div>
+
+    <div (click)="openTimeLine($event, 'list-time-2')" class="content tablink">
+      <p class="year-timeline">2021</p>
+      <ul id="list-time-2" class="itemContent">
+        <li class=""><span>30/12</span></li>
+        <li class=""><span>20/10</span></li>
+        <li class=""><span>15/9</span></li>
+        <li class=""><span>01/6</span></li>
+        <li class=""><span>30/04</span></li>
+        <li class=""><span>08/03</span></li>
+      </ul>
+    </div>
+
+    <div (click)="openTimeLine($event, 'list-time-3')" class="content tablink">
+      <p class="year-timeline">2020</p>
+      <ul id="list-time-3" class="itemContent">
+        <li class=""><span>30/12</span></li>
+        <li class=""><span>20/10</span></li>
+        <li class=""><span>15/9</span></li>
+        <li class=""><span>01/6</span></li>
+        <li class=""><span>30/04</span></li>
+        <li class=""><span>08/03</span></li>
+      </ul>
+    </div>
+  </nav>
+  <section class="timeline__section">
+    <div class="wrapper">
+      <h2 class="milestone">30/12</h2>
+
+      <div class="carousel-images">
+        <!-- <p class="date">02/04/2021</p> -->
+        <p class="title">Tên sự kiện_ngày lễ</p>
+        <span class="des">Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+        </span>
+        <div class="videoOpen" *ngIf="openvideo; else elseImage">
+          <iframe src="https://www.youtube.com/embed/F5tSoaJ93ac" allowfullscreen frameborder="0" name="slider1"></iframe>
+        </div>
+        <ng-template #elseImage class="container-image">
+          <img id="expandedImg" style="width: 100%" [src]="imageSrc" />
+        </ng-template>
+
+        <div class="wrapper">
+          <owl-carousel-o [options]="customOptions">
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/F5tSoaJ93ac?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/F5tSoaJ93ac/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/_tNU6dpjIyM?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/_tNU6dpjIyM/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/RgKAFK5djSk?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/RgKAFK5djSk/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+
+              <img src="assets/img/library/library-img-1.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-2.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-3.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-4.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-5.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-6.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-7.png" (click)="myFunction($event)" />
+            </ng-template>
+          </owl-carousel-o>
+        </div>
+      </div>
+
+
+
+
+
+      <h2 class="milestone">20/10</h2>
+      <div class="carousel-images">
+        <!-- <p class="date">02/04/2021</p> -->
+        <p class="title">Tên sự kiện_ngày lễ</p>
+        <span class="des">Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+        </span>
+        <div class="videoOpen" *ngIf="openvideo; else elseImage">
+          <iframe src="https://www.youtube.com/embed/F5tSoaJ93ac" allowfullscreen frameborder="0" name="slider1"></iframe>
+        </div>
+        <ng-template #elseImage class="container-image">
+          <img id="expandedImg" style="width: 100%" />
+        </ng-template>
+
+        <div class="wrapper">
+          <owl-carousel-o [options]="customOptions">
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/F5tSoaJ93ac?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/F5tSoaJ93ac/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/_tNU6dpjIyM?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/_tNU6dpjIyM/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/RgKAFK5djSk?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/RgKAFK5djSk/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+
+              <img src="assets/img/library/library-img-1.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-2.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-3.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-4.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-5.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-6.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-7.png" (click)="myFunction($event)" />
+            </ng-template>
+          </owl-carousel-o>
+        </div>
+      </div>
+      <h2 class="milestone">15/9</h2>
+      <div class="carousel-images">
+        <!-- <p class="date">02/04/2021</p> -->
+        <p class="title">Tên sự kiện_ngày lễ</p>
+        <span class="des">Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+        </span>
+        <div class="videoOpen" *ngIf="openvideo; else elseImage">
+          <iframe src="https://www.youtube.com/embed/F5tSoaJ93ac" allowfullscreen frameborder="0" name="slider1"></iframe>
+        </div>
+        <ng-template #elseImage class="container-image">
+          <img id="expandedImg" style="width: 100%" />
+        </ng-template>
+
+        <div class="wrapper">
+          <owl-carousel-o [options]="customOptions">
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/F5tSoaJ93ac?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/F5tSoaJ93ac/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/_tNU6dpjIyM?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/_tNU6dpjIyM/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/RgKAFK5djSk?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/RgKAFK5djSk/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+
+              <img src="assets/img/library/library-img-1.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-2.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-3.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-4.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-5.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-6.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-7.png" (click)="myFunction($event)" />
+            </ng-template>
+          </owl-carousel-o>
+        </div>
+      </div>
+      <h2 class="milestone">01/6</h2>
+      <div class="carousel-images">
+        <!-- <p class="date">02/04/2021</p> -->
+        <p class="title">Tên sự kiện_ngày lễ</p>
+        <span class="des">Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+        </span>
+        <div class="videoOpen" *ngIf="openvideo; else elseImage">
+          <iframe src="https://www.youtube.com/embed/F5tSoaJ93ac" allowfullscreen frameborder="0" name="slider1"></iframe>
+        </div>
+        <ng-template #elseImage class="container-image">
+          <img id="expandedImg" style="width: 100%" />
+        </ng-template>
+
+        <div class="wrapper">
+          <owl-carousel-o [options]="customOptions">
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/F5tSoaJ93ac?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/F5tSoaJ93ac/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/_tNU6dpjIyM?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/_tNU6dpjIyM/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/RgKAFK5djSk?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/RgKAFK5djSk/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+
+              <img src="assets/img/library/library-img-1.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-2.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-3.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-4.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-5.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-6.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-7.png" (click)="myFunction($event)" />
+            </ng-template>
+          </owl-carousel-o>
+        </div>
+      </div>
+      <h2 class="milestone">30/04</h2>
+      <div class="carousel-images">
+        <!-- <p class="date">02/04/2021</p> -->
+        <p class="title">Tên sự kiện_ngày lễ</p>
+        <span class="des">Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+        </span>
+        <div class="videoOpen" *ngIf="openvideo; else elseImage">
+          <iframe src="https://www.youtube.com/embed/F5tSoaJ93ac" allowfullscreen frameborder="0" name="slider1"></iframe>
+        </div>
+        <ng-template #elseImage class="container-image">
+          <img id="expandedImg" style="width: 100%" />
+        </ng-template>
+
+        <div class="wrapper">
+          <owl-carousel-o [options]="customOptions">
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/F5tSoaJ93ac?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/F5tSoaJ93ac/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/_tNU6dpjIyM?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/_tNU6dpjIyM/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/RgKAFK5djSk?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/RgKAFK5djSk/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+
+              <img src="assets/img/library/library-img-1.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-2.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-3.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-4.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-5.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-6.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-7.png" (click)="myFunction($event)" />
+            </ng-template>
+          </owl-carousel-o>
+        </div>
+      </div>
+
+      <h2 class="milestone">08/03</h2>
+      <div class="carousel-images">
+        <!-- <p class="date">02/04/2021</p> -->
+        <p class="title">Tên sự kiện_ngày lễ</p>
+        <span class="des">Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+          Đoạn text mô tả về sự kiện, ký tự hiển thị không quá hai dòng văn bản.
+        </span>
+        <div class="videoOpen" *ngIf="openvideo; else elseImage">
+          <iframe src="https://www.youtube.com/embed/F5tSoaJ93ac" allowfullscreen frameborder="0" name="slider1"></iframe>
+        </div>
+        <ng-template #elseImage class="container-image">
+          <img id="expandedImg" style="width: 100%" />
+        </ng-template>
+
+        <div class="wrapper">
+          <owl-carousel-o [options]="customOptions">
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/F5tSoaJ93ac?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/F5tSoaJ93ac/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/_tNU6dpjIyM?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/_tNU6dpjIyM/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <a (click)="openVideo()" href="//www.youtube.com/embed/RgKAFK5djSk?rel=0&autoplay=1" target="slider1"><img src="//img.youtube.com/vi/RgKAFK5djSk/maxresdefault.jpg" /></a>
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+
+              <img src="assets/img/library/library-img-1.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-2.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-3.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-4.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-5.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-6.png" (click)="myFunction($event)" />
+            </ng-template>
+            <ng-template class="slide" carouselSlide id="1">
+              <img src="assets/img/library/library-img-7.png" (click)="myFunction($event)" />
+            </ng-template>
+          </owl-carousel-o>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</article>
