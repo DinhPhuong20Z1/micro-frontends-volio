@@ -38,6 +38,9 @@ export class RecruitmentComponent implements OnInit {
             },
             800: {
                 items: 2,
+            },
+            1000: {
+                items: 3,
             }
         }
     }

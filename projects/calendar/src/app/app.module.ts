@@ -30,6 +30,7 @@ import { NgImageSliderModule } from 'ng-image-slider';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataService } from './@core/service/data.service';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 const routes: Routes = [
@@ -47,6 +48,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
+
         HeaderComponent,
         FooterComponent,
         HomePageComponent,
@@ -65,6 +67,7 @@ const routes: Routes = [
         DialogRecruitPage,
         ContactPageComponent,
         LoginComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -77,9 +80,11 @@ const routes: Routes = [
     MaterialExampleModule,
     NgImageSliderModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
   ],
   providers: [DataService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
